@@ -1,0 +1,577 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1ED1B720-ECFE-4E10-959B-0C1E2E00C7E2}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Platform.VirtualFileSystem</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Platform.VirtualFileSystem</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5, Version=2.2.4822.42600, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Packages\C5.2.2.4822.42600\lib\portable-win+net40+sl40+wp+Xbox40\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix">
+      <HintPath>..\..\lib\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+      <HintPath>..\..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+      <HintPath>..\..\..\WINDOWS\Microsoft.NET\Framework\v1.0.3705\System.XML.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\..\externals\platform\src\Platform.Xml.Serialization\Platform.Xml.Serialization.csproj">
+      <Name>Platform.Xml.Serialization</Name>
+      <Project>{CBB73076-7381-4FDD-907F-7097A8AB04E6}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\externals\platform\src\Platform\Platform.csproj">
+      <Name>Platform</Name>
+      <Project>{31199C34-A7F0-4D69-B2CF-E9CE05262618}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessPermissionVerifierConfigurationEntry.cs" />
+    <Compile Include="AccessVerificationContext.cs" />
+    <Compile Include="ConfigurationSectionHandler.cs" />
+    <Compile Include="DefaultNodeOperationFilter.cs" />
+    <Compile Include="AccessPermissionVerifier.cs" />
+    <Compile Include="DelegatingResolver.cs" />
+    <Compile Include="DirectoryHashingServiceType.cs" />
+    <Compile Include="DirectoryNodeNotFoundException.cs" />
+    <Compile Include="DirectoryRefreshMask.cs" />
+    <Compile Include="FileComparingFlags.cs" />
+    <Compile Include="FileComparingServiceType.cs" />
+    <Compile Include="FileHashingServiceType.cs" />
+    <Compile Include="FileNodeNotFoundException.cs" />
+    <Compile Include="FileSystemAccessType.cs" />
+    <Compile Include="FileSystemActivity.cs" />
+    <Compile Include="FileSystemRenamedActivityEventArgs.cs" />
+    <Compile Include="FileSystemSecuredOperation.cs" />
+    <Compile Include="FileSystemSecurityException.cs" />
+    <Compile Include="FileSystemSecurityManager.cs" />
+    <Compile Include="FileTransferServiceEventArgs.cs" />
+    <Compile Include="FileTransferServiceType.cs" />
+    <Compile Include="HashingServiceType.cs" />
+    <Compile Include="IDirectoryHashingService.cs" />
+    <Compile Include="IHashingService.cs" />
+    <Compile Include="INodeOperationFilter.cs" />
+    <Compile Include="IStreamHashingService.cs" />
+    <Compile Include="NodeAttributes.cs" />
+    <Compile Include="NodeExtensions.cs" />
+    <Compile Include="NodeNameAndTypeComparer.cs" />
+    <Compile Include="PathKeyedNodeCache.cs" />
+    <Compile Include="Providers\AbstractFileHashingService.cs" />
+    <Compile Include="AbstractFileSystemManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AbstractResolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AddressScope.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AddressScopeValidationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AttributeChangeDeterminer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationSection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CoreNodeServicesProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DefaultFileSystemManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DefaultNodeCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemExtenders.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IFileAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IFileComparingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeAttributesUpdateContext.cs" />
+    <Compile Include="INodeContent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IFileHashingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IFileSystem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IFileSystemManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IFileTransferService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ILockingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INativePathService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeCacheKeyProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeCopyingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeDeletingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeMovingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeOperator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeResolutionFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeServiceProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeTaskService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeTaskServiceWithTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INodeTransformationFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IResolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITaskService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITempIdentityFileService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITransactionService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MalformedUriException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MultipleTaskServicesService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeCopyingMovingServiceType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeCopyingServiceType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeDeletingServiceType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeFilters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeMovingServiceType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeNotFoundException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NodeTypeNotSupportedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullNodeCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractHashingService.cs" />
+    <Compile Include="Providers\AbstractNodeAttributes.cs" />
+    <Compile Include="Providers\AbstractStreamHashingService.cs" />
+    <Compile Include="Providers\AbstractTypeBasedFileAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\DictionaryBasedNodeAttributes.cs" />
+    <Compile Include="Providers\AbstractNodeContent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractFileSystem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractNodeAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractNodeAddressWithRootPart.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractTypeBasedNodeAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractNodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractNodeResolutionFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractNodeService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractNodeTransformationFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractMultiFileSystemNodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractRunnableService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AbstractService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\AutoRefreshingNodeAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\BasicNodeAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\DirectoryConsultationWrapper.cs" />
+    <Compile Include="Providers\Imaginary\ImaginaryDirectory.cs" />
+    <Compile Include="Providers\Imaginary\ImaginaryFile.cs" />
+    <Compile Include="Providers\Imaginary\ImaginaryFileSystem.cs" />
+    <Compile Include="Providers\Imaginary\ImaginaryMemoryFile.cs" />
+    <Compile Include="Providers\Imaginary\ImaginaryNodeProvider.cs" />
+    <Compile Include="Providers\JumpPointDirectory.cs" />
+    <Compile Include="Providers\JumpPointFile.cs" />
+    <Compile Include="Providers\AbstractDirectoryHashingService.cs" />
+    <Compile Include="Providers\JumpPointResolver.cs" />
+    <Compile Include="Providers\Local\LocalFileSystemEventArgs.cs" />
+    <Compile Include="Providers\Local\NativeManaged.cs" />
+    <Compile Include="Providers\Local\NativePosix.cs" />
+    <Compile Include="Providers\NodeProviderConfiguration.cs" />
+    <Compile Include="Providers\Overlayed\OverlayedDirectory.cs" />
+    <Compile Include="Providers\Overlayed\OverlayedFile.cs" />
+    <Compile Include="Providers\Overlayed\OverlayedFileSystem.cs" />
+    <Compile Include="Providers\Overlayed\OverlayedNodeContent.cs" />
+    <Compile Include="Providers\Overlayed\OverlayedNodeProvider.cs" />
+    <Compile Include="Providers\StandardDirectoryHashingService.cs" />
+    <Compile Include="Providers\MyComputer\MyComputerNodeProvider.cs" />
+    <Compile Include="Providers\NodeConsultationWrapper.cs" />
+    <Compile Include="Providers\StandardFileHashingService.cs" />
+    <Compile Include="Providers\StandardFileTransferService.cs" />
+    <Compile Include="Providers\StandardNodeAttributesUpdateContext.cs" />
+    <Compile Include="Providers\StandardStreamHashingService.cs" />
+    <Compile Include="Providers\SystemInfo\EnvironmentVariablesDirectory.cs" />
+    <Compile Include="Providers\SystemInfo\SystemInfoNodeProvider.cs" />
+    <Compile Include="Providers\View\ViewDirectory.cs" />
+    <Compile Include="Providers\View\ViewFile.cs" />
+    <Compile Include="Providers\View\ViewFileSystem.cs" />
+    <Compile Include="Providers\View\ViewNodeAddress.cs" />
+    <Compile Include="Providers\View\ViewNodeProvider.cs" />
+    <Compile Include="Providers\DefaultNodeDetails.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\DirectoryDelegationWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\NodeContentWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\FileWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\IRunnableService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\LayeredNodeAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\LocalDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\LocalFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\LocalFileAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\LocalFileSystem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\LocalNodeAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\LocalNodeAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\LocalNodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Local\Native.cs" />
+    <Compile Include="Providers\Local\NativeWin32.cs" />
+    <Compile Include="Providers\NodeAddressWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\NodeAttributeAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\NodeAttributesWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\NodeBackedFileDeleterService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\NodeToFileAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\NodeDelegationWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Shadow\ShadowFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Shadow\ShadowNodeContent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Shadow\ShadowNodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Shadow\ShadowNodeResolutionFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\StandardFileComparingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\StandardFileCopyingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\StandardFileMovingService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\StandardNodeAddress.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\StandardNodeDecorator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Temp\TempNodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\View\ViewResolver.cs" />
+    <Compile Include="Providers\Web\WebDirectory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Web\WebFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Web\WebNodeProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Web\WebFileSystem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Providers\Web\WebNodeAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemSecurityContext.cs" />
+    <Compile Include="RegexBasedNodePredicateHelper.cs" />
+    <Compile Include="RetryNodeOperationFilter.cs" />
+    <Compile Include="ServiceType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StandardFileSystemManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StandardHashingService.cs" />
+    <Compile Include="StandardTempIdentityFileService.cs" />
+    <Compile Include="StreamHashingServiceType.cs" />
+    <Compile Include="TempIdentityFileNodeResolutionFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TempIdentityFileServiceType.cs" />
+    <Compile Include="TooManyLinksException.cs" />
+    <Compile Include="FileSystemManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="JumpPointEventArgs.cs" />
+    <Compile Include="WeakReferenceBasedNodeCache.cs" />
+    <None Include="FileDownloadService.cs">
+      <SubType>Code</SubType>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

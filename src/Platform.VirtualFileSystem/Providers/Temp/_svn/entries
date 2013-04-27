@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="3"
+   name=""
+   committed-date="2006-04-21T01:10:49.890625Z"
+   url="svn://server/TallPoppy/trunk/Platform.NET/src/Platform.VirtualFileSystem/Providers/Temp"
+   kind="dir"
+   uuid="ea518353-7b15-9549-b8ba-ae8af16e6fba"
+   repos="svn://server/TallPoppy"
+   prop-time="2006-08-03T02:26:16.422125Z"
+   revision="426"/>
+<entry
+   committed-rev="1"
+   name="TempNodeProvider.cs"
+   text-time="2006-04-21T01:07:53.875000Z"
+   committed-date="2006-04-21T01:07:53.875000Z"
+   checksum="798d46ac758eaba259d0af152231b1c4"
+   kind="file"
+   prop-time="2006-08-03T02:26:16.422125Z"/>
+</wc-entries>

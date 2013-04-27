@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F5F37D16-C043-4AA1-A003-0D3BB8FD94E2}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Platform.VirtualFileSystem.Multimedia</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Platform.VirtualFileSystem.Multimedia</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Platform.VirtualFileSystem\Platform.VirtualFileSystem.csproj">
+      <Project>{1ED1B720-ECFE-4E10-959B-0C1E2E00C7E2}</Project>
+      <Name>Platform.VirtualFileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\externals\platform\src\Platform.Xml.Serialization\Platform.Xml.Serialization.csproj">
+      <Name>Platform.Xml.Serialization</Name>
+      <Project>{CBB73076-7381-4FDD-907F-7097A8AB04E6}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\externals\platform\src\Platform\Platform.csproj">
+      <Name>Platform</Name>
+      <Project>{31199C34-A7F0-4D69-B2CF-E9CE05262618}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractMediaFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CompositeMediaFileFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationSection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IMediaFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ISoundFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IVideoFile.cs" />
+    <Compile Include="MediaFileFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaFileMonitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaFileNodeResolutionFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaFileNodeType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaFileType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MultimediaException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VolumeFader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VolumeFaderNodeServiceProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VolumeFaderService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VolumeFaderServiceType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VolumeLevel.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

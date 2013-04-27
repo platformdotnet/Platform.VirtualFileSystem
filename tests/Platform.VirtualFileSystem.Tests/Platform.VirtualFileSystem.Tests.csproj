@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1528064F-4278-4800-A3B6-74BC00D58017}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Platform.VirtualFileSystem.Tests</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Platform.VirtualFileSystem.Tests</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\externals\platform\src\Platform.Xml.Serialization\Platform.Xml.Serialization.csproj">
+      <Project>{cbb73076-7381-4fdd-907f-7097a8ab04e6}</Project>
+      <Name>Platform.Xml.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Platform.VirtualFileSystem.DataFile\Platform.VirtualFileSystem.DataFile.csproj">
+      <Project>{22676D41-CD5C-4A36-B8C9-0D764974BC9A}</Project>
+      <Name>Platform.VirtualFileSystem.DataFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Platform.VirtualFileSystem.Multimedia\Platform.VirtualFileSystem.Multimedia.csproj">
+      <Project>{F5F37D16-C043-4AA1-A003-0D3BB8FD94E2}</Project>
+      <Name>Platform.VirtualFileSystem.Multimedia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Platform.VirtualFileSystem.Network.Server\Platform.VirtualFileSystem.Network.Server.csproj">
+      <Project>{5607A079-2F92-43CD-B56D-1616640242C9}</Project>
+      <Name>Platform.VirtualFileSystem.Network.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Platform.VirtualFileSystem.Network.Text\Platform.VirtualFileSystem.Network.Text.csproj">
+      <Project>{C7E2FD48-FCB0-4684-A8B1-69266B6C16A2}</Project>
+      <Name>Platform.VirtualFileSystem.Network.Text</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Platform.VirtualFileSystem.Network\Platform.VirtualFileSystem.Network.csproj">
+      <Project>{36E17084-44C9-4EF3-A5E6-01EA549416FD}</Project>
+      <Name>Platform.VirtualFileSystem.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Platform.VirtualFileSystem.Providers.Zip\Platform.VirtualFileSystem.Providers.Zip.csproj">
+      <Project>{AB736832-3D20-4DDC-A226-3813EF1CE8ED}</Project>
+      <Name>Platform.VirtualFileSystem.Providers.Zip</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Platform.VirtualFileSystem\Platform.VirtualFileSystem.csproj">
+      <Name>Platform.VirtualFileSystem</Name>
+      <Project>{1ED1B720-ECFE-4E10-959B-0C1E2E00C7E2}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\externals\platform\src\Platform\Platform.csproj">
+      <Name>Platform</Name>
+      <Project>{31199C34-A7F0-4D69-B2CF-E9CE05262618}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MyComputerTests.cs" />
+    <Compile Include="ComputeHashTests.cs" />
+    <Compile Include="DataFileTests.cs" />
+    <Compile Include="ImaginaryFileSystemTests.cs" />
+    <Compile Include="JumpPointTests.cs" />
+    <Compile Include="NetworkServerTests.cs" />
+    <Compile Include="OverlayedFileSystemTests.cs" />
+    <Compile Include="TestsBase.cs" />
+    <Compile Include="OperationFilter.cs" />
+    <Compile Include="SetUpClass.cs" />
+    <Compile Include="AttributesTests.cs" />
+    <Compile Include="BasicTests.cs" />
+    <Compile Include="SecurityTests.cs" />
+    <Compile Include="TransferServiceTests.cs" />
+    <Compile Include="ZipFileSystemTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="TestFiles\Directory1\SubDirectory1\A.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\Directory1\SubDirectory2\A.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\Directory1\SubDirectory2\B.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\Directory2\SubDirectory1\A.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestFiles\DataFile1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="TestFiles\Directory1\A.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Directory1\B.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="TestFiles\Directory2\C.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Temp\Temp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\TextFile1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\TextFile2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{586050A8-1150-4313-8BC9-C8891807DB18}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Platform.VirtualFileSystem.Network.Text.Server</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Platform.VirtualFileSystem.Network.Text.Server</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Platform.VirtualFileSystem.Network.Text\Platform.VirtualFileSystem.Network.Text.csproj">
+      <Project>{C7E2FD48-FCB0-4684-A8B1-69266B6C16A2}</Project>
+      <Name>Platform.VirtualFileSystem.Network.Text</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\externals\platform\src\Platform\Platform.csproj">
+      <Name>Platform</Name>
+      <Project>{31199C34-A7F0-4D69-B2CF-E9CE05262618}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform.Network.ExtensibleServer\Platform.Network.ExtensibleServer.csproj">
+      <Project>{D8AF5266-0C91-4842-BE27-F3F3B38B0E01}</Project>
+      <Name>Platform.Network.ExtensibleServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform.VirtualFileSystem.Network\Platform.VirtualFileSystem.Network.csproj">
+      <Project>{36E17084-44C9-4EF3-A5E6-01EA549416FD}</Project>
+      <Name>Platform.VirtualFileSystem.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platform.VirtualFileSystem\Platform.VirtualFileSystem.csproj">
+      <Project>{1ED1B720-ECFE-4E10-959B-0C1E2E00C7E2}</Project>
+      <Name>Platform.VirtualFileSystem</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AttributesCommands.cs" />
+    <Compile Include="ClaimCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CreateCommandProcessor.cs" />
+    <Compile Include="CreateHardLinkCommandProcessor.cs" />
+    <Compile Include="ComputeHashCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CopyCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DeleteCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DisconnectedException.cs" />
+    <Compile Include="DownloadCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DownloadRunLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DownloadTicket.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AdhocEncryptionCommandProcessor.cs" />
+    <Compile Include="ExitCommandProcessor.cs" />
+    <Compile Include="FileSystemCommandConnection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemNetworkServer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemServerException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemTextCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileSystemTextCommandProcessorWithOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GetAttributesCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GetLengthCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GetPositionCommandProcessor.cs" />
+    <Compile Include="HandshakeRunLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ListCommandProcessor.cs" />
+    <Compile Include="ListCommandsCommandProcessor.cs" />
+    <Compile Include="LoginCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MoveCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NOOPCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OptionsSerializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PrintBinaryCommandProcessor.cs" />
+    <Compile Include="PrintCommandProcessor.cs" />
+    <Compile Include="ProcessNextCommandException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProtocolReadLog.cs" />
+    <Compile Include="ProtocolTrafficLog.cs" />
+    <Compile Include="ProtocolWriteLog.cs" />
+    <Compile Include="QuitCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RandomAccessCommandProcessor.cs" />
+    <Compile Include="RandomAccessGetLengthCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RandomAccessRunLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReadCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SeekCommandProcessor.cs" />
+    <Compile Include="ServerStatsCommandProcessor.cs" />
+    <Compile Include="SetAttributesCommandProcessor.cs" />
+    <Compile Include="SetLengthCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SetPositionCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TextCommandProcessorProvider.cs" />
+    <Compile Include="Ticket.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WriteCommandProcessor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
