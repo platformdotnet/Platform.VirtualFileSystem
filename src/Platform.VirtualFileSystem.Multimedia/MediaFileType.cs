@@ -17,36 +17,36 @@ namespace Platform.VirtualFileSystem.Multimedia
 		public static readonly MediaFileType SoundFile = new MediaFileType(typeof(ISoundFile));
 		public static readonly MediaFileType VideoFile = new MediaFileType(typeof(IVideoFile));
 		
-		private Type m_RuntimeType;
+		private readonly Type runtimeType;
 
 		public virtual Type RuntimeType
 		{
 			get
 			{
-				return m_RuntimeType;
+				return this.runtimeType;
 			}
 		}
 
 		protected MediaFileType(Type runtimeType)
 		{
-			m_RuntimeType = runtimeType;
+			this.runtimeType = runtimeType;
 		}
 
 		public override int GetHashCode()
 		{
-			return m_RuntimeType.GetHashCode();
+			return this.runtimeType.GetHashCode();
 		}
 
 		public override bool Equals(object obj)
 		{
-			MediaFileType temp = obj as MediaFileType;
+			var temp = obj as MediaFileType;
 
 			if (temp == null)
 			{
 				return false;
 			}
 
-			return temp.m_RuntimeType.Equals(m_RuntimeType);
+			return temp.runtimeType == this.runtimeType;
 		}
 	}
 }

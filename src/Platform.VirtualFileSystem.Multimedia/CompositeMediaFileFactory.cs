@@ -3,39 +3,21 @@ using System.Collections;
 
 namespace Platform.VirtualFileSystem.Multimedia
 {
-	/// <summary>
-	/// Summary description for CompositeMediaFileFactory.
-	/// </summary>
 	public class CompositeMediaFileFactory
 		: MediaFileFactory
 	{
-		/// <summary>
-		///  Gets
-		/// </summary>
-		public virtual IList ComponentFactories
-		{
-			get
-			{
-				return m_ComponentFactories;
-			}
-		}
-		/// <summary>
-		/// <see cref="ComponentFactories"/>
-		/// </summary>
-		private readonly IList m_ComponentFactories;
+		public virtual IList ComponentFactories { get; private set; }
 
 		public CompositeMediaFileFactory()
 		{
-			m_ComponentFactories = new ArrayList();
+			this.ComponentFactories = new ArrayList();
 		}
 
 		public override IMediaFile NewMediaFile(IFile file, MediaFileNodeType mediaFileNodeType)
 		{
-			NotSupportedException lastE;
+			var lastException = new NotSupportedException();
 
-			lastE = new NotSupportedException();
-
-			foreach (MediaFileFactory factory in m_ComponentFactories)
+			foreach (MediaFileFactory factory in this.ComponentFactories)
 			{
 				try
 				{
@@ -43,11 +25,11 @@ namespace Platform.VirtualFileSystem.Multimedia
 				}
 				catch (NotSupportedException e)
 				{
-					lastE = e;
+					lastException = e;
 				}
 			}
 
-			throw lastE;
+			throw lastException;
 		}
 
 	}

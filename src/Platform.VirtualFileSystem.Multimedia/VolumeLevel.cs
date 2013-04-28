@@ -12,11 +12,11 @@ namespace Platform.VirtualFileSystem.Multimedia
 		{
 			get
 			{
-				return m_Value.Left;
+				return this.value.Left;
 			}
 			set
 			{
-				m_Value.Left = value;
+				this.value.Left = value;
 			}
 		}
 
@@ -24,17 +24,17 @@ namespace Platform.VirtualFileSystem.Multimedia
 		{
 			get
 			{
-				return m_Value.Right;
+				return this.value.Right;
 			}
 			set
 			{
-				m_Value.Right = value;
+				this.value.Right = value;
 			}
 		}
 
 		public Pair<int, int> AsPair()
 		{
-			return m_Value;
+			return this.value;
 		}
 
 		public Pair<int, int> AsPairAdjusted(int maximum)
@@ -57,7 +57,7 @@ namespace Platform.VirtualFileSystem.Multimedia
 			return new VolumeLevel(value);
 		}
 
-		private Pair<int, int> m_Value;
+		private Pair<int, int> value;
 
 		public VolumeLevel(float percent)
 			: this(percent, percent)
@@ -91,7 +91,7 @@ namespace Platform.VirtualFileSystem.Multimedia
 				throw new ArgumentOutOfRangeException("right", right, "Must be between 0 and 100 inclusive");
 			}
 
-			m_Value = new Pair<int, int>(left, right);
+			this.value = new Pair<int, int>(left, right);
 		}
 
 		public int Average
@@ -104,7 +104,7 @@ namespace Platform.VirtualFileSystem.Multimedia
 
 		public override string ToString()
 		{
-			return m_Value.ToString();
+			return this.value.ToString();
 		}
 	}
 }

@@ -8,77 +8,13 @@ namespace Platform.VirtualFileSystem.Multimedia
 		public static readonly MediaFileNodeType SoundFile
 			= new MediaFileNodeType(MediaFileType.SoundFile);
 
-		/// <summary>
-		/// VideoDevice
-		/// </summary>
-		public virtual string VideoDevice
-		{
-			get
-			{
-				return m_VideoDevice;
-			}
-			set
-			{
-				m_VideoDevice = value;
-			}
-		}
-		/// <summary>
-		/// <see cref="VideoDevice"/>
-		/// </summary>
-		private string m_VideoDevice;
+		public virtual string VideoDevice { get; set; }
 
-		/// <summary>
-		/// AudioDevice
-		/// </summary>
-		public virtual string AudioDevice
-		{
-			get
-			{
-				return m_AudioDevice;
-			}
-			set
-			{
-				m_AudioDevice = value;
-			}
-		}
-		/// <summary>
-		/// <see cref="AudioDevice"/>
-		/// </summary>
-		private string m_AudioDevice;
-	
-		/// <summary>
-		///  MediaFileType
-		/// </summary>
-		public virtual MediaFileType MediaFileType
-		{
-			get
-			{
-				return m_MediaFileType;
-			}
-		}
-		/// <summary>
-		/// <see cref="MediaFileType"/>
-		/// </summary>
-		private MediaFileType m_MediaFileType;
+		public virtual string AudioDevice { get; set; }
 
-		/// <summary>
-		/// UniqueInstance
-		/// </summary>
-		public virtual bool UniqueInstance
-		{
-			get
-			{
-				return m_UniqueInstance;
-			}
-			set
-			{
-				m_UniqueInstance = value;
-			}
-		}
-		/// <summary>
-		/// <see cref="UniqueInstance"/>
-		/// </summary>
-		private bool m_UniqueInstance;
+		public virtual MediaFileType MediaFileType { get; private set; }
+
+		public virtual bool UniqueInstance { get; set; }
 
 		/// <summary>
 		/// Creates a new <see cref="MediaFileNodeType"/>
@@ -113,29 +49,27 @@ namespace Platform.VirtualFileSystem.Multimedia
 		public MediaFileNodeType(MediaFileType mediaFileType, bool uniqueInstance)
 			: base(mediaFileType.RuntimeType)
 		{			
-			m_MediaFileType = mediaFileType;
-			m_UniqueInstance = uniqueInstance;
+			this.MediaFileType = mediaFileType;
+			this.UniqueInstance = uniqueInstance;
 		}
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode() ^ m_MediaFileType.GetHashCode();
+			return base.GetHashCode() ^ this.MediaFileType.GetHashCode();
 		}
 
 		public override bool Equals(object obj)
 		{
-			MediaFileNodeType typedObj;
-				
-			typedObj = obj as MediaFileNodeType;
+			var typedObj = obj as MediaFileNodeType;
 
 			if (typedObj == null)
 			{
 				return false;
 			}
 
-			return base.Equals(obj) && m_MediaFileType == typedObj.m_MediaFileType
-			       && m_AudioDevice == typedObj.AudioDevice
-			       && m_VideoDevice == typedObj.VideoDevice;
+			return base.Equals(obj) && this.MediaFileType == typedObj.MediaFileType
+			       && this.AudioDevice == typedObj.AudioDevice
+			       && this.VideoDevice == typedObj.VideoDevice;
 				
 		}
 	}
