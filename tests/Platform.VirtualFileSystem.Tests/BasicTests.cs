@@ -10,39 +10,6 @@ namespace Platform.VirtualFileSystem.Tests
 		: TestsBase
 	{
 		[Test]
-		public void Sample()
-		{
-			var dir = FileSystemManager.Default.ResolveDirectory("C:/Windows");
-			var fileSystem = dir.CreateView("windows");
-			var system32 = fileSystem.ResolveDirectory("System32");
-
-			// Will output: windows://System32
-			Console.WriteLine(system32.Address);
-
-			((StandardFileSystemManager)FileSystemManager.Default).AddFileSystem(fileSystem);
-
-			var windowsNotepad =  FileSystemManager.Default.ResolveFile("windows://notepad.exe");
-
-			Console.WriteLine(windowsNotepad.Exists);
-
-			var root = dir.ResolveFile("..");
-
-			// Will output: file://C:/
-			Console.WriteLine(root.Address);
-
-			var notepad = dir.ResolveFile("notepad.exe");
-
-			// Will output: True
-			Console.WriteLine(notepad.Exists);
-
-			// Will output: /Windows/notepad.exe
-			Console.WriteLine(root.Address.GetRelativePathTo(notepad.Address));
-
-
-			Console.WriteLine(notepad.Address.GetRelativePathTo(root.Address));
-		}
-
-		[Test]
 		public void Test_Temp_FileSystem()
 		{
 			var file = FileSystemManager.Default.ResolveFile("temp:///Temp.txt");

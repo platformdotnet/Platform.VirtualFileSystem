@@ -124,7 +124,6 @@ namespace Platform.VirtualFileSystem.Providers.Local
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
 				return null;
 			}
 		}
@@ -155,7 +154,7 @@ namespace Platform.VirtualFileSystem.Providers.Local
 				}
 			}
 
-			for (int i =0; i < retval.Length; i++)
+			for (var i =0; i < retval.Length; i++)
 			{
 				if (retval[i].StartsWith("user."))
 				{
@@ -170,33 +169,28 @@ namespace Platform.VirtualFileSystem.Providers.Local
 		{
 			int err;
 			long size;
-			byte[] buffer = new byte[0];
+			var buffer = new byte[256];
 
 			if (attributeName.IndexOf('.') < 0)
 			{
 				attributeName = "user." + attributeName;
 			}
 
-			for (;;)
+			while (true)
 			{
-				size = Syscall.getxattr(path, attributeName, buffer, 0);
+				size = Syscall.getxattr(path, attributeName, buffer, (ulong)buffer.Length);
 
-				if (size >= 0)
+				if (size > 0)
 				{
-					buffer = new byte[size];
-
-					size = Syscall.getxattr(path, attributeName, buffer, (ulong)size);
-
-					if (size >= 0)
-					{
-						break;
-					}
+					break;
 				}
 
 				err = Marshal.GetLastWin32Error();
 
 				if (err == (int)Errno.ERANGE)
 				{
+					buffer = new byte[size];
+
 					continue;
 				}
 				else if (err == (int)Errno.EOPNOTSUPP)
