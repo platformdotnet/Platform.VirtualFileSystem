@@ -5,6 +5,7 @@ using Platform.VirtualFileSystem.Network.Server;
 namespace Platform.VirtualFileSystem.Tests
 {
 	[TestFixture]
+	[Category("RequiresSockets")]
 	public class NetworkServerTests
 		: TestsBase
 	{
@@ -18,7 +19,7 @@ namespace Platform.VirtualFileSystem.Tests
 			this.server = TextBasedServer.CreateServer();
 
 			this.server.Start();
-			this.server.WaitForAnyTaskState(TaskState.Running, TaskState.Finished, TaskState.Stopped);
+			this.server.WaitForAnyTaskState(c => !(c == TaskState.Starting || c== TaskState.NotStarted));
 		}
 
 		[TearDown]

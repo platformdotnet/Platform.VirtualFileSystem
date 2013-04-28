@@ -12,11 +12,11 @@ namespace Platform.VirtualFileSystem.Network
 	{
 		public override event FileSystemActivityEventHandler Activity;
 
-		private static readonly IDictionary<string, IList<NetworkFileSystemWeakReference>> c_FileSystemsCache;
+		private static readonly IDictionary<string, IList<NetworkFileSystemWeakReference>> staticFileSystemsCache;
 
 		static NetworkFileSystem()
 		{
-			c_FileSystemsCache = new Dictionary<string, IList<NetworkFileSystemWeakReference>>();
+			staticFileSystemsCache = new Dictionary<string, IList<NetworkFileSystemWeakReference>>();
 		}
 				
 		internal virtual bool ShouldSupportSynthesizedActivityEvents
@@ -31,11 +31,11 @@ namespace Platform.VirtualFileSystem.Network
 		{
 			var uniqueId = networkFileSystem.GetUniqueId();
 
-			lock (c_FileSystemsCache)
+			lock (staticFileSystemsCache)
 			{
 				IList<NetworkFileSystemWeakReference> fileSystems;
 
-				if (c_FileSystemsCache.TryGetValue(uniqueId, out fileSystems))
+				if (staticFileSystemsCache.TryGetValue(uniqueId, out fileSystems))
 				{
 					var node = networkFileSystem.Resolve(eventArgs.Path, eventArgs.NodeType);
 
@@ -51,7 +51,7 @@ namespace Platform.VirtualFileSystem.Network
 							{
 								if (currentNode != node)
 								{
-									foreach (KeyValuePair<string, object> attribute in node.Attributes)
+									foreach (var attribute in node.Attributes)
 									{
 										((NetworkNodeAndFileAttributes)currentNode.Attributes).SetValue<object>(attribute.Key, attribute.Value, false);
 									}
@@ -267,16 +267,16 @@ namespace Platform.VirtualFileSystem.Network
 				comparer
 			);
 
-			lock (c_FileSystemsCache)
+			lock (staticFileSystemsCache)
 			{
 				IList<NetworkFileSystemWeakReference> fileSystems;
 				var uniqueId = this.GetUniqueId();
 
-				if (!c_FileSystemsCache.TryGetValue(uniqueId, out fileSystems))
+				if (!staticFileSystemsCache.TryGetValue(uniqueId, out fileSystems))
 				{
 					fileSystems = new List<NetworkFileSystemWeakReference>();
 
-					c_FileSystemsCache[GetUniqueId()] = fileSystems;
+					staticFileSystemsCache[GetUniqueId()] = fileSystems;
 				}
 
 				fileSystems.Add(new NetworkFileSystemWeakReference(this));				
