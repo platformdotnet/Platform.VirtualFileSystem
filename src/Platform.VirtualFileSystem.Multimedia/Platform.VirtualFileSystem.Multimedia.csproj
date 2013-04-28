@@ -112,9 +112,7 @@
     <Compile Include="AbstractMediaFile.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompositeMediaFileFactory.cs">
       <SubType>Code</SubType>
     </Compile>
