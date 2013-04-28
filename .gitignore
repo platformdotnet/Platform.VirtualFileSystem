@@ -13,6 +13,8 @@ TestResults
 *.user
 *.sln.docstates
 
+external/**
+
 # Build results
 [Dd]ebug/
 [Rr]elease/
