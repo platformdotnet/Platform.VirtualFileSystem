@@ -122,7 +122,7 @@ namespace Platform.VirtualFileSystem.Providers.Local
 			{
 				throw;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return null;
 			}

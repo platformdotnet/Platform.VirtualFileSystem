@@ -413,7 +413,7 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		private readonly C5.IDictionary<INodeAddress, INodeAddress> shortcutAddresses = new C5.TreeDictionary<INodeAddress, INodeAddress>(NodeAddressLengthComparer.Default);
+		private readonly IDictionary<INodeAddress, INodeAddress> shortcutAddresses = new SortedDictionary<INodeAddress, INodeAddress>(NodeAddressLengthComparer.Default);
 				
 		protected virtual bool IsContainedInShortcut(INodeAddress address)
 		{
@@ -431,7 +431,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 			var addressKey = address;
 
-			if (this.shortcutAddresses.Find(ref addressKey, out tempAddress))
+			if (this.shortcutAddresses.TryGetValue(addressKey, out tempAddress))
 			{
 				return true;
 			}

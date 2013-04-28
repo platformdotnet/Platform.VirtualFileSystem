@@ -11,7 +11,7 @@ namespace Platform.VirtualFileSystem.Providers
 	public abstract class AbstractDirectory
 		: AbstractNode, IDirectory
 	{
-		private readonly C5.IDictionary<string, INode> jumpPoints = new C5.TreeDictionary<string, INode>(StringComparer.CurrentCultureIgnoreCase);
+		private readonly IDictionary<string, INode> jumpPoints = new SortedDictionary<string, INode>(StringComparer.InvariantCultureIgnoreCase);
 
 		public virtual event NodeActivityEventHandler RecursiveActivity
 		{
@@ -184,7 +184,7 @@ namespace Platform.VirtualFileSystem.Providers
 				throw new NotSupportedException(targetNode.NodeType.ToString());
 			}
 
-			if (jumpPoints.Contains(name))
+			if (jumpPoints.ContainsKey(name))
 			{
 				OnJumpPointRemoved(new JumpPointEventArgs(name, targetNode, jumpPointNode));
 
@@ -204,13 +204,13 @@ namespace Platform.VirtualFileSystem.Providers
 		{
 			if (nodeType == NodeType.Any)
 			{
-				return jumpPoints.Contains(name);
+				return jumpPoints.ContainsKey(name);
 			}
 			else
 			{
 				INode node;
 				
-				if (jumpPoints.Find(ref name, out node))
+				if (jumpPoints.TryGetValue(name, out node))
 				{
 					return node.NodeType.Is(nodeType);
 				}
@@ -257,7 +257,7 @@ namespace Platform.VirtualFileSystem.Providers
 			{
 				INode node;
 
-				if (!jumpPoints.Find(ref name, out node))
+				if (!jumpPoints.TryGetValue(name, out node))
 				{
 					return;
 				}
@@ -559,7 +559,7 @@ namespace Platform.VirtualFileSystem.Providers
 			{
 				INode jumpPointNode;
 				
-				if (jumpPoints.Find(ref name, out jumpPointNode))
+				if (jumpPoints.TryGetValue(name, out jumpPointNode))
 				{
 					var relativePath = this.Address.GetRelativePathTo(nodeAddress);
 

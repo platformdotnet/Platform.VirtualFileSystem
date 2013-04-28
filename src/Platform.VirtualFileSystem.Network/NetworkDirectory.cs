@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using C5;
-using Platform.VirtualFileSystem.Network.Client;
 using Platform.VirtualFileSystem.Providers;
 
 namespace Platform.VirtualFileSystem.Network
@@ -10,7 +8,7 @@ namespace Platform.VirtualFileSystem.Network
 	public class NetworkDirectory
 		: AbstractDirectory
 	{
-		private TreeDictionary<string, INode> children;
+		private IDictionary<string, INode> children;
 		private Pair<DirectoryRefreshMask, int> directoryRefreshInfo;
 
 		public new NetworkNodeAddress Address
@@ -52,15 +50,14 @@ namespace Platform.VirtualFileSystem.Network
 		}
 
 		[ThreadStatic]
-		private static C5.IDictionary<string, INode> newChildren;
+		private static IDictionary<string, INode> threadLocalNewChildren;
 
 		public override IEnumerable<INode> DoGetChildren(NodeType nodeType, Predicate<INode> acceptNode)
 		{
+			var listedAllChildren = false;
+			IDictionary<string, INode> newChildren;
 			Pair<DirectoryRefreshMask, int> refreshInfo;
-			bool listedAllChildren = false;
-			C5.IDictionary<string, INode> newChildren;
-			C5.IDictionary<string, object> newAttributes;
-						
+			
 			foreach (INode node in this.GetJumpPoints(nodeType, acceptNode))
 			{
 				yield return node;
@@ -79,29 +76,28 @@ namespace Platform.VirtualFileSystem.Network
 
 				if (this.children == null)
 				{
-					this.children = new TreeDictionary<string, INode>(StringComparer.CurrentCultureIgnoreCase);
+					this.children = new SortedDictionary<string, INode>(StringComparer.CurrentCultureIgnoreCase);
 				}
 			}
 
 			if (shouldLoadFromNetwork)
 			{
 				string regex = null;
-				bool skipAcceptNode = false; ;
-				C5.IList<string> toRemove = new C5.LinkedList<string>();
-				NetworkNodeAndFileAttributes attributes = null;
+				var skipAcceptNode = false; ;
+				var toRemove = new List<string>();
 
-				newAttributes = new HashDictionary<string, object>(StringComparer.CurrentCultureIgnoreCase);
+				var newAttributes = new Dictionary<string, object>(StringComparer.CurrentCultureIgnoreCase);
 
-				if (NetworkDirectory.newChildren == null)
+				if (NetworkDirectory.threadLocalNewChildren == null)
 				{
-					NetworkDirectory.newChildren = new TreeDictionary<string, INode>(StringComparer.CurrentCultureIgnoreCase);
+					NetworkDirectory.threadLocalNewChildren = new SortedDictionary<string, INode>(StringComparer.CurrentCultureIgnoreCase);
 				}
 				else
 				{
-					NetworkDirectory.newChildren.Clear();
+					NetworkDirectory.threadLocalNewChildren.Clear();
 				}
 
-				newChildren = NetworkDirectory.newChildren;
+				newChildren = NetworkDirectory.threadLocalNewChildren;
 
 				try
 				{
@@ -117,7 +113,7 @@ namespace Platform.VirtualFileSystem.Network
 						}
 					}
 
-					using (NetworkFileSystem.FreeClientContext freeClientContext = ((NetworkFileSystem)this.FileSystem).GetFreeClientContext())
+					using (var freeClientContext = ((NetworkFileSystem)this.FileSystem).GetFreeClientContext())
 					{
 						var networkclient = freeClientContext.NetworkFileSystemClient;
 
@@ -165,7 +161,7 @@ namespace Platform.VirtualFileSystem.Network
 									child = this.ResolveFile(entry.Name);
 								}
 
-								attributes = (NetworkNodeAndFileAttributes)child.Attributes;
+								var attributes = (NetworkNodeAndFileAttributes)child.Attributes;
 
 								newAttributes.Clear();
 
@@ -187,7 +183,7 @@ namespace Platform.VirtualFileSystem.Network
 
 										foreach (var name in attributes.Names)
 										{
-											if (!newAttributes.Contains(name))
+											if (!newAttributes.ContainsKey(name))
 											{
 												toRemove.Add(name);
 											}
@@ -208,7 +204,7 @@ namespace Platform.VirtualFileSystem.Network
 									Debugger.Break();
 								}
 
-								if ((nodeType == NodeType.Any || child.NodeType == nodeType)
+								if ((nodeType.Equals(NodeType.Any) || child.NodeType.Equals(nodeType))
 									&& (skipAcceptNode || acceptNode(child)))
 								{
 									yield return child;
@@ -232,7 +228,7 @@ namespace Platform.VirtualFileSystem.Network
 
 							foreach (var node in this.children.Values)
 							{
-								if (!newChildren.Contains(node.Name))
+								if (!newChildren.ContainsKey(node.Name))
 								{
 									((NetworkNodeAndFileAttributes)node.Attributes).Clear();
 									((NetworkNodeAndFileAttributes)node.Attributes).SetValue<bool>("exists", false);
@@ -265,7 +261,7 @@ namespace Platform.VirtualFileSystem.Network
 			}
 			else
 			{
-				var retvals = new C5.LinkedList<INode>();
+				var retvals = new List<INode>();
 
 				// Copy the children because we want to yield outside the lock
 
@@ -273,8 +269,7 @@ namespace Platform.VirtualFileSystem.Network
 				{
 					foreach (var pair in this.children)
 					{
-						if ((nodeType == NodeType.Any
-							|| pair.Value.NodeType == nodeType) && acceptNode(pair.Value))
+						if ((nodeType.Equals(NodeType.Any) || pair.Value.NodeType.Equals(nodeType)) && acceptNode(pair.Value))
 						{
 							retvals.Add(pair.Value);
 						}
@@ -294,7 +289,7 @@ namespace Platform.VirtualFileSystem.Network
 			{
 				if (this.children == null)
 				{
-					this.children = new TreeDictionary<string, INode>(StringComparer.CurrentCultureIgnoreCase);
+					this.children = new SortedDictionary<string, INode>(StringComparer.CurrentCultureIgnoreCase);
 				}
 
 				this.children[node.Name] = node;

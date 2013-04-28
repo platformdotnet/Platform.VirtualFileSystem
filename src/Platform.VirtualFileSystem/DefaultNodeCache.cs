@@ -1,5 +1,3 @@
-using Platform;
-using Platform.Utilities;
 using Platform.Collections;
 
 namespace Platform.VirtualFileSystem
@@ -58,12 +56,7 @@ namespace Platform.VirtualFileSystem
 					return false;
 				}
 
-				if (!cacheKey.Value.nodeType.Equals(this.nodeType))
-				{
-					return false;
-				}
-
-				return true;
+				return cacheKey.Value.nodeType.Equals(this.nodeType);
 			}
 		}
 
@@ -76,7 +69,7 @@ namespace Platform.VirtualFileSystem
 		{
 			lock (this.SyncLock)
 			{
-				ILList<DefaultNodeCacheKey> removeList = new ArrayList<DefaultNodeCacheKey>();
+				var removeList = new ArrayList<DefaultNodeCacheKey>();
 
 				foreach (var key in this.Cache.Keys)
 				{
@@ -89,7 +82,7 @@ namespace Platform.VirtualFileSystem
 					}
 				}
 
-				foreach (DefaultNodeCacheKey key in removeList)
+				foreach (var key in removeList)
 				{
 					this.Purge(key.NodeAddress, key.NodeType);
 				}

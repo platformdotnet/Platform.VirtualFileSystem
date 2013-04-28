@@ -19,7 +19,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 			}
 		}
 	
-		private readonly C5.IDictionary<Pair<string, NodeType>, INode> children;
+		private readonly IDictionary<Pair<string, NodeType>, INode> children;
 
 		public new DictionaryBasedNodeAttributes Attributes
 		{
@@ -32,9 +32,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 		public ImaginaryDirectory(IFileSystem fileSystem, INodeAddress address)
 			: base(fileSystem, address)
 		{
-			Comparison<Pair<string, NodeType>> comparison;
-
-			comparison = delegate(Pair<string, NodeType> p1, Pair<string, NodeType> p2)
+			Comparison<Pair<string, NodeType>> comparison = delegate(Pair<string, NodeType> p1, Pair<string, NodeType> p2)
 			{
 				if (p1.Right != p2.Right)
 				{
@@ -44,7 +42,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 				return StringComparer.CurrentCultureIgnoreCase.Compare(p1.Left, p2.Left);
 			};
 
-			this.children = new C5.TreeDictionary<Pair<string, NodeType>, INode>(new ComparisonComparer<Pair<string, NodeType>>(comparison));			
+			this.children = new SortedDictionary<Pair<string, NodeType>, INode>(new ComparisonComparer<Pair<string, NodeType>>(comparison));
 		}
 
 		public virtual void DeleteAllChildren()
@@ -63,7 +61,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 			INode retval;
 			var pair = new Pair<string, NodeType>(name, nodeType);
 
-			if (this.children.Find(ref pair, out retval))
+			if (this.children.TryGetValue(pair, out retval))
 			{
 				return retval;
 			}
@@ -75,7 +73,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 		{
 			if (this.ChildrenProvider != null)
 			{
-				foreach (INode node in this.ChildrenProvider(nodeType, acceptNode))
+				foreach (var node in this.ChildrenProvider(nodeType, acceptNode))
 				{
 					yield return node;
 				}

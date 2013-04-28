@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using C5;
 using Platform.Collections;
 using Platform.VirtualFileSystem.Network.Client;
 using Platform.VirtualFileSystem.Providers;
@@ -13,11 +12,11 @@ namespace Platform.VirtualFileSystem.Network
 	{
 		public override event FileSystemActivityEventHandler Activity;
 
-		private static C5.IDictionary<string, C5.IList<NetworkFileSystemWeakReference>> c_FileSystemsCache;
+		private static readonly IDictionary<string, IList<NetworkFileSystemWeakReference>> c_FileSystemsCache;
 
 		static NetworkFileSystem()
 		{
-			c_FileSystemsCache = new HashDictionary<string, C5.IList<NetworkFileSystemWeakReference>>();
+			c_FileSystemsCache = new Dictionary<string, IList<NetworkFileSystemWeakReference>>();
 		}
 				
 		internal virtual bool ShouldSupportSynthesizedActivityEvents
@@ -30,15 +29,13 @@ namespace Platform.VirtualFileSystem.Network
 
 		internal static void RaiseActivityEvent(NetworkFileSystem networkFileSystem, FileSystemActivityEventArgs eventArgs)
 		{
-			string uniqueId;
-
-			uniqueId = networkFileSystem.GetUniqueId();
+			var uniqueId = networkFileSystem.GetUniqueId();
 
 			lock (c_FileSystemsCache)
 			{
-				C5.IList<NetworkFileSystemWeakReference> fileSystems;
+				IList<NetworkFileSystemWeakReference> fileSystems;
 
-				if (c_FileSystemsCache.Find(ref uniqueId, out fileSystems))
+				if (c_FileSystemsCache.TryGetValue(uniqueId, out fileSystems))
 				{
 					var node = networkFileSystem.Resolve(eventArgs.Path, eventArgs.NodeType);
 
@@ -54,7 +51,7 @@ namespace Platform.VirtualFileSystem.Network
 							{
 								if (currentNode != node)
 								{
-									foreach (System.Collections.Generic.KeyValuePair<string, object> attribute in node.Attributes)
+									foreach (KeyValuePair<string, object> attribute in node.Attributes)
 									{
 										((NetworkNodeAndFileAttributes)currentNode.Attributes).SetValue<object>(attribute.Key, attribute.Value, false);
 									}
@@ -272,12 +269,12 @@ namespace Platform.VirtualFileSystem.Network
 
 			lock (c_FileSystemsCache)
 			{
-				C5.IList<NetworkFileSystemWeakReference> fileSystems;
+				IList<NetworkFileSystemWeakReference> fileSystems;
 				var uniqueId = this.GetUniqueId();
 
-				if (!c_FileSystemsCache.Find(ref uniqueId, out fileSystems))
+				if (!c_FileSystemsCache.TryGetValue(uniqueId, out fileSystems))
 				{
-					fileSystems = new C5.ArrayList<NetworkFileSystemWeakReference>();
+					fileSystems = new List<NetworkFileSystemWeakReference>();
 
 					c_FileSystemsCache[GetUniqueId()] = fileSystems;
 				}
