@@ -14,7 +14,7 @@ namespace Platform.VirtualFileSystem.Tests
 
 			var fileSystem = FileSystemManager.GetManager().ResolveDirectory(Environment.CurrentDirectory).ResolveDirectory("TestFiles").CreateView("testfiles");
 
-			((StandardFileSystemManager)FileSystemManager.Default).AddFileSystem(fileSystem);
+			FileSystemManager.Default.AddFileSystem(fileSystem);
 		}
 	}
 }

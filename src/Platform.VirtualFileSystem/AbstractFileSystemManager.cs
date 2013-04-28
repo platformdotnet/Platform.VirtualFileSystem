@@ -23,6 +23,11 @@ namespace Platform.VirtualFileSystem
 		{
 		}
 
+		public virtual void AddFileSystem(IFileSystem fileSystem)
+		{
+			throw new NotSupportedException(string.Format("{0} does not support dynamically adding file systems", this.GetType()));
+		}
+
 		public IFileSystem CreateLayeredFileSystem(string provider, IFile file)
 		{			
 			throw new NotSupportedException("LayeredFileSystems of the type [" + provider + "] are not supported.");

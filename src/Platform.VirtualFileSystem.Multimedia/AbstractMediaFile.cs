@@ -6,9 +6,6 @@ using Platform.VirtualFileSystem.Providers;
 
 namespace Platform.VirtualFileSystem.Multimedia
 {
-	/// <summary>
-	/// Summary description for AbstractMediaFile.
-	/// </summary>
 	public abstract class AbstractMediaFile
 		: FileWrapper, IMediaFile
 	{
@@ -25,18 +22,12 @@ namespace Platform.VirtualFileSystem.Multimedia
 
 		public virtual void FadeToLevel(VolumeLevel targetLevel, TimeSpan time)
 		{
-			TimeSpan sleep;
 			const int steps = 50;
-			double startLevel;
-			double delta, newLevel;
 
-			startLevel = this.VolumeLevel.Average;
-
-			sleep = new TimeSpan(time.Ticks / steps);
-
-			delta = (targetLevel.Average - startLevel) / steps;
-
-			newLevel = startLevel + delta;
+			var startLevel = this.VolumeLevel.Average;
+			var sleep = new TimeSpan(time.Ticks / steps);
+			var delta = (targetLevel.Average - startLevel) / steps;
+			var newLevel = startLevel + delta;
 
 			if (newLevel < 0)
 			{
@@ -45,7 +36,7 @@ namespace Platform.VirtualFileSystem.Multimedia
 
 			try
 			{
-				for (int i = 0; i < steps; i++)
+				for (var i = 0; i < steps; i++)
 				{
 					this.VolumeLevel = new VolumeLevel((int) newLevel, (int) newLevel);
 

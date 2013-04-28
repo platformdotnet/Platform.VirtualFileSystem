@@ -17,7 +17,7 @@ namespace Platform.VirtualFileSystem.Multimedia
 		/// A <see cref="MediaFileFactory"/> that builds an <see cref="IMediaFile"/> from muiltiple 
 		/// <see cref="MediaFileFactory"/> implementations
 		/// </summary>
-		private static MediaFileFactory c_CompositeMediaFileFactory;
+		private static readonly MediaFileFactory compositeMediaFileFactory;
 
 		/// <summary>
 		/// Gets the default <see cref="MediaFileFactory"/>
@@ -31,7 +31,7 @@ namespace Platform.VirtualFileSystem.Multimedia
 		{
 			get
 			{
-				return c_CompositeMediaFileFactory;
+				return compositeMediaFileFactory;
 			}
 		}
 
@@ -40,14 +40,14 @@ namespace Platform.VirtualFileSystem.Multimedia
 		/// </summary>
 		static MediaFileFactory()
 		{
-			CompositeMediaFileFactory compositeFactory = new CompositeMediaFileFactory();
+			var compositeFactory = new CompositeMediaFileFactory();
 
-			foreach (ConfigurationSection.MediaFileFactoryEntry factory in ConfigurationSection.GetInstance().MediaFileFactories)
+			foreach (var factory in ConfigurationSection.GetInstance().MediaFileFactories)
 			{
 				compositeFactory.ComponentFactories.Add(Activator.CreateInstance(factory.Type));
 			}
 
-			c_CompositeMediaFileFactory = compositeFactory;
+			compositeMediaFileFactory = compositeFactory;
 		}
 
 		/// <summary>

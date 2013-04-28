@@ -6,6 +6,13 @@ namespace Platform.VirtualFileSystem
 		: INodeResolver
 	{
 		/// <summary>
+		/// Adds a file system to the manager. May throw an exception if this is not supported by the manager.
+		/// </summary>
+		/// <exception cref="NotSupportedException">The FileSystemManager does not support dynamically adding file systems</exception>
+		/// <param name="fileSystem"></param>
+		void AddFileSystem(IFileSystem fileSystem);
+
+		/// <summary>
 		/// Resolves a node using the supplied <c>FileSystemOptions</c>.
 		/// </summary>
 		/// <param name="name">The name of the node to look for.</param>

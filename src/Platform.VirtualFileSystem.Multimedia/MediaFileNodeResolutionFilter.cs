@@ -8,16 +8,12 @@ namespace Platform.VirtualFileSystem.Multimedia
 	{
 		public override INode Filter(ref INodeResolver resolver, ref INodeAddress address, ref NodeType nodeType, out bool canCache)
 		{
-			IMediaFile mediaFile;
 			MediaFileNodeType mediaFileNodeType;
 
 			if ((mediaFileNodeType = (nodeType as MediaFileNodeType)) != null)
 			{
-				IFile file;
-							
-				file = resolver.ResolveFile(address.PathAndQuery);
-
-				mediaFile = MediaFileFactory.Default.NewMediaFile(file, mediaFileNodeType);
+				var file = resolver.ResolveFile(address.PathAndQuery);
+				var mediaFile = MediaFileFactory.Default.NewMediaFile(file, mediaFileNodeType);
 
 				canCache = !mediaFileNodeType.UniqueInstance;
 

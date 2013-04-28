@@ -72,7 +72,7 @@ namespace Platform.VirtualFileSystem
 			providers.Add(provider);
 		}
 
-		public virtual void AddFileSystem(IFileSystem fileSystem)
+		public override void AddFileSystem(IFileSystem fileSystem)
 		{
 			var provider = new Providers.View.ViewNodeProvider(this, fileSystem);
 
