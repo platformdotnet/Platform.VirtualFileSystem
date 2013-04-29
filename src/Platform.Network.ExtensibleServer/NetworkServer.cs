@@ -67,6 +67,7 @@ namespace Platform.Network.ExtensibleServer
 					try
 					{
 						tcpListener.Stop();
+						tcpListener.Server.Close();
 					}
 					catch
 					{
@@ -104,7 +105,7 @@ namespace Platform.Network.ExtensibleServer
 
 			tcpListener.Start();
 
-			for (;;)
+			while (true)
 			{
 				try
 				{
@@ -149,8 +150,12 @@ namespace Platform.Network.ExtensibleServer
 
 					connection.RequestTaskState(TaskState.Running, TimeSpan.Zero);
 				}
-				catch
+				catch (StopRequestedException)
 				{
+					throw;
+				}
+				catch
+				{	
 				}
 			}
 		}

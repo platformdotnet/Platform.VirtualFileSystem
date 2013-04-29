@@ -216,7 +216,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public virtual void Login()
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				SendCommand(DefaultTryCount, "login");
 			}
@@ -224,12 +224,11 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public virtual void ReadReady()
 		{
-			string line;
 			Exception e = null;
 
-			for (;;)
+			while (true)
 			{
-				line = ReadNextLine();
+				var line = ReadNextLine();
 
 				if (line.StartsWith(ResponseCodes.READY))
 				{
@@ -249,11 +248,9 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public virtual void ReadWelcomeText(TextWriter welcomeTextWriter)
 		{
-			string line;
-
 			for (;;)
 			{
-				line = this.reader.ReadLine();
+				var line = this.reader.ReadLine();
 
 				if (line.StartsWith(ResponseCodes.READY, StringComparison.CurrentCultureIgnoreCase))
 				{
@@ -353,12 +350,10 @@ namespace Platform.VirtualFileSystem.Network.Text
 		{
 			lock (this.SyncLock)
 			{
-				TimeSpan delay;
-				int tries = trycount;
+				var tries = trycount;
+				var delay = TimeSpan.Zero;
 
-				delay = new TimeSpan();
-
-				for (int i = 0; i < tries; i++)
+				for (var i = 0; i < tries; i++)
 				{
 					try
 					{
@@ -372,13 +367,18 @@ namespace Platform.VirtualFileSystem.Network.Text
 						{
 							System.Threading.Thread.Sleep(delay);
 
-							if (delay.TotalMilliseconds == 0)
+							if (delay == TimeSpan.Zero)
 							{
-								TimeSpan.FromMilliseconds(250);
+								delay = TimeSpan.FromMilliseconds(50);
 							}
 							else
 							{
 								delay = TimeSpan.FromMilliseconds(delay.TotalMilliseconds * 2);
+							}
+
+							if (delay > TimeSpan.FromSeconds(5))
+							{
+								delay = TimeSpan.FromSeconds(5);
 							}
 
 							Reconnect();
@@ -392,7 +392,6 @@ namespace Platform.VirtualFileSystem.Network.Text
 					}
 					catch (Exception e)
 					{
-						Console.WriteLine(e);
 					}
 				}
 
@@ -433,13 +432,13 @@ namespace Platform.VirtualFileSystem.Network.Text
 		protected class CommandContext
 			: IDisposable
 		{
-			private bool m_ReadReady;
-			private TextNetworkFileSystemClient m_Client;
+			private readonly bool readReady;
+			private readonly TextNetworkFileSystemClient client;
 
 			internal CommandContext(TextNetworkFileSystemClient client, bool readReady, bool aquire)
 			{
-				m_Client = client;
-				m_ReadReady = readReady;
+				this.client = client;
+				this.readReady = readReady;
 
 				if (aquire)
 				{
@@ -449,44 +448,44 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 			public virtual void Aquire()
 			{
-				System.Threading.Monitor.Enter(m_Client);
+				System.Threading.Monitor.Enter(this.client);
 			}
 
 			public virtual void Dispose()
 			{
 				try
 				{
-					if (m_ReadReady)
+					if (this.readReady)
 					{
 						try
 						{
-							m_Client.ReadReady();
+							this.client.ReadReady();
 						}
 						catch (TextNetworkProtocolException)
 						{
-							m_Client.connected = false;
+							this.client.connected = false;
 
 							throw;
 						}
 						catch (IOException)
 						{
-							m_Client.connected = false;
+							this.client.connected = false;
 						}
 					}
 				}
 				finally
 				{
-					System.Threading.Monitor.Exit(m_Client);
+					System.Threading.Monitor.Exit(this.client);
 				}
 			}
 		}
 
-		protected virtual CommandContext AquireCommandContext()
+		protected virtual CommandContext AcquireCommandContext()
 		{
-			return AquireCommandContext(true);
+			return this.AcquireCommandContext(true);
 		}
 
-		protected virtual CommandContext AquireCommandContext(bool readReadyAtEnd)
+		protected virtual CommandContext AcquireCommandContext(bool readReadyAtEnd)
 		{
 			return new CommandContext(this, readReadyAtEnd, true);
 		}
@@ -495,7 +494,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public virtual void NegotiateEncryption()
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				var response = this.SendCommand(DefaultTryCount, "ADHOCENCRYPTION -w -compress");
 
@@ -519,7 +518,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override void Delete(string uri, NodeType nodeType, bool recursive)
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				try
 				{
@@ -536,7 +535,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override void Create(string uri, NodeType nodeType, bool createParent)
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				try
 				{
@@ -559,7 +558,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override void Move(string srcUri, string desUri, NodeType nodeType, bool overwrite)
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				try
 				{
@@ -582,7 +581,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override void Copy(string srcUri, string desUri, NodeType nodeType, bool overwrite)
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				try
 				{
@@ -607,7 +606,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 		{
 			Predicate<string> acceptName = null;
 
-			using (AquireCommandContext(false))
+			using (this.AcquireCommandContext(false))
 			{
 				try
 				{
@@ -704,7 +703,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 		{
 			Predicate<string> acceptName = null;
 
-			using (AquireCommandContext(false))
+			using (this.AcquireCommandContext(false))
 			{
 				try
 				{
@@ -808,7 +807,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override void CreateHardLink(string srcUri, string desUri, bool overwrite)
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				try
 				{
@@ -836,7 +835,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 			long length;
 			CommandResponse response;
 
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				try
 				{
@@ -941,7 +940,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 			StringBuilder dirAttributesString = null;
 			StringBuilder fileAttributesString = null;
 			
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				try
 				{
@@ -1056,7 +1055,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override IEnumerable<Pair<string,object>>  GetAttributes(string uri, NodeType nodeType)
 		{
-			using (AquireCommandContext(false))
+			using (this.AcquireCommandContext(false))
 			{
 				var lastReadLine = new ValueBox<string>(this.lastLineRead);
 				
@@ -1080,7 +1079,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override void SetAttributes(string uri, NodeType nodeType, IEnumerable<Pair<string, object>> attributes)
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				var attributesList = attributes.Filter(x => !x.Left.EqualsIgnoreCase("length") && !x.Left.EqualsIgnoreCase("exists")).ToList();
 
@@ -1106,7 +1105,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 
 		public override TimeSpan Ping()
 		{
-			using (AquireCommandContext())
+			using (this.AcquireCommandContext())
 			{
 				var start = DateTime.Now;
 

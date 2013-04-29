@@ -13,6 +13,8 @@ TestResults
 *.user
 *.sln.docstates
 
+*.nupkg
+
 external/**
 
 # Build results
