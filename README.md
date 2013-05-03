@@ -18,7 +18,7 @@ Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-plat
 
 Platform.VirtualFileSystem is available via [nuget](https://nuget.org/packages/Platform.VirtualFileSystem/). You can search for `Platform.VirtualFileSystem` using the Visual Studio NuGet plugin UI or by typing `Install-Package Platform.VirtualFileSystem` into the Visual Studio Package Manager Console.
 
-A zip file for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet direct package from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET).
+A zip file for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet package direct from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET).
 
 
 ### Local Provider
