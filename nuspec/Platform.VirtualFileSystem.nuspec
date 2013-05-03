@@ -4,7 +4,7 @@
     <id>Platform.VirtualFileSystem</id>
     <version>$version$</version>
     <title>Platform.VirtualFileSystem Core Library</title>
-    <summary></summary>
+    <summary>A powerful cross-platform virtual file system layer for .NET</summary>
     <authors>Thong Nguyen</authors>
     <owners>Thong Nguyen</owners>
     <licenseUrl>https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/LICENSE</licenseUrl>
