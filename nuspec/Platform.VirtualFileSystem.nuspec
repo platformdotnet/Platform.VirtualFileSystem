@@ -3,7 +3,7 @@
   <metadata>
     <id>Platform.VirtualFileSystem</id>
     <version>$version$</version>
-    <title>Platform.VirtualFileSystem Core Library</title>
+    <title>Platform.VirtualFileSystem</title>
     <summary>A powerful cross-platform virtual file system layer for .NET</summary>
     <authors>Thong Nguyen</authors>
     <owners>Thong Nguyen</owners>
