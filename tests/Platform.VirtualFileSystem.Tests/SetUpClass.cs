@@ -10,7 +10,7 @@ namespace Platform.VirtualFileSystem.Tests
 		[SetUp]
 		public void SetUp()
 		{
-			Environment.SetEnvironmentVariable("TEMP", Path.Combine(Environment.CurrentDirectory, "TestFiles", "Temp"));
+			Environment.SetEnvironmentVariable("TEMP", Path.Combine(Environment.CurrentDirectory, Path.Combine("TestFiles", "Temp")));
 
 			var fileSystem = FileSystemManager.GetManager().ResolveDirectory(Environment.CurrentDirectory).ResolveDirectory("TestFiles").CreateView("testfiles");
 

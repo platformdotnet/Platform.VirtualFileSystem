@@ -390,7 +390,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 							throw;
 						}
 					}
-					catch (Exception e)
+					catch
 					{
 					}
 				}
