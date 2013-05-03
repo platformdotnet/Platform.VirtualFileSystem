@@ -21,6 +21,8 @@ Platform.VirtualFileSystem is available via [nuget](https://nuget.org/packages/P
 A zip file for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet package direct from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET).
 
 
+## Included FileSystem providers
+
 ### Local Provider
 
 
