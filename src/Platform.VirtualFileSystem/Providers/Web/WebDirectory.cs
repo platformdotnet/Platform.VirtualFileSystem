@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Platform.VirtualFileSystem.Providers.Web
 {
@@ -21,7 +22,7 @@ namespace Platform.VirtualFileSystem.Providers.Web
 			{
 				get
 				{
-					return true;
+					return ((WebDirectory)this.Node).exists;
 				}
 			}
 
@@ -42,6 +43,21 @@ namespace Platform.VirtualFileSystem.Providers.Web
 			{
 				return false;
 			}
+		}
+
+		private bool exists = true;
+		private DateTime? creationDate;
+
+		protected override Stream DoGetInputStream(string contentName, out string encoding, FileMode mode, FileShare sharing)
+		{
+			long length;
+
+			return WebFileSystem.DoGetInputStream(this, contentName, out encoding, mode, sharing, out creationDate, out exists, out length);
+		}
+
+		protected override Stream DoGetOutputStream(string contentName, string encoding, FileMode mode, FileShare sharing)
+		{
+			return WebFileSystem.DoGetOutputStream(this, contentName, encoding, mode, sharing);
 		}
 
 		public override INode Delete()
