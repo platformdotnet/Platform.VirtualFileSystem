@@ -5,20 +5,22 @@ Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-plat
 
  * Support for Microsoft .NET and Mono.
  * Unified addressing. All files and directories are addressed using URIs. No need to concern yourself with different path separators and naming schemes on different platforms.
- * Support for layed URIs to support addressing ofnested file systems (zip, overlayed and netvfs). Layed URIs are provided using square brackets. For example the URI to a.txt contained inside a zip archive located at C:\Test.zip is: `zip://[file:/C:/Test.zip]/a.txt`
- * Very simple but powerful API for working with files. Normalisation of relative paths (paths containing "." and "..") is inbuilt and supported by all providers. Support for extended attributes and alternate data streams are supported on NTFS and most Unix architectures.
+ * Support for layered URIs to support addressing of nested file systems (zip, overlayed and netvfs). Layed URIs are supported using square brackets. For example the URI to a.txt contained inside a zip archive located at C:\Test.zip is: `zip://[file:/C:/Test.zip]/a.txt`
+ * Very simple but powerful API for working with files. Normalisation of relative paths (paths containing "." and "..") is inbuilt at a low level and thus is supported by all providers. Support for extended attributes and alternate data streams are supported on Windows (NTFS) and supporting Unix file systems (ext2fs, xfs etc).
  * Extensible file and directory services architecture (for example: `IFileHashingService` and `IFileTransferService`).
  * Pluggable provider architecture makes adding new filesystems a breeze.
  * Pluggable provider architecture makes extending existing file systems easy. Filters that can modify or wrap files/directories can be added using `INodeResolutionFilter`. Operations on files can be intercepted and/or overidden using `INodeOperationFilter`.
  * Fully thread-safe.
- * Support for defining providers within `app.config` or `web.config`.
+ * Easy to detect file system changes using C# events on `IFile` and `IDirectory` interfaces.
+ * Default cache provides strong object identity. Resolving the same path will return the same object instance as long as the file/directory is still referenced elsewhere.
+ * Support for defining managers and providers in code or declaratively within `app.config` or `web.config`.
  
 
 ## Installation
 
 Platform.VirtualFileSystem is available via [nuget](https://nuget.org/packages/Platform.VirtualFileSystem/). You can search for `Platform.VirtualFileSystem` using the Visual Studio NuGet plugin UI or by typing `Install-Package Platform.VirtualFileSystem` into the Visual Studio Package Manager Console.
 
-A zip file for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet package direct from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET).
+A zip file for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet package direct from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET). Only two assemblies are required for Platform.VirtualFileSystem: `Platform.dll` and `Platform.VirtualFileSystem.dll`.
 
 
 ## Included FileSystem providers
@@ -55,7 +57,7 @@ A zip file for those who don't use NuGet will be available in the future. In the
   
 ### Overlayed Provider
 
-Create a merged file system made up of the merged view of one or more file systems.
+Create a file system made up of the merged view of one or more file systems.
 
 	overlayed://[file:///tmp/a;file:///tmp/b]/c
   
@@ -82,7 +84,7 @@ Provides a simple interface for load/saving of objects serialized into files (se
 	
 ### Network VFS Provider
 
-Exposes all VFS file systems over TCP. Many services are supported natively (for example `IFileHashingService` is executed remotely on the server).
+Exposes all VFS file systems over TCP. Many services are supported natively (for example `IFileHashingService` would be executed remotely on the server).
 
 	netvfs://hostname[file:///usr//]/local/src
 	
@@ -102,13 +104,13 @@ Provides a read-only virtualised view of zip files. Currently random read-write 
 	var windowsFileSystem = localDir.CreateView("windows");
 	var system32 = windowsFileSystem.ResolveDirectory("System32");
 	
-	// Will output: windows://System32
+	// Will output: windows:///System32
 	Console.WriteLine(system32.Address);
 
 	// Add the file system to the default FileSystemManager
 	FileSystemManager.Default.AddFileSystem(windowsFileSystem);
 
-	var windowsNotepad =  FileSystemManager.Default.ResolveFile("windows://notepad.exe");
+	var windowsNotepad =  FileSystemManager.Default.ResolveFile("windows:///notepad.exe");
 
 	// Will output: True
 	Console.WriteLine(windowsNotepad.Exists);
