@@ -5,7 +5,6 @@
     <version>$version$</version>
     <title>Platform.VirtualFileSystem Zip FileSystem Provider</title>
     <summary>A zip provider for the Platform VirtualFileSystem library</summary>
-    <summary></summary>
     <authors>Thong Nguyen</authors>
     <owners>Thong Nguyen</owners>
     <licenseUrl>https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/LICENSE</licenseUrl>
