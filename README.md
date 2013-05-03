@@ -3,6 +3,7 @@ Platform.VirtualFileSystem
 
 Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-platform and managed abstraction layer for file systems. It is similar to VFS features of various operating systems like Linux except it all runs in managed code. Features include:
 
+ * Support for Microsoft .NET and Mono.
  * Unified addressing. All files and directories are addressed using URIs. No need to concern yourself with different path separators and naming schemes on different platforms.
  * Support for layed URIs to support addressing ofnested file systems (zip, overlayed and netvfs). Layed URIs are provided using square brackets. For example the URI to a.txt contained inside a zip archive located at C:\Test.zip is: `zip://[file:/C:/Test.zip]/a.txt`
  * Very simple but powerful API for working with files. Normalisation of relative paths (paths containing "." and "..") is inbuilt and supported by all providers. Support for extended attributes and alternate data streams are supported on NTFS and most Unix architectures.
@@ -15,6 +16,9 @@ Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-plat
 
 ## Installation
 
+Platform.VirtualFileSystem is available via [nuget](https://nuget.org/packages/Platform.VirtualFileSystem/). You can search for `Platform.VirtualFileSystem` using the Visual Studio NuGet plugin UI or by typing `Install-Package Platform.VirtualFileSystem` into the Visual Studio Package Manager Console.
+
+A zip file for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet direct package from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET).
 
 
 ### Local Provider
