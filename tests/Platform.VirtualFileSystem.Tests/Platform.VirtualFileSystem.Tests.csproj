@@ -165,6 +165,7 @@
     <Compile Include="BasicTests.cs" />
     <Compile Include="SecurityTests.cs" />
     <Compile Include="TransferServiceTests.cs" />
+    <Compile Include="WebFileSystemTests.cs" />
     <Compile Include="ZipFileSystemTests.cs" />
   </ItemGroup>
   <ItemGroup>
