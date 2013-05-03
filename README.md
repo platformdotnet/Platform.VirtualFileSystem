@@ -7,7 +7,7 @@ Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-plat
  * Unified addressing. All files and directories are addressed using URIs. No need to concern yourself with different path separators and naming schemes on different platforms.
  * Support for layered URIs to support addressing of nested file systems (zip, overlayed and netvfs). Layed URIs are supported using square brackets. For example the URI to a.txt contained inside a zip archive located at C:\Test.zip is: `zip://[file:/C:/Test.zip]/a.txt`
  * Very simple but powerful API for working with files. Normalisation of relative paths (paths containing "." and "..") is inbuilt at a low level and thus is supported by all providers. Support for extended attributes and alternate data streams are supported on Windows (NTFS) and supporting Unix file systems (ext2fs, xfs etc).
- * Extensible file and directory services architecture (for example: `IFileHashingService` and `IFileTransferService`).
+ * Extensible file and directory services architecture (for example: `IFileHashingService` and `IFileTransferService`). All services implement `Platform.ITask` meaning they can all run the background; are monitorable (percent complete, bytes transferred etc) and can be paused, or cancelled.
  * Pluggable provider architecture makes adding new filesystems a breeze.
  * Pluggable provider architecture makes extending existing file systems easy. Filters that can modify or wrap files/directories can be added using `INodeResolutionFilter`. Operations on files can be intercepted and/or overidden using `INodeOperationFilter`.
  * Fully thread-safe.
