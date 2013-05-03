@@ -11,6 +11,10 @@ Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-plat
  * Pluggable provider architecture makes extending existing file systems easy. Filters that can modify or wrap files/directories can be added using `INodeResolutionFilter`. Operations on files can be intercepted and/or overidden using `INodeOperationFilter`.
  * Fully thread-safe.
  * Support for defining providers within `app.config` or `web.config`.
+ 
+
+## Installation
+
 
 
 ### Local Provider
@@ -121,7 +125,12 @@ Provides a read-only virtualised view of zip files. Currently random read-write 
 	
 	
 
-Refer to the Platform.VirtualFileSystem.Tests project for more examples. The `app.config` of the Tests project offers examples of how to add custom views and add inject non-default NodeProviders.
+Refer to the Platform.VirtualFileSystem.Tests project for more examples. 
+
+
+## Configuring default FileSystems
+
+The default file system manager (`FileSystemManager.Default`) contains all the standard file system providers (except for Network and Zip). If you want to custom define what is available or add views or custom providers, you can extend the IFileSystemManager interface, construct and populate a separate `StandardFileSystemManager` or define file systems within your `app.config` or `web.config`. Please reference [app.config](https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/tests/Platform.VirtualFileSystem.Tests/app.config) from the tests project to see an example of how to do the later.
 
 
 ---
