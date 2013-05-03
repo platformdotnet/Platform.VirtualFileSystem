@@ -125,12 +125,12 @@ Provides a read-only virtualised view of zip files. Currently random read-write 
 	
 	
 
-Refer to the Platform.VirtualFileSystem.Tests project for more examples. 
+Refer to the [Platform.VirtualFileSystem.Tests](https://github.com/platformdotnet/Platform.VirtualFileSystem/tree/master/tests/Platform.VirtualFileSystem.Tests) project for more examples. 
 
 
 ## Configuring default FileSystems
 
-The default file system manager (`FileSystemManager.Default`) contains all the standard file system providers (except for Network and Zip). If you want to custom define what is available or add views or custom providers, you can extend the IFileSystemManager interface, construct and populate a separate `StandardFileSystemManager` or define file systems within your `app.config` or `web.config`. Please reference [app.config](https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/tests/Platform.VirtualFileSystem.Tests/app.config) from the tests project to see an example of how to do the later.
+The default file system manager (`FileSystemManager.Default`) contains all the standard file system providers except for Network and Zip. If you want to custom define what is available or add views or custom providers, you can extend the IFileSystemManager interface, construct and populate a separate `StandardFileSystemManager` or define file systems within your `app.config` or `web.config`. Please reference [app.config](https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/tests/Platform.VirtualFileSystem.Tests/app.config) from the tests project to see an example of how to do the later.
 
 
 ---
