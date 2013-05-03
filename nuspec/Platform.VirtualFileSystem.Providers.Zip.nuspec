@@ -3,7 +3,7 @@
   <metadata>
     <id>Platform.VirtualFileSystem.Zip</id>
     <version>$version$</version>
-    <title>Platform.VirtualFileSystem Zip FileSystem Provider</title>
+    <title>Platform.VirtualFileSystem Zip Provider</title>
     <summary>A zip provider for the Platform VirtualFileSystem library</summary>
     <authors>Thong Nguyen</authors>
     <owners>Thong Nguyen</owners>
