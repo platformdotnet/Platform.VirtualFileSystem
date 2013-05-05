@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Platform.VirtualFileSystem.Zip</id>
+    <id>Platform.VirtualFileSystem.Providers.Zip</id>
     <version>$version$</version>
     <title>Platform.VirtualFileSystem Zip Provider</title>
-    <summary>A zip provider for the Platform VirtualFileSystem library</summary>
+    <summary>Adds zip file support to Platform.VirtualFileSystem (depends on Platform.VirtualFileSystem)</summary>
     <authors>Thong Nguyen</authors>
     <owners>Thong Nguyen</owners>
     <licenseUrl>https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/LICENSE</licenseUrl>
@@ -21,6 +21,7 @@
     <tags>Virtual VirtualFileSystem VFS url uri file directory files directories io zip</tags>
     <dependencies>
       <dependency id="Platform" />
+      <dependency id="Platform.Xml.Serialization" />
       <dependency id="Platform.VirtualFileSystem" />
       <dependency id="SharpZipLib" />
     </dependencies>
