@@ -20,7 +20,9 @@ Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-plat
 
 Platform.VirtualFileSystem is available via [nuget](https://nuget.org/packages/Platform.VirtualFileSystem/). You can search for `Platform.VirtualFileSystem` using the Visual Studio NuGet plugin UI or by typing `Install-Package Platform.VirtualFileSystem` into the Visual Studio Package Manager Console. If you want zip support you should also install the zip provider using `Install-Package Platform.VirtualFileSystem.Providers.Zip`.
 
-A package for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet package direct from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET). Only two assemblies are required for Platform.VirtualFileSystem: `Platform.dll` and `Platform.VirtualFileSystem.dll` (though zip support also requires `Platform.VirtualFileSystem.Providers.Zip.dll`).
+A package for those who don't use NuGet will be available in the future. In the mean time you can download the latest zip of the NuGet package direct from the [nuget website](http://packages.nuget.org/api/v1/package/Platform.VirtualFileSystem). Note that you will also need the [Platform.NET package](wget http://packages.nuget.org/api/v1/package/Platform.NET).
+
+Three assemblies are required for Platform.VirtualFileSystem: `Platform.dll`, `Platform.Xml.Serialization` and `Platform.VirtualFileSystem.dll`. If you require zip support then `Platform.VirtualFileSystem.Providers.Zip.dll` and `ICSharpCode.SharpZipLib` is also required. Platform.VirtualFileSystem will automatically load the zip provider if the `Platform.VirtualFileSystem.Providers.Zip.dll` is located in the same directory as `Platform.VirtualFileSystem.dll`.
 
 
 ## Included FileSystem providers
@@ -80,11 +82,11 @@ Provides a simple and cross-platform consistent view of the disks on a system.
 	
 ### DataFile Provider
 
-Provides a simple interface for load/saving of objects serialized into files (see `DataFileTests.cs`).
+Provides a simple interface for load/saving of objects serialized into files (see `DataFileTests.cs`). Requires `Platform.VirtualFileSystem.DataFile.dll`.
 	
 ### Network VFS Provider
 
-Exposes all VFS file systems over TCP. Many services are supported natively (for example `IFileHashingService` would be executed remotely on the server).
+Exposes all VFS file systems over TCP. Many services are supported natively (for example `IFileHashingService` would be executed remotely on the server). Required `Platform.VirtualFileSystem.Network.*.dll`.
 
 	netvfs://hostname[file:///usr//]/local/src
 	
