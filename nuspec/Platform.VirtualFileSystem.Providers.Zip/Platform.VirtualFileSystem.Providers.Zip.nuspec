@@ -4,13 +4,15 @@
     <id>Platform.VirtualFileSystem.Providers.Zip</id>
     <version>$version$</version>
     <title>Platform.VirtualFileSystem Zip Provider</title>
-    <summary>Adds zip file support to Platform.VirtualFileSystem (depends on Platform.VirtualFileSystem)</summary>
+    <summary>Adds zip scheme/file  support to Platform.VirtualFileSystem</summary>
     <authors>Thong Nguyen</authors>
     <owners>Thong Nguyen</owners>
     <licenseUrl>https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/platformdotnet/Platform.VirtualFileSystem</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
+    Adds zip scheme/file support to Platform.VirtualFileSystem.
+    
     Platform.VirtualFileSystem is a powerful .NET library that provides a uniform and cross-platform abstraction layer for file systems. It is similar to VFS features of various operating systems like Linux except it all runs in managed code.
     You can use one common API for accessing files from various sources (local, http, zip etc) as well as create user-defined file systems using views and overlays.
     
