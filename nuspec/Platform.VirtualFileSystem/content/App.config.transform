@@ -1,0 +1,9 @@
+<configuration>
+  <configSections>
+    <sectionGroup name="Platform">
+      <sectionGroup name="VirtualFileSystem">
+        <section name="Configuration" type="Platform.VirtualFileSystem.ConfigurationSectionHandler, Platform.VirtualFileSystem" />
+      </sectionGroup>
+    </sectionGroup>
+  </configSections>
+</configuration>

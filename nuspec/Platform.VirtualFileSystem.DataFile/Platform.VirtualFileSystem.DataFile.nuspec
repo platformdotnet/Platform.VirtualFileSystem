@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Platform.VirtualFileSystem.DataFile</id>
+    <version>$version$</version>
+    <title>Platform.VirtualFileSystem.DataFile</title>
+    <summary>Adds support for super simple persistence of objects as XML files to Platform.VirtualFileSystem</summary>
+    <authors>Thong Nguyen</authors>
+    <owners>Thong Nguyen</owners>
+    <licenseUrl>https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/platformdotnet/Platform.VirtualFileSystem</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+    Adds support for super simple persistence of objects as XML files to Platform.VirtualFileSystem.
+   
+    Platform.VirtualFileSystem is a powerful .NET library that provides a uniform and cross-platform abstraction layer for file systems.
+    
+    Find out more at: https://github.com/platformdotnet/Platform.VirtualFileSystem
+    </description>
+    <releaseNotes>Initial release of Platform.VirtualFileSystem.DataFile</releaseNotes>
+    <copyright>Copyright (c) 2003-2013 Thong Nguyen (tumtumtum@gmail.com)</copyright>
+    <tags>Virtual VirtualFileSystem VFS url uri file directory files directories io datafile</tags>
+    <dependencies>
+      <dependency id="Platform.NET"/>
+      <dependency id="Platform.VirtualFileSystem"/>
+      <dependency id="Platform.Xml.Serialization" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,18 @@
+<configuration>
+	<configSections>
+		<sectionGroup name="Platform">
+			<sectionGroup name="VirtualFileSystem">
+				<section name="Configuration" type="Platform.VirtualFileSystem.ConfigurationSectionHandler, Platform.VirtualFileSystem"/>
+			</sectionGroup>
+		</sectionGroup>
+	</configSections>
+	<Platform>
+    <VirtualFileSystem>
+			<Configuration>
+				<NodeResolutionFilters>
+					<NodeResolutionFilter type="Platform.VirtualFileSystem.DataFile.DataFileResolutionFilter, Platform.VirtualFileSystem.DataFile"/>					
+				</NodeResolutionFilters>
+			</Configuration>
+		</VirtualFileSystem>
+	</Platform>
+</configuration>
