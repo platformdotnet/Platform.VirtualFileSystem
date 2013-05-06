@@ -1,16 +1,16 @@
 using System;
-using System.Collections;
+using System.IO;
 using System.Reflection;
-using Platform;
-using Platform.Text;
+using System.Text.RegularExpressions;
 using Platform.Collections;
-using Platform.VirtualFileSystem.Providers;
 
 namespace Platform.VirtualFileSystem
 {
 	public class StandardFileSystemManager
 		: AbstractFileSystemManager
 	{
+		private static readonly Regex fileSystemProviderRegex = new Regex(@"Platform\.VirtualFileSystem\.Providers\.([^\.]+)\.dll");
+
 		private readonly ILList<INodeProvider> providers;
 
 		public override void CloseAllFileSystems()
@@ -22,11 +22,60 @@ namespace Platform.VirtualFileSystem
 					((Providers.View.ViewNodeProvider) provider).ViewFileSystem.Close();
 				}
 			}
+
 		}
 
 		public StandardFileSystemManager()
+			: this(false)
 		{
-			providers = new ArrayList<INodeProvider>();			
+		}
+
+		public StandardFileSystemManager(bool scanAssembliesForProviders)
+		{
+			providers = new ArrayList<INodeProvider>();	
+		
+			if (scanAssembliesForProviders)
+			{
+				ScanAssembliesAndAddProviders();
+			}
+		}
+
+		public void ScanAssembliesAndAddProviders()
+		{
+			var location = new Uri(this.GetType().Assembly.GetName().CodeBase);
+
+			try
+			{
+				if (string.IsNullOrEmpty(location.LocalPath))
+				{
+					return;
+				}
+			}
+			catch (InvalidOperationException)
+			{
+				return;
+			}
+
+			var parent = Path.GetDirectoryName(location.LocalPath);
+
+			foreach (var path in Directory.GetFiles(parent))
+			{
+				var fileName = Path.GetFileName(path);
+				var match = fileSystemProviderRegex.Match(fileName);
+
+				if (match.Success)
+				{
+					var assembly = Assembly.LoadFrom(Path.Combine(parent, fileName));
+
+					foreach (var type in assembly.GetTypes())
+					{
+						if (typeof(INodeProvider).IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
+						{
+							this.AddProvider((INodeProvider)Activator.CreateInstance(type, this));
+						}
+					}
+				}
+			}
 		}
 
 		protected virtual INodeProvider CreateProvider(ConfigurationSection.NodeProviderConfigEntry entry)

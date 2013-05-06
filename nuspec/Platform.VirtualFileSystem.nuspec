@@ -21,6 +21,7 @@
     <tags>Virtual VirtualFileSystem VFS url uri file directory files directories io</tags>
     <dependencies>
       <dependency id="Platform.NET"/>
+      <dependency id="Platform.Xml.Serialization" />
     </dependencies>
   </metadata>
 </package>
