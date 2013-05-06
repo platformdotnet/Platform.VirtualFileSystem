@@ -10,19 +10,13 @@ namespace Platform.VirtualFileSystem.DataFile
 	{
 		public virtual Type DataType
 		{
-			get
-			{
-				return typeof(T);
-			}
+			get { return typeof(T); }
 		}
 
-		public virtual Func<DataFile<T>, T> Load { get; private set; }
-
-		public virtual Action<DataFile<T>> Save { get; private set; }
-
 		public virtual bool AutoLoad { get; private set; }
-
 		public virtual TimeSpan RetryTimeout { get; set; }
+		public virtual Func<DataFile<T>, T> Load { get; private set; }
+		public virtual Action<DataFile<T>> Save { get; private set; }
 
 		public DataFileNodeType(IDataFileLoaderSaver<T> loaderSaver)
 			: this(loaderSaver, false, null as NodeType)
