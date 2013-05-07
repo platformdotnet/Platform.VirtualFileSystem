@@ -142,6 +142,10 @@ Refer to the [Platform.VirtualFileSystem.Tests](https://github.com/platformdotne
 
 The default file system manager (`FileSystemManager.Default`) contains all the standard file system providers except for Network and Zip. If you want to custom define what is available or add views or custom providers, you can extend the IFileSystemManager interface, construct and populate a separate `StandardFileSystemManager` or define file systems within your `app.config` or `web.config`. Please reference [app.config](https://raw.github.com/platformdotnet/Platform.VirtualFileSystem/master/tests/Platform.VirtualFileSystem.Tests/app.config) from the tests project to see an example of how to do the later.
 
+## License
+
+Platform.VirtualFileSystem is released under the terms of the new BSD license as documented [here](https://github.com/platformdotnet/Platform.VirtualFileSystem/blob/master/LICENSE). Zip support is provided by a separate assembly (`Platform.VirtualFileSystem.Providers.Zip`) which depends on `SharpZipLib` which is licensed under the GPL with an exception that permits commercial use.
+
 ## Contributing
 
 Platform.VirtualFileSystem was written quite a few years ago and has been recently updated to modern C#. It was written in a time before type inference, automatic properties and lambda expressions so if you see legacy cruft please don't hesistate to update it.
