@@ -1,5 +1,8 @@
 using System;
 using System.IO;
+using Platform.IO;
+using Platform.VirtualFileSystem.Providers;
+using Platform.VirtualFileSystem.Providers.Zip;
 using ZLib = ICSharpCode.SharpZipLib.Zip;
 
 namespace Platform.VirtualFileSystem.Providers.Zip
@@ -25,22 +28,14 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 		protected override Stream DoGetInputStream(string contentName, out string encoding, FileMode fileMode, FileShare fileShare)
 		{
-			lock (this)
-			{
-				lock (this.FileSystem)
-				{
-					this.Refresh();
+			encoding = null;
 
-					encoding = null;
+			return ZipFileStream.CreateInputStream(this);
+		}
 
-					if (this.zipEntry == null)
-					{
-						throw new FileNotFoundException(this.Address.Uri);
-					}
-
-					return ((ZipFileSystem)this.FileSystem).GetInputStream(this.zipEntry);
-				}
-			}
+		protected override Stream DoGetOutputStream(string contentName, string encoding, FileMode fileMode, FileShare fileShare)
+		{
+			return ZipFileStream.CreateOutputStream(this);
 		}
 
 		protected override INodeAttributes CreateAttributes()

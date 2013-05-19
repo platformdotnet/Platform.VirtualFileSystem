@@ -114,9 +114,7 @@ namespace Platform.VirtualFileSystem.Providers.Shadow
 			{
 				base.Close();
 
-				IFile dest;
-
-				dest = this.shadowFile.ParentDirectory.ResolveFile(this.file.Address.Name);
+				var dest = this.shadowFile.ParentDirectory.ResolveFile(this.file.Address.Name);
 
 				this.file.MoveTo(dest.ParentDirectory, true);
 				dest.RenameTo(this.shadowFile.Address.Name, true);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Platform.IO;
@@ -29,6 +30,92 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		}
 		private readonly AttributeChangeDeterminer changeDeterminer;
 
+		private readonly IDictionary<ZipFile, IFile> tempFiles = new Dictionary<ZipFile, IFile>();
+ 
+		internal IFile GetTempFile(ZipFile zipFile, bool createIfNotExist)
+		{
+			lock (this)
+			{
+				IFile retval;
+
+				if (!tempFiles.TryGetValue(zipFile, out retval))
+				{
+					if (createIfNotExist)
+					{
+						var uniqueId = Guid.NewGuid();
+
+						retval = FileSystemManager.Default.ResolveFile("temp:///" + uniqueId.ToString("N"));
+
+						tempFiles[zipFile] = retval;
+
+						if (((IZipNode)zipFile).ZipEntry != null)
+						{
+							zipFile.CopyTo(retval, true);
+						}
+					}
+				}
+
+				return retval;
+			}
+		}
+
+		public virtual void Flush()
+		{
+			lock (this)
+			{
+				if (tempFiles.Count > 0)
+				{
+					zipFile.BeginUpdate();
+
+					try
+					{
+						foreach (var zipFileAndTempFile in tempFiles)
+						{
+							var tempFile = zipFileAndTempFile.Value;
+							var name = zipFileAndTempFile.Key.Address.AbsolutePath;
+
+							try
+							{
+								zipFile.Add(new StreamDataSource(tempFile.GetContent().GetInputStream()), name);
+							}
+							catch (FileNodeNotFoundException)
+							{
+							}
+						}
+					}
+					finally
+					{
+						zipFile.CommitUpdate();
+					}
+
+					directoryExistsByPath.Clear();
+				}
+			}
+		}
+
+		public override void Dispose()
+		{
+			lock (this)
+			{
+				this.Flush();
+
+				this.Close();
+
+				foreach (var tempFile in tempFiles.Values)
+				{
+					try
+					{
+						tempFile.Delete();
+					}
+					catch
+					{
+					}
+				}
+			}
+
+			base.Dispose();
+		}
+
 		public ZipFileSystem(IFile file)
 			: this(file, FileSystemOptions.NewDefault())
 		{
@@ -37,6 +124,16 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		public ZipFileSystem(IFile file, FileSystemOptions options)
 			: this(LayeredNodeAddress.Parse("zip://[" + file.Address.Uri + "]"), file, options)
 		{
+		}
+
+		public static ZipFileSystem CreateZipFile(IFile zipFile)
+		{
+			return CreateZipFile(zipFile, FileSystemOptions.NewDefault());
+		}
+
+		public static ZipFileSystem CreateZipFile(IFile zipFile, FileSystemOptions options)
+		{
+			return CreateZipFile(zipFile, null, null, options);
 		}
 
 		public static ZipFileSystem CreateZipFile(IFile zipFile, IDirectory zipFilecontents)
@@ -75,26 +172,29 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				zipOutputStream.IsStreamOwner = true;
 				zipOutputStream.UseZip64 = ZLib.UseZip64.Dynamic;
 
-				foreach (IFile file in files)
+				if (files != null)
 				{
-					var entryName = fileToFullPath(file);
-					entryName = ZLib.ZipEntry.CleanName(entryName);
-					
-					var entry = new ZLib.ZipEntry(entryName);
-
-					using (var stream = file.GetContent().GetInputStream(FileMode.Open, FileShare.Read))
+					foreach (var file in files)
 					{
-						if (stream.Length > 0)
+						var entryName = fileToFullPath(file);
+						entryName = ZLib.ZipEntry.CleanName(entryName);
+
+						var entry = new ZLib.ZipEntry(entryName);
+
+						using (var stream = file.GetContent().GetInputStream(FileMode.Open, FileShare.Read))
 						{
-							entry.Size = stream.Length;
+							if (stream.Length > 0)
+							{
+								entry.Size = stream.Length;
+							}
+
+							zipOutputStream.PutNextEntry(entry);
+
+							stream.CopyTo(zipOutputStream);
 						}
 
-						zipOutputStream.PutNextEntry(entry);
-
-						stream.CopyTo(zipOutputStream);
+						zipOutputStream.CloseEntry();
 					}
-
-					zipOutputStream.CloseEntry();
 				}
 			}
 
@@ -128,7 +228,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			this.changeDeterminer = new AttributeChangeDeterminer(ParentLayer, "LastWriteTime", "Length");
 
-			this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().GetInputStream());
+			this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().OpenStream(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None));
 
 			if (zipFile.SupportsActivityEvents)
 			{
@@ -156,7 +256,14 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			lock (this)
 			{
+				if (this.isClosed)
+				{
+					return;
+				}
+
 				this.zipFile.Close();
+				directoryExistsByPath.Clear();
+				
 				this.changeDeterminer.MakeUnchanged();
 				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().GetInputStream());
 			}
@@ -172,13 +279,22 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			}
 		}
 
+		private bool isClosed;
+
 		public override void Close()
 		{
+			base.Close();
+
 			lock (this)
 			{
-				base.Close();
+				if (isClosed)
+				{
+					return;
+				}
 
 				this.zipFile.Close();
+
+				isClosed = true;
 			}
 		}
 
@@ -209,6 +325,51 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 				return base.Resolve(address, nodeType);
 			}
+		}
+
+		private readonly IDictionary<string, bool> directoryExistsByPath = new Dictionary<string, bool>();
+
+		internal bool DirectoryExists(string path)
+		{
+			var originalPath = path;
+	
+			lock (this)
+			{
+				this.CheckAndReload();
+
+				var value = false;
+
+				if (directoryExistsByPath.TryGetValue(originalPath, out value))
+				{
+					return value;
+				}
+
+				if (path.Length > 1 && path[0] == FileSystemManager.SeperatorChar)
+				{
+					path = path.Substring(1);
+				}
+
+				foreach (ZLib.ZipEntry entry in this.zipFile)
+				{
+					if (entry.Name.StartsWith(path, true, CultureInfo.InvariantCulture)
+						&& entry.Name.Length >= path.Length && entry.Name[path.Length] == '/')
+					{
+						directoryExistsByPath[originalPath] = true;
+
+						return true;
+					}
+					else if (entry.Name.EqualsIgnoreCaseInvariant(path) && entry.IsDirectory)
+					{
+						directoryExistsByPath[originalPath] = true;
+
+						return true;
+					}
+				}
+			}
+
+			directoryExistsByPath[originalPath] = false;
+
+			return false;
 		}
 
 		internal virtual ZLib.ZipEntry GetEntry(string path)
@@ -267,9 +428,6 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			}
 		}
 
-		/// <summary>
-		/// <see cref="AbstractFileSystem.CreateNode(INodeAddress, NodeType)"/>
-		/// </summary>
 		protected override INode CreateNode(INodeAddress address, NodeType nodeType)
 		{
 			lock (this)

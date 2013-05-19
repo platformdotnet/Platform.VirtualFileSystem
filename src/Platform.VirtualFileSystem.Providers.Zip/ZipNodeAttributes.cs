@@ -18,7 +18,15 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			get
 			{
-				return this.zipNode.ZipEntry != null;
+				if (this.zipNode.NodeType.IsLikeDirectory)
+				{
+					return ((ZipFileSystem)this.zipNode.FileSystem).DirectoryExists(this.zipNode.Address.AbsolutePath);
+				}
+				else
+				{
+					return this.zipNode.ZipEntry != null
+					       || ((ZipFileSystem)this.zipNode.FileSystem).GetTempFile((ZipFile)zipNode, false) != null;
+				}
 			}
 		}
 

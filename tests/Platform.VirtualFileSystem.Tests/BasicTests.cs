@@ -18,6 +18,17 @@ namespace Platform.VirtualFileSystem.Tests
 		}
 
 		[Test]
+		public void Test_Open_File_For_write()
+		{
+			var file = FileSystemManager.Default.ResolveFile("temp:///Output.txt");
+
+			using (var stream = file.GetContent().GetOutputStream())
+			{
+				stream.WriteByte((byte)'O');
+			}
+		}
+
+		[Test]
 		public void Test_Check_TestFiles_View_FileSystem_Exists()
 		{
 			var dir = FileSystemManager.Default.ResolveDirectory("testfiles://Directory1");

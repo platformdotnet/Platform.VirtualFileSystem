@@ -126,6 +126,7 @@
     <Compile Include="IZipNode.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StreamDataSource.cs" />
     <Compile Include="ZipDirectory.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -135,6 +136,7 @@
     <Compile Include="ZipFileAttributes.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ZipFileStream.cs" />
     <Compile Include="ZipFileSystem.cs">
       <SubType>Code</SubType>
     </Compile>
