@@ -1,7 +1,9 @@
 Platform.VirtualFileSystem
 ==========================
 
-Platform.VirtualFileSystem is a .NET library that provides a uniform, cross-platform and managed abstraction layer for file systems. It is similar to VFS features of various operating systems like Linux except it all runs in managed code. Features include:
+A virtual file system for C#, .NET and Mono.
+
+Platform.VirtualFileSystem provides a uniform, cross-platform and managed abstraction layer for file systems. It is similar to VFS features of various operating systems like Linux except it all runs in managed code. Features include:
 
  * Support for Microsoft .NET and Mono.
  * Unified addressing. All files and directories are addressed using URIs. No need to concern yourself with different path separators and naming schemes on different platforms.
