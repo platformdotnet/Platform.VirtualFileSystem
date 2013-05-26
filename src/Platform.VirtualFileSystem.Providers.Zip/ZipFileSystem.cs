@@ -11,84 +11,219 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 	public class ZipFileSystem
 		: AbstractFileSystem
 	{
-		internal ZLib.ZipFile zipFile;		
+		internal ZLib.ZipFile zipFile;
 
-		/// <summary>
-		/// <see cref="IFileSystem.SupportsActivityEvents"/>
-		/// </summary>
-		/// <remarks>
-		/// Zip file systems support activity events though not on a file by file basis (because
-		/// zip file systems are read only).  Events are fired when the host zip file is changed,
-		/// deleted or renamed.
-		/// </remarks>
 		public override bool SupportsActivityEvents
 		{
-			get
-			{
-				return true;
-			}
+			get { return true; }
 		}
-		private readonly AttributeChangeDeterminer changeDeterminer;
 
-		private readonly IDictionary<ZipFile, IFile> tempFiles = new Dictionary<ZipFile, IFile>();
- 
-		internal IFile GetTempFile(ZipFile zipFile, bool createIfNotExist)
+		private readonly AttributeChangeDeterminer changeDeterminer; 
+		private readonly Dictionary<string, ZipFileInfo> zipFileInfos = new Dictionary<string, ZipFileInfo>(StringComparer.InvariantCultureIgnoreCase);
+		private readonly Dictionary<string, ZipDirectoryInfo> zipDirectoryInfos = new Dictionary<string, ZipDirectoryInfo>(StringComparer.InvariantCultureIgnoreCase);
+
+		internal virtual ZipDirectoryInfo GetZipDirectoryInfo(string path)
 		{
 			lock (this)
 			{
-				IFile retval;
+				ZipDirectoryInfo retval;
 
-				if (!tempFiles.TryGetValue(zipFile, out retval))
+				if (!zipDirectoryInfos.TryGetValue(path, out retval))
 				{
-					if (createIfNotExist)
-					{
-						var uniqueId = Guid.NewGuid();
+					retval = new ZipDirectoryInfo(false);
 
-						retval = FileSystemManager.Default.ResolveFile("temp:///" + uniqueId.ToString("N"));
+					retval.AbsolutePath = path;
 
-						tempFiles[zipFile] = retval;
-
-						if (((IZipNode)zipFile).ZipEntry != null)
-						{
-							zipFile.CopyTo(retval, true);
-						}
-					}
+					zipDirectoryInfos[path] = retval;
 				}
 
 				return retval;
 			}
 		}
 
-		public virtual void Flush()
+		internal virtual ZipFileInfo GetZipFileInfo(string path)
 		{
 			lock (this)
 			{
-				if (tempFiles.Count > 0)
+				ZipFileInfo retval;
+
+				if (!zipFileInfos.TryGetValue(path, out retval))
+				{
+					retval = new ZipFileInfo(null);
+
+					retval.AbsolutePath = path;
+
+					zipFileInfos[path] = retval;
+				}
+
+				return retval;
+			}
+		}
+
+		private void RefreshNodeInfos()
+		{	
+			lock (this)
+			{
+				if (zipFileInfos != null)
+				{
+					foreach (var zipFileInfo in this.zipFileInfos.Values.Where(c => c.ShadowFile != null))
+					{
+						try
+						{
+							zipFileInfo.ShadowFile.Delete();
+						}
+						catch
+						{
+						}
+					}
+				}
+
+				zipFileInfos.Clear();
+				zipDirectoryInfos.Clear();
+
+				var directories = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+
+				directories.Add("/");
+
+				foreach (ZLib.ZipEntry zipEntry in zipFile)
+				{
+					if (zipEntry.IsDirectory)
+					{
+						directories.Add("/" + zipEntry.Name.TrimRight('/'));
+					}
+					else
+					{
+						var zipFileInfo = new ZipFileInfo(zipEntry);
+
+						var x = zipEntry.Name.LastIndexOf('/');
+
+						if (x > 0)
+						{
+							var path = zipEntry.Name.Substring(0, x);
+
+							directories.Add("/" + path);
+						}
+
+						zipFileInfo.AbsolutePath = "/" + zipEntry.Name;
+
+						zipFileInfos[zipFileInfo.AbsolutePath] = zipFileInfo;
+					}
+				}
+
+				foreach (var directoryPath in directories)
+				{
+					var zipDirectoryInfo = new ZipDirectoryInfo(true);
+
+					zipDirectoryInfo.AbsolutePath = directoryPath;
+
+					zipDirectoryInfos[zipDirectoryInfo.AbsolutePath] = zipDirectoryInfo;
+				}
+			}
+		}
+
+		public virtual void Flush()
+		{
+			this.Flush(true);
+		}
+
+		private void Flush(bool refresh)
+		{
+			lock (this)
+			{
+				var filesChanged = zipFileInfos.Values.Where(c => c.ShadowFile != null).ToList();
+				var filesDeleted = zipFileInfos.Values.Where(c => !c.Exists && c.ZipEntry != null).ToList();
+
+				var setOfPreviousDirectories = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+
+				foreach (ZLib.ZipEntry zipEntry in zipFile)
+				{
+					if (zipEntry.IsDirectory)
+					{
+						setOfPreviousDirectories.Add("/" + zipEntry.Name.Substring(0, zipEntry.Name.Length - 1));
+					}
+					else
+					{
+						var x = zipEntry.Name.LastIndexOf('/');
+
+						if (x > 0)
+						{
+							var path = zipEntry.Name.Substring(0, x);
+
+							setOfPreviousDirectories.Add("/" + path);
+						}
+					}
+				}
+
+				var setOfCurrentImplicitDirectories = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase); 
+				var setOfCurrentDirectories = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase); 
+
+				foreach (var zipFileInfo in zipFileInfos.Values)
+				{
+					if (zipFileInfo.Exists)
+					{
+						var x = zipFileInfo.AbsolutePath.LastIndexOf('/');
+
+						if (x > 0)
+						{
+							var path = zipFileInfo.AbsolutePath.Substring(0, x);
+
+							setOfCurrentDirectories.Add(path);
+							setOfCurrentImplicitDirectories.Add(path);
+						}
+					}
+				}
+
+				foreach (var zipDirectoryInfo in zipDirectoryInfos.Values.Where(c => c.Exists))
+				{
+					setOfCurrentDirectories.Add(zipDirectoryInfo.AbsolutePath);
+				}
+
+				var setOfNewDirectories = new HashSet<string>(setOfCurrentDirectories.Where(c => !setOfPreviousDirectories.Contains(c)), StringComparer.InvariantCultureIgnoreCase);
+				var setOfDeletedDirectories = new HashSet<string>(setOfPreviousDirectories.Where(c => !setOfCurrentDirectories.Contains(c)), StringComparer.InvariantCultureIgnoreCase);
+				var setOfDirectoriesToCreate = new HashSet<string>(setOfNewDirectories.Where(c => !setOfCurrentImplicitDirectories.Contains(c)), StringComparer.InvariantCultureIgnoreCase);
+
+				setOfDirectoriesToCreate.Remove("/");
+
+				if (filesChanged.Count > 0 || filesDeleted.Count > 0)
 				{
 					zipFile.BeginUpdate();
 
 					try
 					{
-						foreach (var zipFileAndTempFile in tempFiles)
+						foreach (var zipFileInfo in filesChanged)
 						{
-							var tempFile = zipFileAndTempFile.Value;
-							var name = zipFileAndTempFile.Key.Address.AbsolutePath;
+							var shadowFile = zipFileInfo.ShadowFile;
+
+							var name = zipFileInfo.AbsolutePath;
 
 							try
 							{
-								zipFile.Add(new StreamDataSource(tempFile.GetContent().GetInputStream()), name);
+								zipFile.Add(new StreamDataSource(shadowFile.GetContent().GetInputStream()), name);
 							}
 							catch (FileNodeNotFoundException)
 							{
 							}
+						}
+
+						foreach (var zipFileInfo in filesDeleted)
+						{
+							zipFile.Delete(zipFileInfo.ZipEntry);
+						}
+
+						foreach (var directoryToCreate in setOfDirectoriesToCreate)
+						{
+							zipFile.AddDirectory(directoryToCreate);
 						}
 					}
 					finally
 					{
 						zipFile.CommitUpdate();
 					}
+				}
 
-					directoryExistsByPath.Clear();
+				if (refresh)
+				{
+					this.RefreshNodeInfos();
 				}
 			}
 		}
@@ -97,15 +232,15 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			lock (this)
 			{
-				this.Flush();
+				this.Flush(false);
 
 				this.Close();
 
-				foreach (var tempFile in tempFiles.Values)
+				foreach (var zipFileInfo in this.zipFileInfos.Values.Where(c => c.ShadowFile != null))
 				{
 					try
 					{
-						tempFile.Delete();
+						zipFileInfo.ShadowFile.Delete();
 					}
 					catch
 					{
@@ -228,9 +363,11 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			this.changeDeterminer = new AttributeChangeDeterminer(ParentLayer, "LastWriteTime", "Length");
 
-			this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().OpenStream(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None));
+			this.OpenZlib();
 
-			if (zipFile.SupportsActivityEvents)
+			this.RefreshNodeInfos();
+
+			if (zipFile.SupportsActivityEvents && options.ReadOnly)
 			{
 				zipFile.Activity += new NodeActivityEventHandler(ZipFile_Activity);
 			}
@@ -252,20 +389,34 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			}
 		}
 
+		private void OpenZlib()
+		{
+			if (this.Options.ReadOnly)
+			{
+				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().GetInputStream(FileShare.ReadWrite));
+			}
+			else
+			{
+				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().OpenStream(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read));
+			}
+		}
+
 		protected virtual void Reload()
 		{
 			lock (this)
 			{
-				if (this.isClosed)
+				if (this.isClosed || this.isClosing)
 				{
 					return;
 				}
 
 				this.zipFile.Close();
-				directoryExistsByPath.Clear();
 				
 				this.changeDeterminer.MakeUnchanged();
-				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().GetInputStream());
+
+				this.OpenZlib();
+
+				this.RefreshNodeInfos();
 			}
 		}
 
@@ -280,9 +431,12 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		}
 
 		private bool isClosed;
+		private bool isClosing;
 
 		public override void Close()
 		{
+			isClosing = true;
+
 			base.Close();
 
 			lock (this)
@@ -295,6 +449,17 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				this.zipFile.Close();
 
 				isClosed = true;
+
+				foreach (var zipFileInfo in this.zipFileInfos.Values.Where(c => c.ShadowFile != null))
+				{
+					try
+					{
+						zipFileInfo.ShadowFile.Delete();
+					}
+					catch
+					{
+					}
+				}
 			}
 		}
 
@@ -325,51 +490,6 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 				return base.Resolve(address, nodeType);
 			}
-		}
-
-		private readonly IDictionary<string, bool> directoryExistsByPath = new Dictionary<string, bool>();
-
-		internal bool DirectoryExists(string path)
-		{
-			var originalPath = path;
-	
-			lock (this)
-			{
-				this.CheckAndReload();
-
-				var value = false;
-
-				if (directoryExistsByPath.TryGetValue(originalPath, out value))
-				{
-					return value;
-				}
-
-				if (path.Length > 1 && path[0] == FileSystemManager.SeperatorChar)
-				{
-					path = path.Substring(1);
-				}
-
-				foreach (ZLib.ZipEntry entry in this.zipFile)
-				{
-					if (entry.Name.StartsWith(path, true, CultureInfo.InvariantCulture)
-						&& entry.Name.Length >= path.Length && entry.Name[path.Length] == '/')
-					{
-						directoryExistsByPath[originalPath] = true;
-
-						return true;
-					}
-					else if (entry.Name.EqualsIgnoreCaseInvariant(path) && entry.IsDirectory)
-					{
-						directoryExistsByPath[originalPath] = true;
-
-						return true;
-					}
-				}
-			}
-
-			directoryExistsByPath[originalPath] = false;
-
-			return false;
 		}
 
 		internal virtual ZLib.ZipEntry GetEntry(string path)

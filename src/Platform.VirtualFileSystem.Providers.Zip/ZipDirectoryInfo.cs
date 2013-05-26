@@ -5,7 +5,12 @@ using System.Text;
 
 namespace Platform.VirtualFileSystem.Providers.Zip
 {
-	class ZipDirectoryInfo
+	internal class ZipDirectoryInfo
+		: ZipNodeInfo
 	{
+		public ZipDirectoryInfo(bool exists)
+		{
+			this.exists = exists;
+		}
 	}
 }

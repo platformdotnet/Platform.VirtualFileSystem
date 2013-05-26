@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace Platform.VirtualFileSystem.Providers.Zip
 {
-	public class ZipFileInfo
+	internal class ZipFileInfo
+		: ZipNodeInfo
 	{
-		private bool created;
+		public IFile ShadowFile { get; private set; }
 
-		public ZipEntry ZipEntry { get; set; }
-		private IFile ShadowFile { get; set; }
-
-		public bool Exists
+		public override bool Exists
 		{
 			get
 			{
@@ -22,16 +17,11 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 					return true;
 				}
 
-				if (this.ZipEntry != null)
-				{
-					return true;
-				}
-
-				return created;
+				return base.Exists;
 			}
 		}
 
-		public DateTime? DateTime
+		public override DateTime? DateTime
 		{
 			get
 			{
@@ -40,44 +30,50 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 					return this.ShadowFile.Attributes.CreationTime;
 				}
 
-				if (this.ZipEntry != null)
-				{
-					return this.ZipEntry.DateTime;
-				}
-
-				return null;
+				return base.DateTime;
 			}
 		}
 
-		public IFile GetShadowFile(bool createIfNecessary)
+		public ZipFileInfo(ZipEntry zipEntry)
+			: base(zipEntry)
 		{
-			var uniqueId = Guid.NewGuid();
+			
+		}
 
-			var retval = FileSystemManager.Default.ResolveFile("tmp:///" + uniqueId.ToString("N")).Refresh();
-
-			if (!retval.Exists)
+		public virtual IFile GetShadowFile(bool createIfNecessary)
+		{
+			if (this.ShadowFile != null)
 			{
-				retval.Create();
+				return this.ShadowFile;
 			}
 
+			if (!createIfNecessary)
+			{
+				return null;
+			}
+
+			var uniqueId = Guid.NewGuid();
+
+			var retval = FileSystemManager.Default.ResolveFile("temp:///" + uniqueId.ToString("N") + ".zipfs.tmp");
+
+			retval.Create();
+			
 			this.ShadowFile = retval;
 
 			return retval;
 		}
 
-		public void Create()
+		public override void Create()
 		{
-			
+			this.GetShadowFile(true).Create();
+
+			base.Create();
 		}
 
-		public void Delete()
+		public override void Delete()
 		{
-			created = false;
-
-			this.ZipEntry = null;
-			this.Exists = false;
-			this.DateTime = null;
-
+			base.Delete();
+			
 			if (this.ShadowFile != null)
 			{
 				try
@@ -88,6 +84,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				{	
 				}
 			}
+
 			this.ShadowFile = null;
 		}
 	}

@@ -46,9 +46,11 @@ namespace Platform.VirtualFileSystem.Providers.Local
 			return LocalNodeAddress.Parse(uri);
 		}
 
-		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options)
+		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options, out bool cache)
 		{
 			options.AddNodeProviderConfiguration(this.configuration);
+
+			cache = true;
 
 			return new LocalFileSystem(rootAddress, options);
 		}

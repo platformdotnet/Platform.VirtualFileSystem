@@ -25,8 +25,10 @@ namespace Platform.VirtualFileSystem.Network
 			return NetworkNodeAddress.Parse(uri);
 		}
 
-		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options)
+		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options, out bool cache)
 		{
+			cache = true;
+
 			return new NetworkFileSystem(rootAddress, options);
 		}
 	}

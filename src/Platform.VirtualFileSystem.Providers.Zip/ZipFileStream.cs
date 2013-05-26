@@ -10,6 +10,14 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 		public static ZipFileStream CreateInputStream(ZipFile zipFile)
 		{
+			if (!zipFile.ParentDirectory.Exists)
+			{
+				if (!zipFile.ParentDirectory.Refresh().Exists)
+				{
+					throw new DirectoryNodeNotFoundException(zipFile.ParentDirectory.Address);
+				}
+			}
+
 			zipFile.Refresh();
 
 			var zipEntry = ((IZipNode)zipFile).ZipEntry;
@@ -19,11 +27,12 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				throw new FileNotFoundException(zipFile.Address.Uri);
 			}
 
-			var tempFile = ((ZipFileSystem)zipFile.FileSystem).GetTempFile(zipFile, false);
+			var zipFileInfo = ((ZipFileSystem)zipFile.FileSystem).GetZipFileInfo(zipFile.Address.AbsolutePath);
+			var shadowFile = zipFileInfo.ShadowFile;
 
-			if (tempFile != null)
+			if (shadowFile != null)
 			{
-				return new ZipFileStream(zipFile, tempFile.GetContent().GetInputStream());
+				return new ZipFileStream(zipFile, shadowFile.GetContent().GetInputStream());
 			}
 			else
 			{
@@ -33,9 +42,19 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 		public static ZipFileStream CreateOutputStream(ZipFile zipFile)
 		{
-			var tempFile = ((ZipFileSystem)zipFile.FileSystem).GetTempFile(zipFile, true);
+			if (!zipFile.ParentDirectory.Exists)
+			{
+				if (!zipFile.ParentDirectory.Refresh().Exists)
+				{
+					throw new DirectoryNodeNotFoundException(zipFile.ParentDirectory.Address);
+				}
+			}
 
-			return new ZipFileStream(zipFile, tempFile.GetContent().GetOutputStream());
+			var zipFileInfo = ((ZipFileSystem)zipFile.FileSystem).GetZipFileInfo(zipFile.Address.AbsolutePath);
+
+			var shadowFile = zipFileInfo.GetShadowFile(true);
+
+			return new ZipFileStream(zipFile, shadowFile.GetContent().GetOutputStream());
 		}
 
 		private ZipFileStream(ZipFile zipFile, Stream stream)

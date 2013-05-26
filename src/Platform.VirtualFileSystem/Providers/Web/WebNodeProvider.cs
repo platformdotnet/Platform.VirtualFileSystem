@@ -30,8 +30,10 @@ namespace Platform.VirtualFileSystem.Providers.Web
 			return StandardNodeAddress.Parse(uri);
 		}
 
-		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options)
+		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options, out bool cache)
 		{
+			cache = true;
+
 			return new WebFileSystem(rootAddress, options);
 		}		
 	}
