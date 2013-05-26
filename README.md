@@ -1,6 +1,9 @@
 Platform.VirtualFileSystem
 ==========================
 
+[Read the Quickstart wiki](wiki/Quickstart)
+
+
 A virtual file system for C#, .NET and Mono.
 
 Platform.VirtualFileSystem provides a uniform, cross-platform and managed abstraction layer for file systems. It is similar to VFS features of various operating systems like Linux except it all runs in managed code. Features include:
@@ -152,6 +155,9 @@ Platform.VirtualFileSystem is released under the terms of the new BSD license as
 
 Platform.VirtualFileSystem was written quite a few years ago and has been recently updated to modern C#. It was written in a time before type inference, automatic properties and lambda expressions so if you see legacy cruft please don't hesistate to update it.
 
+## More
+
+[Read the Quickstart wiki](wiki/Quickstart)
 
 ---
 Copyright © 2003-2013 Thong Nguyen (tumtumtum@gmail.com)
