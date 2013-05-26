@@ -50,17 +50,24 @@ namespace Platform.VirtualFileSystem.Providers
 
 			if (fileSystem == null)
 			{
-				fileSystem = NewFileSystem(rootAddress, options == null ? FileSystemOptions.NewDefault() : null);
+				bool cache;
+
+				options = options ?? FileSystemOptions.NewDefault();
+
+				fileSystem = NewFileSystem(rootAddress, options, out cache);
 
 				fileSystem.Closed += FileSystem_Closed;
 
-				AddFileSystem(rootAddress, fileSystem, options);
+				if (cache)
+				{
+					AddFileSystem(rootAddress, fileSystem, options);
+				}
 			}
 
 			return fileSystem.Resolve(nodeAddress, nodeType);
 		}
 
-		protected abstract IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options);
+		protected abstract IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options, out bool cache);
 			
 		protected abstract INodeAddress ParseUri(string uri);
 

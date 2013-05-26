@@ -16,6 +16,16 @@ namespace Platform.VirtualFileSystem
 			return new FileSystemOptions();
 		}
 
+		public static FileSystemOptions NewDefaultWithReadOnly()
+		{
+			return new FileSystemOptions()
+			{
+				ReadOnly = true
+			};
+		}
+
+		public virtual bool ReadOnly { get; set; }
+
 		public virtual IList NodeResolutionFilterTypes { get; set; }
 
 		public virtual IList NodeTransformationFilterTypes { get; set; }

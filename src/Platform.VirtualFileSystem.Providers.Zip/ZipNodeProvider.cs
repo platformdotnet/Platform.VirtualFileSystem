@@ -23,9 +23,11 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			return LayeredNodeAddress.Parse(uri);
 		}
 
-		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options)
+		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options, out bool cache)
 		{
 			var backingFile = this.Manager.ResolveFile(((LayeredNodeAddress)rootAddress).InnerUri);
+
+			cache = options.ReadOnly;
 
 			return new ZipFileSystem(rootAddress, backingFile, options);
 		}

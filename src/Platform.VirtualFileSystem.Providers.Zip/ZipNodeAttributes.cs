@@ -17,15 +17,14 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		public override bool Exists
 		{
 			get
-			{
+			{	
 				if (this.zipNode.NodeType.IsLikeDirectory)
 				{
-					return ((ZipFileSystem)this.zipNode.FileSystem).DirectoryExists(this.zipNode.Address.AbsolutePath);
+					return ((ZipFileSystem)this.zipNode.FileSystem).GetZipDirectoryInfo(this.zipNode.Address.AbsolutePath).Exists;
 				}
 				else
 				{
-					return this.zipNode.ZipEntry != null
-					       || ((ZipFileSystem)this.zipNode.FileSystem).GetTempFile((ZipFile)zipNode, false) != null;
+					return ((ZipFileSystem)this.zipNode.FileSystem).GetZipFileInfo(this.zipNode.Address.AbsolutePath).Exists;
 				}
 			}
 		}

@@ -48,11 +48,13 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 			}
 		}
 
-		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options)
+		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options, out bool cache)
 		{
 			var layeredAddress = (LayeredNodeAddress)rootAddress;
 			var components = layeredAddress.InnerUri.Split(';');
 			var fileSystems = components.Select(s => this.Manager.Resolve(s).FileSystem).ToList();
+
+			cache = true;
 
 			return new OverlayedFileSystem(fileSystems, options);
 		}

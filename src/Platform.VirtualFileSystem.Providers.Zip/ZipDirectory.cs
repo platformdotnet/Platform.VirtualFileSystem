@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using ZLib = ICSharpCode.SharpZipLib.Zip;
 
 namespace Platform.VirtualFileSystem.Providers.Zip
@@ -45,6 +47,74 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			{
 				return this.zipPath;
 			}
+		}
+
+		protected override INode DoDelete()
+		{
+			return this.DoDelete(false);
+		}
+
+		protected override IDirectory DoDelete(bool recursive)
+		{
+			if (((ZipFileSystem)this.FileSystem).Options.ReadOnly)
+			{
+				return base.DoDelete(recursive);
+			}
+
+			if (!recursive)
+			{
+				if (this.GetChildren().Any())
+				{
+					throw new IOException("The directory is not empty");
+				}
+
+				((ZipFileSystem)this.FileSystem).GetZipDirectoryInfo(this.Address.AbsolutePath).Delete();
+			}
+			else
+			{
+				foreach (var item in this.GetChildren())
+				{
+					if (item is IDirectory)
+					{
+						((IDirectory)item).Delete(true);
+					}
+					else
+					{
+						item.Delete();
+					}
+				}
+
+				((ZipFileSystem)this.FileSystem).GetZipDirectoryInfo(this.Address.AbsolutePath).Delete();
+			}
+
+			return this;
+		}
+
+		public override INode DoCreate(bool createParent)
+		{
+			if (((ZipFileSystem)this.FileSystem).Options.ReadOnly)
+			{
+				return base.DoCreate(createParent);
+			}
+
+			if (createParent)
+			{
+				if (!this.ParentDirectory.Exists)
+				{
+					this.ParentDirectory.Create(true);
+				}
+			}
+			else
+			{
+				if (!this.ParentDirectory.Exists)
+				{
+					throw new DirectoryNodeNotFoundException(this.ParentDirectory.Address);
+				}
+			}
+
+			((ZipFileSystem)this.FileSystem).GetZipDirectoryInfo(this.Address.AbsolutePath).Create();
+
+			return this;
 		}
 		
 		public override IEnumerable<INode> DoGetChildren(NodeType nodeType, Predicate<INode> acceptNode)

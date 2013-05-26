@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using Platform.IO;
 using Platform.VirtualFileSystem.Providers.Zip;
 
 namespace Platform.VirtualFileSystem.Tests
@@ -29,6 +30,10 @@ namespace Platform.VirtualFileSystem.Tests
 
 				var newFile2 = fileSystem.ResolveFile("/TestDir/A.txt");
 
+				Assert.IsFalse(newFile2.ParentDirectory.Exists);
+				newFile2.ParentDirectory.Create();
+				Assert.IsTrue(newFile2.ParentDirectory.Exists);
+
 				Assert.IsFalse(newFile2.Exists);
 
 				using (var writer = newFile2.GetContent().GetWriter())
@@ -38,6 +43,48 @@ namespace Platform.VirtualFileSystem.Tests
 
 				newFile2.Refresh();
 				Assert.IsTrue(newFile2.Exists);
+
+				fileSystem.ResolveDirectory("/NewDirectory").Create();
+
+				var z = fileSystem.ResolveDirectory("/X/Y/Z");
+
+				Assert.IsFalse(z.Exists);
+
+				Assert.Catch<DirectoryNodeNotFoundException>(() => z.Create());
+
+				z.Create(true);
+
+				Assert.IsTrue(z.Exists);
+				Assert.IsTrue(fileSystem.ResolveDirectory("/X/Y").Exists);
+				Assert.IsTrue(fileSystem.ResolveDirectory("/X").Exists);
+			}
+
+			using (var fileSystem = FileSystemManager.Default.ResolveDirectory("zip://[temp:///TestReadWriteZipFile.zip]/").FileSystem)
+			{
+				var testFile = fileSystem.ResolveFile("Test.txt");
+
+				Assert.AreEqual("Test", testFile.GetContent().GetReader().ReadToEndThenClose());
+
+				using (var writer = testFile.GetContent().GetWriter())
+				{
+					writer.Write("Hello");
+				}
+
+				Assert.IsTrue(testFile.Exists);
+				
+				Assert.AreEqual("Hello", testFile.GetContent().GetReader().ReadToEndThenClose());
+
+				Assert.IsTrue(fileSystem.ResolveDirectory("/NewDirectory").Exists);
+				Assert.IsTrue(fileSystem.ResolveDirectory("/X/Y/Z").Exists);
+				Assert.IsTrue(fileSystem.ResolveDirectory("/X/Y").Exists);
+				Assert.IsTrue(fileSystem.ResolveDirectory("/X").Exists);
+			}
+
+			using (var fileSystem = FileSystemManager.Default.ResolveDirectory("zip://[temp:///TestReadWriteZipFile.zip]/").FileSystem)
+			{
+				var testFile = fileSystem.ResolveFile("Test.txt");
+
+				Assert.AreEqual("Hello", testFile.GetContent().GetReader().ReadToEndThenClose());
 			}
 		}
 
@@ -51,6 +98,8 @@ namespace Platform.VirtualFileSystem.Tests
 				Assert.AreEqual("A.csv", fileContents);
 
 				var newFile = fileSystem.ResolveFile("SubDirectory1/B.txt");
+
+				newFile.ParentDirectory.Create();
 
 				Assert.IsFalse(newFile.Exists);
 
