@@ -94,7 +94,7 @@ Exposes all VFS file systems over TCP. Many services are supported natively (for
 	
 ### Zip Provider
 
-Provides a read-only virtualised view of zip files. Currently random read-write access to zip files is not supported although creation of zip files as a whole from VFS directories and files is supported via `ZipFileSystem.CreateZipFile`.
+Provides a virtualised view of zip files. Both readonly and random readwrite support zip files has been supported since version 1.0.0.45. You can also directly create a zip file from an existing directory using `ZipFileSystem.CreateZipFile`.
 
 	zip://[file:///home/tum/Test.zip]/Directory/Textfile.txt
 	
