@@ -65,6 +65,15 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			}
 		}
 
+		protected override INode DoDelete()
+		{
+			var zipFileInfo = ((ZipFileSystem)this.FileSystem).GetZipFileInfo(this.Address.AbsolutePath);
+
+			zipFileInfo.Delete();
+
+			return this;
+		}
+
 		string IZipNode.ZipPath
 		{
 			get

@@ -85,11 +85,17 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 				directories.Add("/");
 
+				var zipEntriesByDirectory = new Dictionary<string, ZLib.ZipEntry>();
+
 				foreach (ZLib.ZipEntry zipEntry in zipFile)
 				{
 					if (zipEntry.IsDirectory)
 					{
-						directories.Add("/" + zipEntry.Name.TrimRight('/'));
+						var s = "/" + zipEntry.Name.TrimRight('/');
+
+						directories.Add(s);
+
+						zipEntriesByDirectory[s] = zipEntry;
 					}
 					else
 					{
@@ -112,10 +118,15 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 				foreach (var directoryPath in directories)
 				{
+					ZLib.ZipEntry zipEntry; 
 					var zipDirectoryInfo = new ZipDirectoryInfo(true);
 
-					zipDirectoryInfo.AbsolutePath = directoryPath;
+					if (zipEntriesByDirectory.TryGetValue(directoryPath, out zipEntry))
+					{
+						zipDirectoryInfo.ZipEntry = zipEntry;
+					}
 
+					zipDirectoryInfo.AbsolutePath = directoryPath;
 					zipDirectoryInfos[zipDirectoryInfo.AbsolutePath] = zipDirectoryInfo;
 				}
 			}
@@ -213,6 +224,11 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 						foreach (var directoryToCreate in setOfDirectoriesToCreate)
 						{
 							zipFile.AddDirectory(directoryToCreate);
+						}
+
+						foreach (var directory in setOfDeletedDirectories)
+						{
+							// SharpZipLib currently doesn't support removing explicit directories
 						}
 					}
 					finally

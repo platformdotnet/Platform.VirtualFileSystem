@@ -85,6 +85,15 @@ namespace Platform.VirtualFileSystem.Tests
 				var testFile = fileSystem.ResolveFile("Test.txt");
 
 				Assert.AreEqual("Hello", testFile.GetContent().GetReader().ReadToEndThenClose());
+
+				testFile.Delete();
+			}
+
+			using (var fileSystem = FileSystemManager.Default.ResolveDirectory("zip://[temp:///TestReadWriteZipFile.zip]/").FileSystem)
+			{
+				var testFile = fileSystem.ResolveFile("Test.txt");
+
+				Assert.IsFalse(testFile.Exists);
 			}
 		}
 
