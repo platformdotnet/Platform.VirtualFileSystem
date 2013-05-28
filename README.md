@@ -1,7 +1,7 @@
 Platform.VirtualFileSystem
 ==========================
 
-[Read the Quickstart wiki](https://github.com/platformdotnet/Platform.VirtualFileSystem/wiki/Quickstart)
+[Read the Platform.VirtualFileSystem wiki](https://github.com/platformdotnet/Platform.VirtualFileSystem/wiki)
 
 
 A virtual file system for C#, .NET and Mono.
@@ -157,7 +157,7 @@ Platform.VirtualFileSystem was written quite a few years ago and has been recent
 
 ## More
 
-[Read the Quickstart wiki](https://github.com/platformdotnet/Platform.VirtualFileSystem/wiki/Quickstart)
+[Read the Platform.VirtualFileSystem wiki](https://github.com/platformdotnet/Platform.VirtualFileSystem/wiki)
 
 ---
 Copyright © 2003-2013 Thong Nguyen (tumtumtum@gmail.com)
