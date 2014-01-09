@@ -21,14 +21,16 @@ namespace Platform.VirtualFileSystem.Tests
 
 			var file = FileSystemManager.Default.ResolveFile("temp:///Temp.txt");
 
-			Assert.AreEqual(1, file.GetContentNames().Count());
+			var x = file.GetContentNames().Count();
+
+			Assert.GreaterOrEqual(1, x);
 
 			using (var writer = file.GetContent("AlternateStream").GetWriter())
 			{
 				writer.Write("AlternateData");
 			}
 
-			Assert.AreEqual(2, file.GetContentNames().Count());
+			Assert.AreEqual(x + 1, file.GetContentNames().Count());
 
 			Assert.IsTrue(file.GetContentNames().Contains("AlternateStream"));
 
