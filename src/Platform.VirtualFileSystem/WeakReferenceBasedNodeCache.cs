@@ -21,13 +21,18 @@ namespace Platform.VirtualFileSystem
 		}
 
 		protected WeakReferenceBasedNodeCache()
-			: this(DefaultCapacity)
+			: this(DefaultCapacity, TimeSpan.FromMinutes(30))
 		{
 		}
 
 		protected WeakReferenceBasedNodeCache(int capacity)
+			: this(capacity, TimeSpan.FromMinutes(30))
+		{	
+		}
+
+		protected WeakReferenceBasedNodeCache(int capacity, TimeSpan timeout)
 		{
-			this.cache = new TimedReferenceDictionary<K, INode>(TimeSpan.FromMinutes(30), capacity, typeof(Dictionary<,>), Int16.MaxValue);
+			this.cache = new WeakReferenceDictionary<K, INode>(typeof(Dictionary<,>), Int16.MaxValue);
 		}
 
 		public virtual IEnumerator GetEnumerator()

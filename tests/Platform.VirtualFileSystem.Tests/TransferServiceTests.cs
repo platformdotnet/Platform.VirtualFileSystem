@@ -19,10 +19,12 @@ namespace Platform.VirtualFileSystem.Tests
 			var transferStates = new List<TransferState>();
 
 			var service = src.GetService<IFileTransferService>(new FileTransferServiceType(des));
-			
-			service.Start();
 
 			service.TransferStateChanged += (sender, arg) => transferStates.Add(arg.CurrentTransferState);
+			service.Progress.ValueChanged += (sender, args) => Console.WriteLine("Progress: {0}%", Convert.ToDouble(args.NewValue) / Convert.ToDouble((service.Progress.MaximumValue)) * 100);
+			
+
+			service.Start();
 
 			service.WaitForAnyTaskState(TaskState.Finished);
 

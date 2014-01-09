@@ -1,3 +1,4 @@
+using System;
 using Platform.Collections;
 
 namespace Platform.VirtualFileSystem

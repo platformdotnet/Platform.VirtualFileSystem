@@ -56,7 +56,7 @@ namespace Platform.VirtualFileSystem
 
 		public FileSystemOptions()
 		{
-			Variables = new NameValueCollection();
+			this.Variables = new NameValueCollection();
 			this.NodeCacheType = typeof(DefaultNodeCache);
 			this.AccessPermissionVerifierTypes = new List<Type>();
 

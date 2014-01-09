@@ -1,3 +1,5 @@
+using System;
+
 namespace Platform.VirtualFileSystem
 {
 	public class PathKeyedNodeCache

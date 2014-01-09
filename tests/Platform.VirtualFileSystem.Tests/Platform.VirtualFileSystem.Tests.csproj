@@ -158,6 +158,7 @@
     <Compile Include="JumpPointTests.cs" />
     <Compile Include="NetworkServerTests.cs" />
     <Compile Include="OverlayedFileSystemTests.cs" />
+    <Compile Include="TestAlternateStreams.cs" />
     <Compile Include="TestsBase.cs" />
     <Compile Include="OperationFilter.cs" />
     <Compile Include="SetUpClass.cs" />

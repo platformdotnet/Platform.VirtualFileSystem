@@ -12,13 +12,6 @@ namespace Platform.VirtualFileSystem
 	public abstract class AbstractFileSystemManager
 		: AbstractResolver, IFileSystemManager
 	{
-		private INodeCache nodeCache;
-
-		protected AbstractFileSystemManager()
-		{
-			nodeCache = new DefaultNodeCache();
-		}
-
 		public virtual void CloseAllFileSystems()
 		{
 		}

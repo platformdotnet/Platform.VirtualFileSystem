@@ -222,7 +222,6 @@ namespace Platform.VirtualFileSystem.Providers
 		protected AbstractFileSystem(INodeAddress rootAddress, IFile parentLayer, FileSystemOptions options)
 		{
 			this.cache = (INodeCache)Activator.CreateInstance(options.NodeCacheType);
-
 			this.parentLayer = parentLayer;
 			this.rootAddress = rootAddress;
 			this.options = options;

@@ -25,6 +25,8 @@ namespace Platform.VirtualFileSystem.Tests
 		{
 			var file = this.WorkingDirectory.ResolveFile("TextFile1.txt");
 
+			this.WorkingDirectory.ResolveDirectory("a").GetFiles(c => c.Address.Extension == "dll");
+
 			var service = (IHashingService)file.GetService(new FileHashingServiceType());
 
 			Assert.AreEqual("bec084d430670e66976d5abc24627a54", service.ComputeHash().TextValue);
