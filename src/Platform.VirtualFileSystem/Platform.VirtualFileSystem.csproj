@@ -136,6 +136,7 @@
     <Compile Include="FileSystemSecuredOperation.cs" />
     <Compile Include="FileSystemSecurityException.cs" />
     <Compile Include="FileSystemSecurityManager.cs" />
+    <Compile Include="FileSystemVariablesCollection.cs" />
     <Compile Include="FileTransferServiceEventArgs.cs" />
     <Compile Include="FileTransferServiceType.cs" />
     <Compile Include="HashingServiceType.cs" />

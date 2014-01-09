@@ -28,7 +28,7 @@ namespace Platform.VirtualFileSystem
 
 		public override INode Resolve(string uri, NodeType nodeType, AddressScope scope)
 		{
-			return Resolve(uri, nodeType, scope, null);
+			return Resolve(uri, nodeType, scope, FileSystemOptions.Default);
 		}
 
 		protected virtual void QueryResolutionFilters()

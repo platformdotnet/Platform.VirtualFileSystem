@@ -1,10 +1,10 @@
+using System.Collections.Generic;
+
 namespace Platform.VirtualFileSystem.Providers.Local
 {
 	public class LocalNodeProvider
 		: AbstractMultiFileSystemNodeProvider
 	{
-		private static readonly string[] supportedUriSchemas = new string[] { "file" };
-
 		public class Configuration
 			: NodeProviderConfiguration
 		{
@@ -14,11 +14,12 @@ namespace Platform.VirtualFileSystem.Providers.Local
 		{
 			get
 			{
-				return supportedUriSchemas;
+				return new[] { "file" };;
 			}
 		}
 
 		private readonly Configuration configuration;
+		private readonly Dictionary<FileSystemOptions, FileSystemOptions> modifiedFileSystemOptions = new Dictionary<FileSystemOptions, FileSystemOptions>();
 
 		public LocalNodeProvider(IFileSystemManager manager)
 			: this(manager, new Configuration())
@@ -48,11 +49,18 @@ namespace Platform.VirtualFileSystem.Providers.Local
 
 		protected override IFileSystem NewFileSystem(INodeAddress rootAddress, FileSystemOptions options, out bool cache)
 		{
-			options.AddNodeProviderConfiguration(this.configuration);
+			FileSystemOptions modifiedOptions;
+
+			if (!modifiedFileSystemOptions.TryGetValue(options, out modifiedOptions))
+			{
+				modifiedOptions = options.CreateWithAdditionalConfig(this.configuration);
+
+				modifiedFileSystemOptions[options] = modifiedOptions;
+			}
 
 			cache = true;
 
-			return new LocalFileSystem(rootAddress, options);
+			return new LocalFileSystem(rootAddress, modifiedOptions);
 		}
 	}
 }

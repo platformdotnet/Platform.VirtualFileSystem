@@ -5,13 +5,11 @@ namespace Platform.VirtualFileSystem.Network
 	public class NetworkNodeProvider
 		: AbstractMultiFileSystemNodeProvider
 	{
-		private readonly string[] c_SupportedSchemas = new string[] { "netvfs" };
-
 		public override string[] SupportedUriSchemas
 		{
 			get
 			{
-				return c_SupportedSchemas;
+				return new [] { "netvfs" };;
 			}
 		}
 

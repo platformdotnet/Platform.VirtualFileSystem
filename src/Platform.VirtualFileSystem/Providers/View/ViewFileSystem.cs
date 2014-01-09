@@ -37,7 +37,7 @@ namespace Platform.VirtualFileSystem.Providers.View
 		}
 
 		public ViewFileSystem(string scheme, IDirectory root)
-			: this(scheme, root, FileSystemOptions.NewDefault())
+			: this(scheme, root, FileSystemOptions.Default)
 		{
 		}
 

@@ -10,6 +10,30 @@ namespace Platform.VirtualFileSystem.Tests
 		: TestsBase
 	{
 		[Test]
+		public void Test_Access_Multiple_LocalFileSystemNodes()
+		{
+			IFileSystem fileSystem = null;
+
+			for (var i = 0; i < 100; i++)
+			{
+				var dir = FileSystemManager.Default.ResolveDirectory("./");
+
+				if (fileSystem == null)
+				{
+					fileSystem = dir.FileSystem;
+				}
+				else
+				{
+					Assert.AreSame(fileSystem, dir.FileSystem);
+				}
+
+				var files = dir.GetFiles();
+
+				files.ForEach(c => Assert.AreSame(fileSystem, c.FileSystem));
+			}
+		}
+
+		[Test]
 		public void Test_Temp_FileSystem()
 		{
 			var file = FileSystemManager.Default.ResolveFile("temp:///Temp.txt");

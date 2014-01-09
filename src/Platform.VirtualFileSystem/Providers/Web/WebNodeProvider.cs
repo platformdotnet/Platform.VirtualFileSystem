@@ -5,18 +5,16 @@ namespace Platform.VirtualFileSystem.Providers.Web
 	public class WebNodeProvider
 		: AbstractMultiFileSystemNodeProvider
 	{
-		private static readonly string[] supportedUriSchemas = new string[]
-		{
-			Uri.UriSchemeHttp,
-			Uri.UriSchemeHttps,
-			Uri.UriSchemeFtp
-		};
-
 		public override string[] SupportedUriSchemas
 		{
-			get	
+			get
 			{
-				return supportedUriSchemas;
+				return new []
+				{
+					Uri.UriSchemeHttp,
+					Uri.UriSchemeHttps,
+					Uri.UriSchemeFtp
+				};
 			}
 		}
 

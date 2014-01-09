@@ -268,7 +268,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		}
 
 		public ZipFileSystem(IFile file)
-			: this(file, FileSystemOptions.NewDefault())
+			: this(file, FileSystemOptions.Default)
 		{
 		}
 
@@ -279,7 +279,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 		public static ZipFileSystem CreateZipFile(IFile zipFile)
 		{
-			return CreateZipFile(zipFile, FileSystemOptions.NewDefault());
+			return CreateZipFile(zipFile, FileSystemOptions.Default);
 		}
 
 		public static ZipFileSystem CreateZipFile(IFile zipFile, FileSystemOptions options)
@@ -289,7 +289,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 		public static ZipFileSystem CreateZipFile(IFile zipFile, IDirectory zipFilecontents)
 		{
-			return CreateZipFile(zipFile, zipFilecontents, FileSystemOptions.NewDefault());
+			return CreateZipFile(zipFile, zipFilecontents, FileSystemOptions.Default);
 		}
 		
 		public static ZipFileSystem CreateZipFile(IFile zipFile, IDirectory zipFileContents, FileSystemOptions options)

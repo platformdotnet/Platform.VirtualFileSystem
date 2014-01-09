@@ -538,7 +538,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 		public virtual IFileSystem CreateView(string scheme)
 		{
-			return CreateView(scheme, (FileSystemOptions)this.FileSystem.Options.Clone());
+			return CreateView(scheme, this.FileSystem.Options);
 		}
 
 		public virtual IFileSystem CreateView(string scheme, FileSystemOptions options)

@@ -5,13 +5,11 @@ namespace Platform.VirtualFileSystem.Providers.Shadow
 	public class ShadowNodeProvider
 		: AbstractNodeProvider
 	{
-		private static readonly string[] supportedUriSchemas = new string[] { "shadow" };
-
 		public override string[] SupportedUriSchemas
 		{
 			get
 			{
-				return supportedUriSchemas;
+				return new [] { "shadow" }; ;
 			}
 		}
 

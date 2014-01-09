@@ -68,14 +68,14 @@ namespace Platform.VirtualFileSystem.Providers.View
 				fileSystemManager,
 				config.Scheme,
 				ResolveRootDirectory(fileSystemManager, config.Uri, config.Create),
-				FileSystemOptions.NewDefault(),
+				FileSystemOptions.Default,
 				config
 			)
 		{
 		}
 
 		public ViewNodeProvider(IFileSystemManager fileSystemManager, string scheme, IDirectory root)
-			: this(fileSystemManager, scheme, root, FileSystemOptions.NewDefault())
+			: this(fileSystemManager, scheme, root, FileSystemOptions.Default)
 		{
 		}
 
@@ -98,27 +98,11 @@ namespace Platform.VirtualFileSystem.Providers.View
 
 			if (config != null)
 			{
-				options.AddNodeProviderConfiguration(config);
+				options = options.CreateWithAdditionalConfig(config);
 			}
 
 			var fileSystem = root.CreateView(scheme, options);
 			
-			/*
-			if (config != null)
-			{				
-				if (config.AccessPermissionVerifiers != null)
-				{
-					foreach (Type type in config.AccessPermissionVerifiers)
-					{
-						viewFileSystem.SecurityManager.CurrentContext.AddPermissionVerifier
-						(
-							(AccessPermissionVerifier)Activator.CreateInstance(type)
-						);
-					}
-				}
-			}
-			*/
-
 			return fileSystem;
 		}
 
@@ -138,7 +122,7 @@ namespace Platform.VirtualFileSystem.Providers.View
 		{
 			get
 			{
-				return this.schemes;
+				return (string[])this.schemes.Clone();
 			}
 		}
 

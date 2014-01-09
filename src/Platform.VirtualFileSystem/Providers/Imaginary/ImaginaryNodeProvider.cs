@@ -28,7 +28,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 		{
 			get
 			{
-				return this.schemas;
+				return (string[])this.schemas.Clone();
 			}
 		}
 		private readonly string[] schemas;

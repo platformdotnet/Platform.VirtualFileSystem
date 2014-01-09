@@ -19,7 +19,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 		private IDirectory root;
 
 		public ImaginaryFileSystem(string scheme)
-			: this(scheme, FileSystemOptions.NewDefault())
+			: this(scheme, FileSystemOptions.Default)
 		{
 			this.root = this.ResolveDirectory("/").Create();
 		}

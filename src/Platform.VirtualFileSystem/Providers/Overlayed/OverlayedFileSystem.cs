@@ -190,7 +190,7 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 		/// </summary>
 		/// <param name="fileSystems">The file systems to initially add to this file system.</param>
 		public OverlayedFileSystem(params IFileSystem[] fileSystems)
-			: this(fileSystems, FileSystemOptions.NewDefault(), new StandardOverlayedNodeSelector())
+			: this(fileSystems, FileSystemOptions.Default, new StandardOverlayedNodeSelector())
 		{
 		}
 

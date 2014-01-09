@@ -3,13 +3,11 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 	public class ZipNodeProvider
 		: AbstractMultiFileSystemNodeProvider
 	{
-		private static readonly string[] supportedUriSchemas = new string[] { "zip" };
-
 		public override string[] SupportedUriSchemas
 		{
 			get
 			{
-				return supportedUriSchemas;
+				return new[] { "zip" };
 			}
 		}
 

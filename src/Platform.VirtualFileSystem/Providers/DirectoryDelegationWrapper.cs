@@ -393,7 +393,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 		public IFileSystem CreateView(string scheme)
 		{
-			return CreateView(scheme, FileSystemOptions.NewDefault());
+			return CreateView(scheme, FileSystemOptions.Default);
 		}
 
 		public IFileSystem CreateView(FileSystemOptions options)
