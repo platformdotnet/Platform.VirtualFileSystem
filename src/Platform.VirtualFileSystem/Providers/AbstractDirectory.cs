@@ -312,9 +312,11 @@ namespace Platform.VirtualFileSystem.Providers
 
 		public static IEnumerable<INode> Walk(IDirectory directory, NodeType nodeType)
 		{
+			var accept = NodeFilters.ByNodeType(nodeType);
+
 			foreach (var childNode in directory.GetChildren())
 			{
-				if (childNode.NodeType.Equals(nodeType))
+				if (accept(childNode))
 				{
 					yield return childNode;
 				}

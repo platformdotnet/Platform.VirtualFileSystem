@@ -34,6 +34,30 @@ namespace Platform.VirtualFileSystem.Tests
 		}
 
 		[Test]
+		public void Test_Create_Directory_Then_Walk()
+		{
+			var dir = FileSystemManager.Default.ResolveDirectory("./Test");
+
+			try
+			{
+				dir.Delete(true);
+			}
+			catch (NodeNotFoundException)
+			{	
+			}
+
+			dir.Create();
+
+			var file = dir.ResolveFile("test.txt");
+			file.Create();
+
+			var walkResult = dir.Walk().ToList();
+
+			Assert.AreEqual(1, walkResult.Count);
+			Assert.AreEqual(file, walkResult[0]);
+		}
+
+		[Test]
 		public void Test_Access_Different_Views()
 		{
 			var fs1 = FileSystemManager.Default.ResolveDirectory("./").FileSystem;
