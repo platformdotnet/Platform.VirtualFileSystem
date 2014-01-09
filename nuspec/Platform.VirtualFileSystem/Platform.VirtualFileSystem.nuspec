@@ -16,7 +16,7 @@
     
     Find out more at: https://github.com/platformdotnet/Platform.VirtualFileSystem
     </description>
-    <releaseNotes>Some changes to support new read/write zip support</releaseNotes>
+    <releaseNotes>$releasenotes$</releaseNotes>
     <copyright>Copyright (c) 2003-2013 Thong Nguyen (tumtumtum@gmail.com)</copyright>
     <tags>Virtual VirtualFileSystem VFS url uri file directory files directories io</tags>
     <dependencies>
