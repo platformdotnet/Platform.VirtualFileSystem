@@ -158,7 +158,7 @@ namespace Platform.VirtualFileSystem.Providers.Local
 		public static LocalNodeAddress Parse(string uri)
 		{
 			Group group;
-			Match match;
+			Match match = null;
 			string root, scheme, query;
 			
 			// Often Parse will be called with the exact same URI reference that was last passed
@@ -169,142 +169,155 @@ namespace Platform.VirtualFileSystem.Providers.Local
 			{
 				match = lastCanParseMatch;
 			}
-			else
+
+			while (true)
 			{
-				match = localFileNameRegEx.Match(uri);
-			}
-
-			if (!match.Success)
-			{
-				throw new MalformedUriException(uri);
-			}
-
-			bool schemeExplicitlyProvided;
-
-			group = match.Groups["scheme"];			
-			
-			if (group.Value == "")
-			{
-				scheme = "file";
-				schemeExplicitlyProvided = false;
-			}
-			else
-			{				
-				scheme = group.Value;
-				schemeExplicitlyProvided = true;
-			}
-
-			group = match.Groups["uncserver"];
-			
-			if (group.Success)
-			{
-				string path;
-				Pair<string, string> result;
-
-				path = match.Groups["path1"].Value;
-
-				result = path.SplitAroundCharFromLeft(1, PredicateUtils.ObjectEqualsAny('\\', '/'));
-
-				root = "//" + group.Value + result.Left.Replace('\\', '/');
-				path = "/" + result.Right;
-												
-				if (path == "")
+				if (match == null)
 				{
-					path = "/";
+					match = localFileNameRegEx.Match(uri);
 				}
 
-				query = match.Groups["query"].Value;
-
-				return new LocalNodeAddress(scheme, root, true, StringUriUtils.NormalizePath(path), query);
-			}
-			else
-			{
-				string path;
-
-				group = match.Groups["root"];
-
-				if (group.Captures.Count > 0)
+				if (!match.Success)
 				{
-					///
-					/// Windows path specification
-					///
-
-					root = group.Value;
-
-					path = match.Groups["path2"].Value;
-
-					if (path.Length == 0)
-					{
-						path = FileSystemManager.SeperatorString;
-					}
-
-					query = match.Groups["query"].Value;
-
-					path = StringUriUtils.NormalizePath(path);
-
-					if (schemeExplicitlyProvided)
-					{
-						///
-						/// Explicitly provided scheme means
-						/// special characters are hexcoded
-						///
-
-						path = TextConversion.FromEscapedHexString(path);
-						query = TextConversion.FromEscapedHexString(query);
-					}
-
-					return new LocalNodeAddress(scheme, root, true, path, query);
+					throw new MalformedUriException(uri);
 				}
-				else if (match.Groups["path3"].Value != "")
+
+				bool schemeExplicitlyProvided;
+
+				group = match.Groups["scheme"];
+
+				if (group.Value == "")
 				{
-					///
-					/// Unix path specification
-					///
-
-					path = match.Groups["path3"].Value;
-					query = match.Groups["query"].Value;
-
-					path = StringUriUtils.NormalizePath(path);
-
-					if (schemeExplicitlyProvided)
-					{
-						///
-						/// Explicitly provided scheme means
-						/// special characters are hexcoded
-						///
-
-						path = TextConversion.FromEscapedHexString(path);
-						query = TextConversion.FromEscapedHexString(query);
-					}
-
-					return new LocalNodeAddress(scheme, "", true, path, query);
+					scheme = "file";
+					schemeExplicitlyProvided = false;
 				}
 				else
 				{
-					///
-					/// Relative path specification
-					///
+					scheme = group.Value;
+					schemeExplicitlyProvided = true;
+				}
 
-					path = match.Groups["path4"].Value;
-					query = match.Groups["query"].Value;
+				group = match.Groups["uncserver"];
 
-					path = StringUriUtils.Combine(Environment.CurrentDirectory, path);
+				if (group.Success)
+				{
+					string path;
+					Pair<string, string> result;
 
-					path = StringUriUtils.NormalizePath(path);
+					path = match.Groups["path1"].Value;
 
-					if (schemeExplicitlyProvided)
+					result = path.SplitAroundCharFromLeft(1, PredicateUtils.ObjectEqualsAny('\\', '/'));
+
+					root = "//" + group.Value + result.Left.Replace('\\', '/');
+					path = "/" + result.Right;
+
+					if (path == "")
 					{
-						///
-						/// Explicitly provided scheme means
-						/// special characters are hexcoded
-						///
-
-						path = TextConversion.FromEscapedHexString(path);
-						query = TextConversion.FromEscapedHexString(query);
+						path = "/";
 					}
 
-					return new LocalNodeAddress(scheme, "", true, path, query);
+					query = match.Groups["query"].Value;
+
+					return new LocalNodeAddress(scheme, root, true, StringUriUtils.NormalizePath(path), query);
 				}
+				else
+				{
+					string path;
+
+					group = match.Groups["root"];
+
+					if (group.Captures.Count > 0)
+					{
+						//
+						// Windows path specification
+						//
+
+						root = group.Value;
+
+						path = match.Groups["path2"].Value;
+
+						if (path.Length == 0)
+						{
+							path = FileSystemManager.SeperatorString;
+						}
+
+						query = match.Groups["query"].Value;
+
+						path = StringUriUtils.NormalizePath(path);
+
+						if (schemeExplicitlyProvided)
+						{
+							//
+							// Explicitly provided scheme means
+							// special characters are hexcoded
+							//
+
+							path = TextConversion.FromEscapedHexString(path);
+							query = TextConversion.FromEscapedHexString(query);
+						}
+
+						return new LocalNodeAddress(scheme, root, true, path, query);
+					}
+					else if (match.Groups["path3"].Value != "")
+					{
+						//
+						// Unix path specification
+						//
+
+						path = match.Groups["path3"].Value;
+						query = match.Groups["query"].Value;
+
+						path = StringUriUtils.NormalizePath(path);
+
+						if (schemeExplicitlyProvided)
+						{
+							//
+							// Explicitly provided scheme means
+							// special characters are hexcoded
+							//
+
+							path = TextConversion.FromEscapedHexString(path);
+							query = TextConversion.FromEscapedHexString(query);
+						}
+
+						return new LocalNodeAddress(scheme, "", true, path, query);
+					}
+					else
+					{
+						//
+						// Relative path specification
+						//
+
+						path = match.Groups["path4"].Value;
+						query = match.Groups["query"].Value;
+
+						path = StringUriUtils.Combine(Environment.CurrentDirectory, path);
+						path = StringUriUtils.NormalizePath(path);
+
+						if (!string.IsNullOrEmpty(query))
+						{
+							query = "?" + query;
+						}
+						else
+						{
+							query = "";
+						}
+
+						if (schemeExplicitlyProvided)
+						{
+							uri = scheme + "://" + path + "query";
+						}
+						else
+						{
+							uri = path + query;
+						}
+
+						match = null;
+
+						continue;
+					}
+				}
+				break;
 			}
 		}
 

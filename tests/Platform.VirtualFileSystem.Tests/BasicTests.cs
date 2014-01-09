@@ -67,6 +67,16 @@ namespace Platform.VirtualFileSystem.Tests
 
 			Assert.AreSame(fs1, FileSystemManager.Default.ResolveFile("./a.txt").FileSystem);
 			Assert.AreSame(fs2, FileSystemManager.Default.ResolveFile("testscheme:///a.txt").FileSystem);
+
+			var file1 = FileSystemManager.Default.ResolveFile("testscheme:///test.txt");
+			var file2 = FileSystemManager.Default.ResolveFile("testscheme:///test2.txt");
+
+			Assert.AreSame(file1.FileSystem, file2.FileSystem);
+
+			file1 = FileSystemManager.Default.ResolveFile("./test.txt");
+			file2 = FileSystemManager.Default.ResolveFile("./test2.txt");
+
+			Assert.AreSame(file1.FileSystem, file2.FileSystem);
 		}
 
 		[Test]
