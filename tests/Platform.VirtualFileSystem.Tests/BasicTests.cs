@@ -34,6 +34,18 @@ namespace Platform.VirtualFileSystem.Tests
 		}
 
 		[Test]
+		public void Test_Access_Different_Views()
+		{
+			var fs1 = FileSystemManager.Default.ResolveDirectory("./").FileSystem;
+			var fs2 = FileSystemManager.Default.ResolveDirectory("./").CreateView("testscheme");
+
+			FileSystemManager.Default.AddFileSystem(fs2);
+
+			Assert.AreSame(fs1, FileSystemManager.Default.ResolveFile("./a.txt").FileSystem);
+			Assert.AreSame(fs2, FileSystemManager.Default.ResolveFile("testscheme:///a.txt").FileSystem);
+		}
+
+		[Test]
 		public void Test_Temp_FileSystem()
 		{
 			var file = FileSystemManager.Default.ResolveFile("temp:///Temp.txt");
