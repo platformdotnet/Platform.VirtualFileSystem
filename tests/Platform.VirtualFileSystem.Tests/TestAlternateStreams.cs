@@ -14,6 +14,11 @@ namespace Platform.VirtualFileSystem.Tests
 		[Test]
 		public void Test_Add_AlternateStream()
 		{
+			if (Environment.OSVersion.Platform == PlatformID.Unix)
+			{
+				return;
+			}
+
 			var file = FileSystemManager.Default.ResolveFile("temp:///Temp.txt");
 
 			Assert.AreEqual(1, file.GetContentNames().Count());
