@@ -8,7 +8,7 @@ namespace Platform.VirtualFileSystem
 	public abstract class WeakReferenceBasedNodeCache<K>
 		: INodeCache
 	{
-		public const int DefaultCapacity = Int16.MaxValue;
+		private const int DefaultCapacity = 1024;
 
 		private readonly ILDictionary<K, INode> cache;
 
@@ -21,18 +21,13 @@ namespace Platform.VirtualFileSystem
 		}
 
 		protected WeakReferenceBasedNodeCache()
-			: this(DefaultCapacity, TimeSpan.FromMinutes(30))
-		{
-		}
-
-		protected WeakReferenceBasedNodeCache(int capacity)
-			: this(capacity, TimeSpan.FromMinutes(30))
+			: this(DefaultCapacity)
 		{	
 		}
 
-		protected WeakReferenceBasedNodeCache(int capacity, TimeSpan timeout)
+		protected WeakReferenceBasedNodeCache(int capacity)
 		{
-			this.cache = new WeakReferenceDictionary<K, INode>(typeof(Dictionary<,>), Int16.MaxValue);
+			this.cache = new WeakReferenceDictionary<K, INode>(typeof(Dictionary<,>), capacity);
 		}
 
 		public virtual IEnumerator GetEnumerator()

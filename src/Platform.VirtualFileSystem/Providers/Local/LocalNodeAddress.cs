@@ -313,11 +313,8 @@ namespace Platform.VirtualFileSystem.Providers.Local
 						}
 
 						match = null;
-
-						continue;
 					}
 				}
-				break;
 			}
 		}
 
