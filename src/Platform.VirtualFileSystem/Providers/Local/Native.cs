@@ -1,11 +1,6 @@
-﻿#region Using directives
-
-using System;
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Text;
-
-#endregion
 
 namespace Platform.VirtualFileSystem.Providers.Local
 {
@@ -13,10 +8,10 @@ namespace Platform.VirtualFileSystem.Providers.Local
 	{
 		public static Native GetInstance()
 		{
-			return instance;
+			return Instance;
 		}
 
-		private static readonly Native instance;
+		private static readonly Native Instance;
 
 		static Native()
 		{
@@ -25,11 +20,11 @@ namespace Platform.VirtualFileSystem.Providers.Local
 				|| Environment.OSVersion.Platform == PlatformID.Win32Windows
 				|| Environment.OSVersion.Platform == PlatformID.WinCE)
 			{
-				instance = new NativeWin32();
+				Instance = new NativeWin32();
 			}
 			else
 			{
-				instance = new NativePosix();
+				Instance = new NativePosix();
 			}
 		}
 

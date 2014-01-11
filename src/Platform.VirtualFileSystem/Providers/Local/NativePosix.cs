@@ -80,8 +80,6 @@ namespace Platform.VirtualFileSystem.Providers.Local
 				return null;
 			}
 
-			UnixFileSystemInfo retval;
-
 			try
 			{
 				if (!obj.IsSymbolicLink)
@@ -89,23 +87,21 @@ namespace Platform.VirtualFileSystem.Providers.Local
 					return null;
 				}
 
-				retval = obj.GetContents();
+				var retval = obj.GetContents();
 
 				if (retval == null)
 				{
 					return null;
 				}
 
-				bool isDirectory, isRegularFile;
-
-				isDirectory = retval.IsDirectory;
+				var isDirectory = retval.IsDirectory;
 
 				if (isDirectory)
 				{
 					return NodeType.Directory;
 				}
 
-				isRegularFile = retval.IsRegularFile;
+				var isRegularFile = retval.IsRegularFile;
 
 				if (isRegularFile)
 				{
@@ -130,15 +126,13 @@ namespace Platform.VirtualFileSystem.Providers.Local
 
 		public override IEnumerable<string> ListExtendedAttributes(string path)
 		{
-			int err;
-			long size;
 			string[] retval;
 
-			size = Syscall.listxattr(path, out retval);
+			var size = Syscall.listxattr(path, out retval);
 
 			if (size == -1)
 			{
-				err = Marshal.GetLastWin32Error();
+				var err = Marshal.GetLastWin32Error();
 
 				if (err == (int)Errno.ERANGE)
 				{
@@ -154,7 +148,7 @@ namespace Platform.VirtualFileSystem.Providers.Local
 				}
 			}
 
-			for (var i =0; i < retval.Length; i++)
+			for (var i = 0; i < retval.Length; i++)
 			{
 				if (retval[i].StartsWith("user."))
 				{
@@ -167,7 +161,6 @@ namespace Platform.VirtualFileSystem.Providers.Local
 
 		public override byte[] GetExtendedAttribute(string path, string attributeName)
 		{
-			int err;
 			long size;
 			var buffer = new byte[256];
 
@@ -185,7 +178,7 @@ namespace Platform.VirtualFileSystem.Providers.Local
 					break;
 				}
 
-				err = Marshal.GetLastWin32Error();
+				var err = Marshal.GetLastWin32Error();
 
 				if (err == (int)Errno.ERANGE)
 				{
