@@ -77,6 +77,11 @@ namespace Platform.Network.ExtensibleServer
 					{
 						return;
 					}
+
+					if (taskState == TaskState.Stopped || taskState == TaskState.Finished)
+					{
+						return;
+					}
 				}
 			}
 

@@ -13,8 +13,8 @@ namespace Platform.VirtualFileSystem.Tests
 	{
 		private INetworkFileSystemServer server;
 
-		[SetUp]
-		public override void SetUp()
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp()
 		{
 			base.SetUp();
 
@@ -24,8 +24,8 @@ namespace Platform.VirtualFileSystem.Tests
 			this.server.WaitForAnyTaskState(c => !(c == TaskState.Starting || c== TaskState.NotStarted));
 		}
 
-		[TearDown]
-		public virtual void TearDown()
+		[TestFixtureTearDown]
+		public void TestFixtureTearDown()
 		{
 			this.server.Stop();
 		}
