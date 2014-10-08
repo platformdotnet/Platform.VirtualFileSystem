@@ -1081,7 +1081,7 @@ namespace Platform.VirtualFileSystem.Network.Text
 		{
 			using (this.AcquireCommandContext())
 			{
-				var attributesList = attributes.Filter(x => !x.Left.EqualsIgnoreCase("length") && !x.Left.EqualsIgnoreCase("exists")).ToList();
+				var attributesList = attributes.Where(x => !x.Left.EqualsIgnoreCase("length") && !x.Left.EqualsIgnoreCase("exists")).ToList();
 
 				SendCommandWithoutResponse(@"setattributes -t={0} ""{1}""", TextNetworkProtocol.GetNodeTypeName(nodeType), uri);
 

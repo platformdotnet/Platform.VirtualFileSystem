@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Platform.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -127,7 +128,7 @@ namespace Platform.VirtualFileSystem
 					return;
 				}
 
-				var localVerifiers = new ArrayList<Pair<object, AccessPermissionVerifier>>(this.verifiers.Filter(x => !x.Left.Equals(id)));
+				var localVerifiers = new ArrayList<Pair<object, AccessPermissionVerifier>>(this.verifiers.Where(x => !x.Left.Equals(id)));
 
 				this.verifiers = localVerifiers;
 			}
