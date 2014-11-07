@@ -24,7 +24,7 @@
     <dependencies>
       <dependency id="Platform.NET" version="1.0.0.154"/>
       <dependency id="Platform.Xml.Serialization" version="1.0.0.154"/>
-      <dependency id="Platform.VirtualFileSystem" version="$version"/>
+      <dependency id="Platform.VirtualFileSystem" version="$version$"/>
       <dependency id="SharpZipLib" />
     </dependencies>
   </metadata>
