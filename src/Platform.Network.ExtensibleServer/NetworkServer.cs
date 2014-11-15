@@ -92,13 +92,8 @@ namespace Platform.Network.ExtensibleServer
 		{
 			if (taskState == TaskState.Stopped || taskState == TaskState.Finished || taskState == TaskState.Paused)
 			{
-				try
-				{
-					tcpListener.Stop();
-				}
-				catch
-				{
-				}
+				ActionUtils.IgnoreExceptions(tcpListener.Stop);
+				ActionUtils.IgnoreExceptions(tcpListener.Server.Close);
 			}
 
 			return base.RequestTaskState(taskState, timeout);
