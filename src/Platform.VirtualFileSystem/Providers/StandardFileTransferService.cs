@@ -540,12 +540,6 @@ namespace Platform.VirtualFileSystem.Providers
 			catch (StopRequestedException)
 			{
 			}
-			catch (Exception e)
-			{
-				Console.Error.WriteLine(e);
-
-				throw;
-			}
 			finally
 			{
 				if (this.TransferState != TransferState.Finished)

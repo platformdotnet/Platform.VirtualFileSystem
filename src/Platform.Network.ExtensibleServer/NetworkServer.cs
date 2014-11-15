@@ -174,7 +174,7 @@ namespace Platform.Network.ExtensibleServer
 					throw;
 				}
 				catch
-				{	
+				{
 				}
 			}
 		}
