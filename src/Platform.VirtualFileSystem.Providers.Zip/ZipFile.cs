@@ -1,8 +1,4 @@
-using System;
 using System.IO;
-using Platform.IO;
-using Platform.VirtualFileSystem.Providers;
-using Platform.VirtualFileSystem.Providers.Zip;
 using ZLib = ICSharpCode.SharpZipLib.Zip;
 
 namespace Platform.VirtualFileSystem.Providers.Zip
@@ -43,7 +39,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			return new ZipFileAttributes(this);
 		}
 
-		ZLib.ZipEntry IZipNode.ZipEntry
+		public virtual ZLib.ZipEntry ZipEntry
 		{
 			get
 			{
@@ -51,7 +47,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			}
 		}
 
-		void IZipNode.SetZipEntry(ZLib.ZipEntry value)
+		public void SetZipEntry(ZLib.ZipEntry value)
 		{
 			this.zipEntry = value;
 			

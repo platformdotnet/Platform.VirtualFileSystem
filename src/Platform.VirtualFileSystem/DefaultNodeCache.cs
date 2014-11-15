@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Platform.Collections;
 
 namespace Platform.VirtualFileSystem
@@ -70,9 +72,9 @@ namespace Platform.VirtualFileSystem
 		{
 			lock (this.SyncLock)
 			{
-				var removeList = new ArrayList<DefaultNodeCacheKey>();
+				var removeList = new List<DefaultNodeCacheKey>();
 
-				foreach (var key in this.Cache.Keys)
+				foreach (var key in this.Cache.Select(c => c.Key))
 				{
 					if (key.NodeAddress.IsDescendentOf(address, AddressScope.DescendentOrSelf))
 					{

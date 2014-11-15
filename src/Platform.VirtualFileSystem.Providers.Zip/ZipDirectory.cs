@@ -6,34 +6,24 @@ using ZLib = ICSharpCode.SharpZipLib.Zip;
 
 namespace Platform.VirtualFileSystem.Providers.Zip
 {
-	public class ZipDirectory
+	public sealed class ZipDirectory
 		: AbstractDirectory, IZipNode
 	{
-		private ZLib.ZipEntry zipEntry;
-
-		ZLib.ZipEntry IZipNode.ZipEntry
-		{
-			get
-			{
-				return this.zipEntry;
-			}
-		}
+		public ZLib.ZipEntry ZipEntry { get; private set; }
 
 		void IZipNode.SetZipEntry(ZLib.ZipEntry value)
 		{
-			this.zipEntry = value;
+			this.ZipEntry = value;
 
 			if (value != null)
 			{
-				this.zipPath = value.Name;
+				this.ZipPath = value.Name;
 			}
 			else
 			{
-				this.zipPath = this.Address.AbsolutePath.Substring(1);
+				this.ZipPath = this.Address.AbsolutePath.Substring(1);
 			}
 		}
-
-		private string zipPath;
 
 		public ZipDirectory(ZipFileSystem fileSystem, LayeredNodeAddress address, ZLib.ZipEntry zipEntry)
 			: base(fileSystem, address)
@@ -41,13 +31,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			((IZipNode)(this)).SetZipEntry(zipEntry);
 		}
 
-		string IZipNode.ZipPath
-		{
-			get
-			{
-				return this.zipPath;
-			}
-		}
+		public string ZipPath { get; private set; }
 
 		protected override INode DoDelete()
 		{
@@ -129,10 +113,10 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 			foreach (ZLib.ZipEntry zipEntry in fileSystem.zipFile)
 			{
-				if (zipEntry.Name.StartsWith(this.zipPath)  /* Is descendent */
-					&& zipEntry.Name.Length != this.zipPath.Length /* Not self */)
+				if (zipEntry.Name.StartsWith(this.ZipPath)  /* Is descendent */
+					&& zipEntry.Name.Length != this.ZipPath.Length /* Not self */)
 				{
-					var x = zipEntry.Name.IndexOf('/', this.zipPath.Length);
+					var x = zipEntry.Name.IndexOf('/', this.ZipPath.Length);
 
 					if (x == -1 /* Is direct descendent File */)
 					{

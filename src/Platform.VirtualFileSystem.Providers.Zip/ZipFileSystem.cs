@@ -244,8 +244,8 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 			}
 		}
 
-		public override void Dispose()
-		{
+		protected override void Dispose(bool disposing)
+		{	
 			lock (this)
 			{
 				this.Flush(false);
@@ -262,9 +262,11 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 					{
 					}
 				}
+
+				((IDisposable)this.zipFile).Dispose();
 			}
 
-			base.Dispose();
+			base.Dispose(disposing);
 		}
 
 		public ZipFileSystem(IFile file)

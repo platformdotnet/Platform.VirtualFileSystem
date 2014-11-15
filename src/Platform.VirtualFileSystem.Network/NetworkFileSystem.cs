@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Platform.Collections;
 using Platform.VirtualFileSystem.Network.Client;
 using Platform.VirtualFileSystem.Providers;
@@ -168,13 +169,13 @@ namespace Platform.VirtualFileSystem.Network
 				cache = this.freeClients;
 			}
 
-			lock (cache.SyncLock)
+			lock (cache)
 			{
 				while (true)
 				{
 					if (cache.Count > 0)
 					{
-						foreach (var client in cache.Values)
+						foreach (var client in cache.Select(c => c.Value))
 						{
 							if (client.Connected)
 							{
@@ -219,7 +220,7 @@ namespace Platform.VirtualFileSystem.Network
 
 			if (!client.Connected)
 			{				
-				lock (cache.SyncLock)
+				lock (cache)
 				{
 					cache.Clear();
 				}
@@ -227,7 +228,7 @@ namespace Platform.VirtualFileSystem.Network
 				return;
 			}
 
-			lock (cache.SyncLock)
+			lock (cache)
 			{
 				if (client.Connected)
 				{

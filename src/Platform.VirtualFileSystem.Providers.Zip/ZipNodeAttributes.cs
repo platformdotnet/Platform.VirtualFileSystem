@@ -41,7 +41,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			get
 			{
-				lock (this)
+				lock (this.SyncLock)
 				{
 					VerifyZipEntry();
 
@@ -57,7 +57,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			get
 			{
-				lock (this)
+				lock (this.SyncLock)
 				{
 					VerifyZipEntry();
 
@@ -73,7 +73,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			get
 			{
-				lock (this)
+				lock (this.SyncLock)
 				{
 					VerifyZipEntry();
 

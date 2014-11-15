@@ -10,9 +10,9 @@ namespace Platform.VirtualFileSystem
 	{
 		private const int DefaultCapacity = 1024;
 
-		private readonly ILDictionary<K, INode> cache;
+		private readonly IDictionary<K, INode> cache;
 
-		protected ILDictionary<K, INode> Cache
+		protected IDictionary<K, INode> Cache
 		{
 			get
 			{
@@ -115,15 +115,12 @@ namespace Platform.VirtualFileSystem
 
 		public virtual object SyncLock
 		{
-			get
-			{
-				return this.cache.SyncLock;
-			}
+			get { return this.cache; }
 		}
 
 		public virtual IAutoLock GetAutoLock()
 		{
-			return new AutoLock(this.cache.SyncLock);
+			return new AutoLock(this.cache);
 		}
 
 		public virtual IAutoLock AquireAutoLock()

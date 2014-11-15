@@ -478,7 +478,7 @@ namespace Platform.VirtualFileSystem.Providers.Local
             }
         }
 
-	    public override void Dispose()
+	    protected override void Dispose(bool disposing)
         {
             try
             {

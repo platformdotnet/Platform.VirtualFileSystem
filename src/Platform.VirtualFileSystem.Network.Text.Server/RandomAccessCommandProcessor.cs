@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Platform.Collections;
 using Platform.Utilities;
 using Platform.Network.ExtensibleServer;
@@ -80,7 +82,7 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 
 			try
 			{
-				ILList<object> list = new ArrayList<object>();
+				IList<object> list = new List<object>();
 
 				Connection.RunLevel = new RandomAccessRunLevel(file, stream);
 

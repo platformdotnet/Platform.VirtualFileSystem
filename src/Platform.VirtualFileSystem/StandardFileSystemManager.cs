@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -11,7 +12,7 @@ namespace Platform.VirtualFileSystem
 	{
 		private static readonly Regex fileSystemProviderRegex = new Regex(@"Platform\.VirtualFileSystem\.Providers\.([^\.]+)\.dll");
 
-		private readonly ILList<INodeProvider> providers;
+		private readonly IList<INodeProvider> providers;
 
 		public override void CloseAllFileSystems()
 		{
@@ -22,7 +23,6 @@ namespace Platform.VirtualFileSystem
 					((Providers.View.ViewNodeProvider) provider).ViewFileSystem.Close();
 				}
 			}
-
 		}
 
 		public StandardFileSystemManager()
@@ -32,7 +32,7 @@ namespace Platform.VirtualFileSystem
 
 		public StandardFileSystemManager(bool scanAssembliesForProviders)
 		{
-			providers = new ArrayList<INodeProvider>();	
+			providers = new List<INodeProvider>();	
 		
 			if (scanAssembliesForProviders)
 			{

@@ -121,6 +121,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationSectionHandler.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ZipDirectoryInfo.cs" />
     <Compile Include="ZipFileInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

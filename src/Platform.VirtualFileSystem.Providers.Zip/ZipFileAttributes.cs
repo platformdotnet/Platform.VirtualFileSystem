@@ -3,6 +3,8 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 	internal class ZipFileAttributes
 		: ZipNodeAttributes
 	{
+		private readonly object lockObject = new object();
+
 		public ZipFileAttributes(IZipNode zipNode)
 			: base(zipNode)
 		{			
@@ -13,7 +15,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			get
 			{
-				lock (this)
+				lock (lockObject)
 				{
 					VerifyZipEntry();
 

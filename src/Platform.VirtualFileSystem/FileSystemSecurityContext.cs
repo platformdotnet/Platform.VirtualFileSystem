@@ -50,7 +50,7 @@ namespace Platform.VirtualFileSystem
 			this.inherit = inherit;
 			this.previousContext = previousContext;
 
-			this.verifiers = new ArrayList<Pair<object, AccessPermissionVerifier>>();
+			this.verifiers = new List<Pair<object, AccessPermissionVerifier>>();
 		}
 
 		public override void Dispose()
@@ -68,6 +68,7 @@ namespace Platform.VirtualFileSystem
 
 			OnDisposed(EventArgs.Empty);
 		}
+		
 		private IList<Pair<object, AccessPermissionVerifier>> verifiers;
 
 		internal virtual int VerifiersCount
@@ -99,7 +100,7 @@ namespace Platform.VirtualFileSystem
 
 		public virtual void AddPermissionVerifier(object id, AccessPermissionVerifier verifier)
 		{
-			IList<Pair<object, AccessPermissionVerifier>> verifiers;
+			IList<Pair<object, AccessPermissionVerifier>> localVerifiers;
 
 			lock (this.addRemoveLock)
 			{
@@ -110,12 +111,12 @@ namespace Platform.VirtualFileSystem
 
 				lock (this.verifiers)
 				{
-					verifiers = new ArrayList<Pair<object, AccessPermissionVerifier>>(this.verifiers);
+					localVerifiers = new List<Pair<object, AccessPermissionVerifier>>(this.verifiers);
 				}
 
-				verifiers.Add(new Pair<object, AccessPermissionVerifier>(id, verifier));
+				localVerifiers.Add(new Pair<object, AccessPermissionVerifier>(id, verifier));
 
-				this.verifiers = verifiers;
+				this.verifiers = localVerifiers;
 			}
 		}
 
@@ -128,7 +129,7 @@ namespace Platform.VirtualFileSystem
 					return;
 				}
 
-				var localVerifiers = new ArrayList<Pair<object, AccessPermissionVerifier>>(this.verifiers.Where(x => !x.Left.Equals(id)));
+				var localVerifiers = new List<Pair<object, AccessPermissionVerifier>>(this.verifiers.Where(x => !x.Left.Equals(id)));
 
 				this.verifiers = localVerifiers;
 			}

@@ -10,7 +10,7 @@ namespace Platform.VirtualFileSystem.Network
 		: AbstractFileSystemManager
 	{
 		private readonly IPAddress ipAddress;
-		private readonly ILDictionary<string, IFileSystem> fileSystemCache;
+		private readonly IDictionary<string, IFileSystem> fileSystemCache;
 
 		public NetworkFileSystemManager(IPAddress ipAddress)
 		{
@@ -25,7 +25,7 @@ namespace Platform.VirtualFileSystem.Network
 
 			var address = LayeredNodeAddress.Parse(uri);
 						
-			lock (this.fileSystemCache.SyncLock)
+			lock (this.fileSystemCache)
 			{
 				success = this.fileSystemCache.TryGetValue(address.RootUri, out fileSystem);
 			}
@@ -36,7 +36,7 @@ namespace Platform.VirtualFileSystem.Network
 
 				fileSystem = FileSystemManager.GetManager().ResolveDirectory(networkUri).FileSystem;
 
-				lock (this.fileSystemCache.SyncLock)
+				lock (this.fileSystemCache)
 				{
 					this.fileSystemCache.Add(address.RootUri, fileSystem);
 				}

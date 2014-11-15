@@ -255,7 +255,7 @@ namespace Platform.VirtualFileSystem.Providers
 				{
 					if (this.nodeContents == null)
 					{
-						var alternateContents = new LinearHashDictionary<string, INodeContent>();
+						var alternateContents = new Dictionary<string, INodeContent>();
 
 						System.Threading.Thread.MemoryBarrier();
 
@@ -264,7 +264,7 @@ namespace Platform.VirtualFileSystem.Providers
 				}
 			}
 
-			lock (this.nodeContents.SyncLock)
+			lock (this.nodeContents)
 			{
 				INodeContent retval;
 
@@ -282,7 +282,7 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		private volatile ILDictionary<string, INodeContent> nodeContents;
+		private volatile IDictionary<string, INodeContent> nodeContents;
 
 		protected virtual INodeContent CreateContent(string contentName)
 		{

@@ -16,10 +16,8 @@ namespace Platform.VirtualFileSystem.Providers
 	{
 		#region Fields
 
-		private IFile parentLayer;
 		private readonly INodeAddress rootAddress;
 		private readonly INodeCache cache;
-		private readonly FileSystemOptions options;
 		private volatile IDirectory rootDirectory;
 		private readonly AutoLock autoLock;
 
@@ -108,13 +106,7 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		protected virtual IFile ParentLayer
-		{
-			get
-			{
-				return this.parentLayer;
-			}
-		}
+		protected IFile ParentLayer { get; private set; }
 
 		protected virtual INodeAddress RootAddress
 		{
@@ -132,13 +124,7 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		public virtual FileSystemOptions Options
-		{
-			get
-			{
-				return this.options;
-			}
-		}
+		public FileSystemOptions Options { get; private set; }
 
 		public virtual IDirectory RootDirectory
 		{
@@ -222,9 +208,9 @@ namespace Platform.VirtualFileSystem.Providers
 		protected AbstractFileSystem(INodeAddress rootAddress, IFile parentLayer, FileSystemOptions options)
 		{
 			this.cache = (INodeCache)Activator.CreateInstance(options.NodeCacheType);
-			this.parentLayer = parentLayer;
+			this.ParentLayer = parentLayer;
 			this.rootAddress = rootAddress;
-			this.options = options;
+			this.Options = options;
 			this.autoLock = new AutoLock(this);
 
 			InitializeConstruction(rootAddress, parentLayer, options);
@@ -252,11 +238,9 @@ namespace Platform.VirtualFileSystem.Providers
 		{
 			this.SecurityManager = new FileSystemSecurityManager();
 
-			foreach (Type type in this.options.AccessPermissionVerifierTypes)
+			foreach (var type in this.Options.AccessPermissionVerifierTypes)
 			{
-				AccessPermissionVerifier verifier;
-
-				verifier = (AccessPermissionVerifier)this.Extenders.ConstructExtender(type);
+				var verifier = (AccessPermissionVerifier)this.Extenders.ConstructExtender(type);
 
 				this.SecurityManager.GlobalContext.AddPermissionVerifier(verifier);
 			}
@@ -271,7 +255,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 		protected virtual void SetParentLayer(IFile file)
 		{
-			this.parentLayer = file;
+			this.ParentLayer = file;
 		}
 
 		public virtual INodeCache NodeCache
@@ -595,9 +579,15 @@ namespace Platform.VirtualFileSystem.Providers
 			return true;
 		}
 
-        public virtual void Dispose()
+        public void Dispose()
         {
-        		Close();
+	        this.Dispose(true);
+	        GC.SuppressFinalize(this);
         }
+
+		protected virtual void Dispose(bool disposed)
+		{
+			Close();
+		}
     }
 }

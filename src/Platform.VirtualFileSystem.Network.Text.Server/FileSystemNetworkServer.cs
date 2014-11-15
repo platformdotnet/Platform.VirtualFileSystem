@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using Platform;
 using Platform.Utilities;
@@ -13,11 +14,11 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	public class FileSystemNetworkServer
 		: CommandNetworkServer, INetworkFileSystemServer
 	{
-		public virtual ILDictionary<string, Ticket> Tickets { get; private set; }
+		public virtual IDictionary<string, Ticket> Tickets { get; private set; }
 
 		public virtual void AddTicket(Ticket ticket)
 		{
-			lock (this.Tickets.SyncLock)
+			lock (this.Tickets)
 			{
 				this.Tickets[ticket.TicketId] = ticket;
 			}
@@ -25,7 +26,7 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 
 		public virtual void RemoveTicket(string ticketId)
 		{
-			lock (this.Tickets.SyncLock)
+			lock (this.Tickets)
 			{
 				this.Tickets.Remove(ticketId);
 			}
@@ -33,7 +34,7 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 
 		public virtual bool TryGetTicket(string ticketId, out Ticket ticket)
 		{
-			lock (this.Tickets.SyncLock)
+			lock (this.Tickets)
 			{
 				if (this.Tickets.TryGetValue(ticketId, out ticket))
 				{
@@ -49,10 +50,9 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 		private void Initialize()
 		{
 			this.Tickets = new TimedReferenceDictionary<string, Ticket>
-				(
-					TimeSpan.FromMinutes(15),
-					typeof(LinearHashDictionary<,>)
-				);
+			(
+				TimeSpan.FromMinutes(15)
+			);
 		}
 
 		public FileSystemNetworkServer(IFileSystemManager fileSystemManager, int port)
