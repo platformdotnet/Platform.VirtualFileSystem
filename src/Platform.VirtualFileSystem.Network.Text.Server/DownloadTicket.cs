@@ -47,7 +47,7 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 			
 			var des = connection.WriteStream;
 
-			var pump = new StreamPump(src, des);
+			var pump = new StreamCopier(src, des);
         
 			pump.Run();
 

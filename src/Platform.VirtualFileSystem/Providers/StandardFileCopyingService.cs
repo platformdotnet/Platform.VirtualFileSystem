@@ -5,7 +5,7 @@ using Platform.IO;
 namespace Platform.VirtualFileSystem.Providers
 {
 	public class StandardFileCopyingService
-		: StreamPump, INodeCopyingService, INodeMovingService, INodeDeletingService, StreamPump.IStreamProvider
+		: StreamCopier, INodeCopyingService, INodeMovingService, INodeDeletingService, StreamCopier.IStreamProvider
 	{
 		public new static readonly int DefaultBufferSize = 32 * 1024;
 
@@ -34,7 +34,7 @@ namespace Platform.VirtualFileSystem.Providers
 			InitializePump();
 		}
 
-		Stream StreamPump.IStreamProvider.GetSourceStream()
+		Stream StreamCopier.IStreamProvider.GetSourceStream()
 		{
 			if (ServiceType.BufferSize == 0)
 			{
@@ -46,7 +46,7 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		Stream StreamPump.IStreamProvider.GetDestinationStream()
+		Stream StreamCopier.IStreamProvider.GetDestinationStream()
 		{
 			if (this.ServiceType.BufferSize == 0)
 			{
@@ -58,12 +58,12 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		long StreamPump.IStreamProvider.GetSourceLength()
+		long StreamCopier.IStreamProvider.GetSourceLength()
 		{
 			return this.sourceFile.Length ?? 0;
 		}
 
-		long StreamPump.IStreamProvider.GetDestinationLength()
+		long StreamCopier.IStreamProvider.GetDestinationLength()
 		{
 			return ((IFile)this.ServiceType.Destination).Length ?? 0;
 		}

@@ -56,7 +56,7 @@ namespace Platform.VirtualFileSystem
 
 				if (this.configurationCache == null)
 				{
-					this.configurationCache = FunctionUtils.VolatileAssign(delegate
+					this.configurationCache = FuncUtils.VolatileAssign(delegate
 							{
 								var searchType = this.Type;
 

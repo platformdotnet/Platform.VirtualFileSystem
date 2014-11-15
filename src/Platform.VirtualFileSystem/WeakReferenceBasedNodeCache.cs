@@ -27,7 +27,7 @@ namespace Platform.VirtualFileSystem
 
 		protected WeakReferenceBasedNodeCache(int capacity)
 		{
-			this.cache = new WeakReferenceDictionary<K, INode>(typeof(Dictionary<,>), capacity);
+			this.cache = new WeakReferenceDictionary<K, INode>(capacity);
 		}
 
 		public virtual IEnumerator GetEnumerator()

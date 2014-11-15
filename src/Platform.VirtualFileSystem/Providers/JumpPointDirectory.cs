@@ -17,7 +17,7 @@ namespace Platform.VirtualFileSystem.Providers
 		private readonly INodeAddress address;
 
 		public JumpPointDirectory(IDirectory dir, INodeAddress address)
-			: base(dir, new JumpPointResolver(dir), Converters<INode, INode>.NoConvert)
+			: base(dir, new JumpPointResolver(dir), ConverterUtils<INode, INode>.NoConvert)
 		{
 			this.address = address;
 		}

@@ -63,7 +63,7 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 			{
 				lock (this.SyncLock)
 				{
-					this.content = FunctionUtils.VolatileAssign(() => new OverlayedNodeContent(this));
+					this.content = FuncUtils.VolatileAssign(() => new OverlayedNodeContent(this));
 				}
 			}
 

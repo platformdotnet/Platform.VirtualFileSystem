@@ -11,7 +11,7 @@ namespace Platform.Network.ExtensibleServer
 		private TcpListener tcpListener;
 		private readonly IPEndPoint localEndPoint;
 
-		public virtual int ConnectionCount
+		public int ConnectionCount
 		{
 			get
 			{

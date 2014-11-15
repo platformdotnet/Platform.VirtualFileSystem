@@ -160,10 +160,10 @@ namespace Platform.VirtualFileSystem.Providers
 				{
 					lock (this)
 					{
-						if (!this.pumpRegistered && this.service.pump != null)
+						if (!this.pumpRegistered && this.service.copier != null)
 						{
-							this.service.pump.Progress.ValueChanged += PumpProgress_ValueChanged;
-							this.service.pump.Progress.MajorChange += new EventHandler(PumpProgress_MajorChange);
+							this.service.copier.Progress.ValueChanged += PumpProgress_ValueChanged;
+							this.service.copier.Progress.MajorChange += new EventHandler(PumpProgress_MajorChange);
 
 							this.pumpRegistered = true;
 						}
@@ -234,14 +234,14 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		private StreamPump pump;
+		private StreamCopier copier;
 		private long bytesTransferred = 0L;
 
 		private long GetBytesTransferred()
 		{
-			if (this.pump != null)
+			if (this.copier != null)
 			{
-				return Convert.ToInt64(this.pump.Progress.CurrentValue) + this.offset;
+				return Convert.ToInt64(this.copier.Progress.CurrentValue) + this.offset;
 			}
 			else
 			{
@@ -251,9 +251,9 @@ namespace Platform.VirtualFileSystem.Providers
 
 		private long GetBytesToTransfer()
 		{
-			if (this.pump != null)
+			if (this.copier != null)
 			{
-				return Convert.ToInt64(this.pump.Progress.MaximumValue) + this.offset;
+				return Convert.ToInt64(this.copier.Progress.MaximumValue) + this.offset;
 			}
 			else
 			{
@@ -509,11 +509,11 @@ namespace Platform.VirtualFileSystem.Providers
 						Stream sourcePartialStream = new PartialStream(sourceStream, destinationTempStream.Length);
 						Stream destinationTempPartialStream = new PartialStream(destinationTempStream, destinationTempStream.Length);
 
-						this.pump =
-							new StreamPump(new BufferedStream(sourcePartialStream, this.serviceType.BufferSize), destinationTempPartialStream,
+						this.copier =
+							new StreamCopier(new BufferedStream(sourcePartialStream, this.serviceType.BufferSize), destinationTempPartialStream,
 							               false, false, this.serviceType.ChunkSize);
 
-						this.pump.TaskStateChanged += delegate(object sender, TaskEventArgs eventArgs)
+						this.copier.TaskStateChanged += delegate(object sender, TaskEventArgs eventArgs)
 						                           {
 						                           	if (eventArgs.TaskState == TaskState.Running
 						                           	    || eventArgs.TaskState == TaskState.Paused
@@ -526,9 +526,9 @@ namespace Platform.VirtualFileSystem.Providers
 						SetTransferState(TransferState.Transferring);
 						ProcessTaskStateRequest();
 
-						this.pump.Run();
+						this.copier.Run();
 
-						if (this.pump.TaskState == TaskState.Stopped)
+						if (this.copier.TaskState == TaskState.Stopped)
 						{
 							throw new StopRequestedException();
 						}
@@ -565,10 +565,10 @@ namespace Platform.VirtualFileSystem.Providers
 
 		public override bool RequestTaskState(TaskState taskState, TimeSpan timeout)
 		{
-			if (this.pump != null && this.pump.TaskState != TaskState.NotStarted
-				&& this.pump.TaskState != TaskState.Finished && this.pump.TaskState != TaskState.Stopped)
+			if (this.copier != null && this.copier.TaskState != TaskState.NotStarted
+				&& this.copier.TaskState != TaskState.Finished && this.copier.TaskState != TaskState.Stopped)
 			{
-				this.pump.RequestTaskState(taskState, timeout);
+				this.copier.RequestTaskState(taskState, timeout);
 			}
 			
 			return base.RequestTaskState(taskState, timeout);

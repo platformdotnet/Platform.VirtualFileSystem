@@ -202,7 +202,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 		public virtual IEnumerable<INode> Walk()
 		{
-			if (this.NodeAdapter == Converters<INode, INode>.NoConvert)
+			if (this.NodeAdapter == ConverterUtils<INode, INode>.NoConvert)
 			{
 				return this.Wrappee.Walk();
 			}
@@ -227,7 +227,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 		public virtual IEnumerable<INode> Walk(NodeType nodeType)
 		{
-			if (NodeAdapter == Converters<INode, INode>.NoConvert)
+			if (NodeAdapter == ConverterUtils<INode, INode>.NoConvert)
 			{
 				return this.Wrappee.Walk(nodeType);
 			}

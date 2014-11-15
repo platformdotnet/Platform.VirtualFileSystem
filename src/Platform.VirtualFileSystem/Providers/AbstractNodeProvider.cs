@@ -38,7 +38,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 		public virtual bool SupportsUri(string uri)
 		{
-			var schema = uri.SplitAroundFirstStringFromLeft("://").Left;
+			var schema = uri.SplitOnFirst("://").Left;
 
 			return Array.Exists<string>
 			(

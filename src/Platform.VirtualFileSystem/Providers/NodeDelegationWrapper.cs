@@ -86,7 +86,7 @@ namespace Platform.VirtualFileSystem.Providers
 		protected virtual INodeResolver NodeResolver { get; set; }
 
 		protected NodeDelegationWrapper(INode innerNode)
-			: this(innerNode, null, Converters<INode, INode>.NoConvert)
+			: this(innerNode, null, ConverterUtils<INode, INode>.NoConvert)
 		{
 		}
 

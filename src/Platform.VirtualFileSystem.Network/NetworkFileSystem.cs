@@ -252,21 +252,10 @@ namespace Platform.VirtualFileSystem.Network
 		internal protected NetworkFileSystem(INodeAddress rootAddress, FileSystemOptions options)
 			: base(rootAddress, null, options)
 		{
-			var comparer = new FunctionBasedEqualityComparer<INetworkFileSystemClient>((client1, client2) => ReferenceEquals(client1, client2));
+			var comparer = ObjectReferenceIdentityEqualityComparer<INetworkFileSystemClient>.Default;
 
-			this.freeClients = new TimedReferenceDictionary<INetworkFileSystemClient, INetworkFileSystemClient>
-			(
-				TimeSpan.FromMinutes(25),
-				typeof(Dictionary<,>),
-				comparer
-			);
-
-			this.freeClientsForBinaryAccess = new TimedReferenceDictionary<INetworkFileSystemClient, INetworkFileSystemClient>
-			(
-				TimeSpan.FromMinutes(25),
-				typeof(Dictionary<,>),
-				comparer
-			);
+			this.freeClients = new TimedReferenceDictionary<INetworkFileSystemClient, INetworkFileSystemClient>(TimeSpan.FromMinutes(25), comparer);
+			this.freeClientsForBinaryAccess = new TimedReferenceDictionary<INetworkFileSystemClient, INetworkFileSystemClient>(TimeSpan.FromMinutes(25), comparer);
 
 			lock (staticFileSystemsCache)
 			{

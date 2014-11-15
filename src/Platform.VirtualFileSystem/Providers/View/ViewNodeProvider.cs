@@ -128,7 +128,7 @@ namespace Platform.VirtualFileSystem.Providers.View
 
 		public override INode Find(INodeResolver resolver, string uri, NodeType nodeType, FileSystemOptions options)
 		{
-			var result = uri.SplitAroundFirstStringFromLeft("://");
+			var result = uri.SplitOnFirst("://");
 
 			if (result.Left != this.viewFileSystem.RootDirectory.Address.Scheme)
 			{

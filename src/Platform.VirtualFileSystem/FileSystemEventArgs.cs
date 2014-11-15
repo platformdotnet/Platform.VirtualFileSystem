@@ -18,23 +18,16 @@ namespace Platform.VirtualFileSystem
 	{
 		public virtual FileSystemActivity Activity { get; private set; }
 
+		public string Path { get; set; }
+		public string Name { get; set; }
 		public NodeType NodeType { get; set; }
-
-		public virtual string Path { get; set; }
-
-		public virtual string Name { get; set; }
-
+		
 		public FileSystemActivityEventArgs(FileSystemActivity activity, NodeType nodeType, string name, string path)
 		{
 			this.Activity = activity;
 			this.Name = name;
 			this.Path = path;
 			this.NodeType = nodeType;
-		}
-
-		public override string ToString()
-		{
-			return String.Format("{0} {1}", Activity, Path);
 		}
 	}
 }

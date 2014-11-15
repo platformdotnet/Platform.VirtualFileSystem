@@ -23,7 +23,7 @@ namespace Platform.VirtualFileSystem.Tests
 
 			var x = file.GetContentNames().Count();
 
-			Assert.GreaterOrEqual(1, x);
+			Assert.GreaterOrEqual(x, 1);
 
 			using (var writer = file.GetContent("AlternateStream").GetWriter())
 			{

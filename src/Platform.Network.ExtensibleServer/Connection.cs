@@ -7,7 +7,7 @@ namespace Platform.Network.ExtensibleServer
 	public class ConnectionEventArgs
 		: EventArgs
 	{
-		public virtual RunLevel RunLevel
+		public RunLevel RunLevel
 		{
 			get;
 			set;

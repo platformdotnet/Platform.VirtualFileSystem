@@ -29,7 +29,7 @@ namespace Platform.VirtualFileSystem.Providers.View
 				{
 					lock (this.SyncLock)
 					{
-						this.parentDirectory = FunctionUtils.VolatileAssign(() => this.ResolveDirectory(".."));
+						this.parentDirectory = FuncUtils.VolatileAssign(() => this.ResolveDirectory(".."));
 					}
 				}
 

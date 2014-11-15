@@ -61,7 +61,7 @@ namespace Platform.VirtualFileSystem.Providers.Imaginary
 		{
 			Pair<string, string> result;
 
-			result = uri.SplitAroundFirstStringFromLeft("://");
+			result = uri.SplitOnFirst("://");
 
 			if (result.Left != this.imaginaryFileSystem.RootDirectory.Address.Scheme)
 			{

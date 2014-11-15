@@ -193,7 +193,7 @@ namespace Platform.VirtualFileSystem.Providers
 			}
 		}
 
-		public DirectoryConsulatationWrapper(IDirectory innerDirectory)
+		protected DirectoryConsulatationWrapper(IDirectory innerDirectory)
 			: base(innerDirectory)
 		{
 		}

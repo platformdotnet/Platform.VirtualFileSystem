@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Platform.VirtualFileSystem
 {
@@ -9,9 +7,9 @@ namespace Platform.VirtualFileSystem
 	public class JumpPointEventArgs
 		: EventArgs
 	{
-		public virtual string Name { get; set; }
-		public virtual INode Target { get; set; }
-		public virtual INode JumpPointNode { get; set; }
+		public string Name { get; set; }
+		public INode Target { get; set; }
+		public INode JumpPointNode { get; set; }
 
 		public JumpPointEventArgs(string name, INode target, INode jumpPointNode)
 		{

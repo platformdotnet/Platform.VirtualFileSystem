@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using Platform.VirtualFileSystem.Providers.Imaginary;
 
 namespace Platform.VirtualFileSystem.Providers.MyComputer
@@ -35,7 +36,7 @@ namespace Platform.VirtualFileSystem.Providers.MyComputer
 
 				name = name.Replace(Path.DirectorySeparatorChar, '_');
 
-				name = name.Filter(Local.LocalNodeAddress.IsValidFileNameChar);
+				name = String.Concat(name.Where(Local.LocalNodeAddress.IsValidFileNameChar));
 
 				if (acceptNode(node))
 				{

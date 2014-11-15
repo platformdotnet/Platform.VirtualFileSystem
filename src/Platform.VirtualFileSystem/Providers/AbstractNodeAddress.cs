@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
-using System.Collections;
 using Platform.Text;
 
 namespace Platform.VirtualFileSystem.Providers
@@ -234,7 +232,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 				if (this.depth == -1)
 				{
-					this.depth = FunctionUtils.VolatileAssign(() => this.absolutePath.CountChars(c => c == FileSystemManager.SeperatorChar));
+					this.depth = FuncUtils.VolatileAssign(() => this.absolutePath.CountChars(c => c == FileSystemManager.SeperatorChar));
 				}
 
 				return this.depth;

@@ -15,7 +15,7 @@ namespace Platform.VirtualFileSystem.Network
 		public NetworkFileSystemManager(IPAddress ipAddress)
 		{
 			this.ipAddress = ipAddress;
-			this.fileSystemCache = new TimedReferenceDictionary<string, IFileSystem>(TimeSpan.FromMinutes(5), typeof(Dictionary<,>));
+			this.fileSystemCache = new TimedReferenceDictionary<string, IFileSystem>(TimeSpan.FromMinutes(5));
 		}
 
 		public override INode Resolve(string uri, NodeType nodeType, AddressScope scope, FileSystemOptions options)

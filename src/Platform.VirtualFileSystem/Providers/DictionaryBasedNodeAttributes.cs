@@ -359,7 +359,7 @@ namespace Platform.VirtualFileSystem.Providers
 			{
 				lock (this.SyncLock)
 				{
-					this.autoLock = FunctionUtils.VolatileAssign(() => new AutoLock(this));
+					this.autoLock = FuncUtils.VolatileAssign(() => new AutoLock(this));
 				}
 			}
 

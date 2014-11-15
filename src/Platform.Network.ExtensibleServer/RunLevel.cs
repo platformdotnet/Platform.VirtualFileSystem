@@ -2,11 +2,7 @@ namespace Platform.Network.ExtensibleServer
 {
 	public abstract class RunLevel
 	{
-		public virtual string Name
-		{
-			get;
-			set;
-		}
+		public string Name { get; set; }
 
 		protected RunLevel()
 		{
@@ -30,18 +26,12 @@ namespace Platform.Network.ExtensibleServer
 
 		public override bool Equals(object o)
 		{
-            if ((o as RunLevel) == null)
-            {
-            	return false;
-            }
-
-			return ((RunLevel)o).Name.EqualsIgnoreCase(this.Name);
+			return (o as RunLevel) != null && ((RunLevel)o).Name.EqualsIgnoreCase(this.Name);
 		}
 
 		public override int GetHashCode()
 		{
 			return ToString().GetHashCode();
 		}
-
 	}
 }

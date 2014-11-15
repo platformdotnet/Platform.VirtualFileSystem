@@ -20,7 +20,7 @@ namespace Platform.VirtualFileSystem.Network
 				{
 					lock (this)
 					{
-						this.remoteUri = FunctionUtils.VolatileAssign(() => StringUriUtils.Combine(this.InnerUri, TextConversion.ToReEscapedHexString(this.PathAndQuery, TextConversion.IsStandardUrlEscapedChar)));
+						this.remoteUri = FuncUtils.VolatileAssign(() => StringUriUtils.Combine(this.InnerUri, TextConversion.ToReEscapedHexString(this.PathAndQuery, TextConversion.IsStandardUrlEscapedChar)));
 					}
 				}
 
