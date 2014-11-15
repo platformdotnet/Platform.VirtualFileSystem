@@ -20,8 +20,8 @@
     <copyright>Copyright (c) 2003-2013 Thong Nguyen (tumtumtum@gmail.com)</copyright>
     <tags>Virtual VirtualFileSystem VFS url uri file directory files directories io</tags>
     <dependencies>
-      <dependency id="Platform.NET" version="1.1.0.175"/>
-      <dependency id="Platform.Xml.Serialization" version="1.1.0.175"/>
+      <dependency id="Platform.NET" version="1.1.0.176"/>
+      <dependency id="Platform.Xml.Serialization" version="1.1.0.176"/>
     </dependencies>
   </metadata>
 </package>
