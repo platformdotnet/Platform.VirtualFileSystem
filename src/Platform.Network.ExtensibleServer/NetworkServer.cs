@@ -165,6 +165,10 @@ namespace Platform.Network.ExtensibleServer
 
 					connection.RequestTaskState(TaskState.Running, TimeSpan.Zero);
 				}
+				catch (ThreadAbortException)
+				{
+					throw;
+				}
 				catch (StopRequestedException)
 				{
 					throw;
