@@ -6,7 +6,7 @@ using System.Threading;
 namespace Platform.Network.ExtensibleServer
 {
 	public abstract class NetworkServer
-		: AbstractTask
+		: AbstractTask, IDisposable
 	{
 		private TcpListener tcpListener;
 		private readonly IPEndPoint localEndPoint;
@@ -104,6 +104,22 @@ namespace Platform.Network.ExtensibleServer
 			return base.RequestTaskState(taskState, timeout);
 		}
 
+		public void Dispose()
+		{
+			this.Dispose(true);
+
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				ActionUtils.IgnoreExceptions(() => this.tcpListener.Stop());
+				ActionUtils.IgnoreExceptions(() => this.tcpListener.Server.Close());
+			}
+		}
+
 		public override void DoRun()
 		{
 			tcpListener = new TcpListener(localEndPoint);
@@ -131,19 +147,18 @@ namespace Platform.Network.ExtensibleServer
 
 						try
 						{
+							this.Sleep(100);
+
 							tcpListener.Start();
 						}
 						catch
 						{
-
 						}
 
 						ProcessTaskStateRequest();
 
 						continue;
 					}
-
-					var endPoint = socket.RemoteEndPoint;
 
 					this.ProcessTaskStateRequest();
 

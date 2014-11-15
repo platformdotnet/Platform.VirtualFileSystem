@@ -28,6 +28,7 @@ namespace Platform.VirtualFileSystem.Tests
 		public void TestFixtureTearDown()
 		{
 			this.server.Stop();
+			this.server.Dispose();
 		}
 
 		[Test]
