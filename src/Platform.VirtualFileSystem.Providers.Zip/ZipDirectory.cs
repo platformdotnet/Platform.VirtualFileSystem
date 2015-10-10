@@ -116,7 +116,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				if (zipEntry.Name.StartsWith(this.ZipPath)  /* Is descendent */
 					&& zipEntry.Name.Length != this.ZipPath.Length /* Not self */)
 				{
-					var x = zipEntry.Name.IndexOf('/', this.ZipPath.Length);
+					var x = zipEntry.Name.IndexOf('/', this.ZipPath.Length + 1);
 
 					if (x == -1 /* Is direct descendent File */)
 					{
@@ -130,7 +130,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 					else if (x <= zipEntry.Name.Length - 1 /* Is direct descendent dir */)
 					{
 						var s = zipEntry.Name.Substring(0, x);
-
+                            
 						directories.Add(s);
 					}
 				}
