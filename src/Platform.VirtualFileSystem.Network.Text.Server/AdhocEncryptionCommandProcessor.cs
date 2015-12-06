@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using Platform.Text;
-using Platform.Utilities;
 using Platform.Network.ExtensibleServer;
 using Platform.Network.ExtensibleServer.CommandServer;
 using ICSharpCode.SharpZipLib.Zip.Compression;

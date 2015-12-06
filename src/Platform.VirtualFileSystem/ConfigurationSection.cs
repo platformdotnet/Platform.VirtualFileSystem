@@ -1,9 +1,5 @@
 using System;
 using System.Xml;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Reflection;
 using Platform.Xml.Serialization;
 
 namespace Platform.VirtualFileSystem

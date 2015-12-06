@@ -1,4 +1,3 @@
-using System;
 using Platform.VirtualFileSystem.Providers;
 
 namespace Platform.VirtualFileSystem.Multimedia

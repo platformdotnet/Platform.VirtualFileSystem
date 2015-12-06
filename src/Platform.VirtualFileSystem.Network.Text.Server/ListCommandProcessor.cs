@@ -1,16 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using Platform;
 using Platform.Text;
-using Platform.Collections;
 using Platform.Network.ExtensibleServer;
 using Platform.Network.ExtensibleServer.CommandServer;
 using Platform.Utilities;
-using Platform.VirtualFileSystem.Network.Text.Protocol;
 
 namespace Platform.VirtualFileSystem.Network.Text.Server
 {

@@ -1,6 +1,5 @@
 using System;
 using System.Xml;
-using System.Collections;
 using System.Configuration;
 using Platform.Xml.Serialization;
 

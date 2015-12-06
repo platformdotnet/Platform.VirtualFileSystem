@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Platform.Text;
 
 namespace Platform.VirtualFileSystem.Network.Text.Protocol

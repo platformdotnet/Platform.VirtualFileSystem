@@ -1,7 +1,4 @@
 using System;
-using Platform.Collections;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Platform.VirtualFileSystem
 {

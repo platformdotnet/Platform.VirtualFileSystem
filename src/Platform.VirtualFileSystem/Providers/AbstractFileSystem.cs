@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Platform.Text;
 
 namespace Platform.VirtualFileSystem.Providers
 {

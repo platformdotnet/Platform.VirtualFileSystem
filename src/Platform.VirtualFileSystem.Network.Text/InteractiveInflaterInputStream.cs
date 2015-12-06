@@ -41,9 +41,6 @@ using System;
 using System.Security.Cryptography;
 using System.IO;
 
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Checksums;
-
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams.Interactive
 {
 

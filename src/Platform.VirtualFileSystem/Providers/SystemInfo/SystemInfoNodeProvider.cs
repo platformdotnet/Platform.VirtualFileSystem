@@ -1,9 +1,6 @@
 using System;
 using System.Globalization;
-using System.IO;
-using System.Collections.Generic;
 using System.Text;
-using Platform.Text;
 using Platform.VirtualFileSystem.Providers.Imaginary;
 
 namespace Platform.VirtualFileSystem.Providers.SystemInfo

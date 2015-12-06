@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using Platform.Text;
-using Platform.Collections;
 
 namespace Platform.VirtualFileSystem.Network.Text.Protocol
 {

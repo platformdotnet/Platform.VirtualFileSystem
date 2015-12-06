@@ -1,4 +1,3 @@
-using System;
 using Platform.Network.ExtensibleServer;
 
 namespace Platform.VirtualFileSystem.Network.Text.Server

@@ -2,9 +2,6 @@ using System;
 using System.IO;
 using System.Threading;
 using Platform.IO;
-using Platform.Text;
-using Platform;
-using Platform.VirtualFileSystem.Providers;
 
 namespace Platform.VirtualFileSystem.Providers
 {

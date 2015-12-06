@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Platform.VirtualFileSystem.Providers
 {
 	public abstract class AbstractHashingService

@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using Platform;
+
 //
 namespace Platform.VirtualFileSystem
 {

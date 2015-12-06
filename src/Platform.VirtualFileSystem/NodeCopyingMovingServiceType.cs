@@ -1,6 +1,3 @@
-using System;
-using Platform.VirtualFileSystem.Providers;
-
 namespace Platform.VirtualFileSystem
 {
 	public abstract class NodeCopyingMovingServiceType

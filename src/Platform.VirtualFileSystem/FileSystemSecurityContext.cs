@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-using Platform.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Platform.VirtualFileSystem
 {

@@ -3,7 +3,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Platform;
 using Platform.IO;
 using Platform.Text;
 using Platform.Xml.Serialization;

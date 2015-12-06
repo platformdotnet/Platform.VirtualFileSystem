@@ -1,5 +1,3 @@
-using System;
-
 namespace Platform.VirtualFileSystem
 {
 	public sealed class FileAttributes

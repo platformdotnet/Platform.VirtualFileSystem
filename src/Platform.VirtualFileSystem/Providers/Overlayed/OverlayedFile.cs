@@ -1,5 +1,3 @@
-using System;
-
 namespace Platform.VirtualFileSystem.Providers.Overlayed
 {
 	internal class OverlayedFile

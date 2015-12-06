@@ -1,5 +1,3 @@
-using System;
-
 namespace Platform.VirtualFileSystem.Network.Text.Protocol
 {
 	public sealed class ErrorCodes

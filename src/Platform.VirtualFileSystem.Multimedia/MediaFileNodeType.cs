@@ -1,5 +1,3 @@
-using System;
-
 namespace Platform.VirtualFileSystem.Multimedia
 {
 	public class MediaFileNodeType

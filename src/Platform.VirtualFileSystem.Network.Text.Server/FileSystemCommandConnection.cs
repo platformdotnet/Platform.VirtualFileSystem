@@ -4,7 +4,6 @@ using System.Text;
 using System.Net.Sockets;
 using System.Threading;
 using System.Collections.Generic;
-using Platform;
 using Platform.IO;
 using Platform.Text;
 using Platform.Network.ExtensibleServer;

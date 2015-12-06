@@ -1,11 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Security.Cryptography;
-using System.Collections.Generic;
-using System.Text;
-using Platform.IO;
 
 namespace Platform.VirtualFileSystem.Providers
 {

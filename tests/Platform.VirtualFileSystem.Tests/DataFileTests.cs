@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Platform.VirtualFileSystem.DataFile;
 using Platform.Xml.Serialization;
 

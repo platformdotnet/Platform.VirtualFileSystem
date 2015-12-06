@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics;
-
 namespace Platform.VirtualFileSystem.Providers
 {
 	public class AbstractTypeBasedFileAttributes

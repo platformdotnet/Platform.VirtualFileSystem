@@ -1,10 +1,5 @@
 using System;
-using System.IO;
 using System.Security.Cryptography;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics;
-using Platform;
 using Platform.IO;
 using Platform.Text;
 
