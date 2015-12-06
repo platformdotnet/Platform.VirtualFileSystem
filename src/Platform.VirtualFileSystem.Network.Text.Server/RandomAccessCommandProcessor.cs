@@ -16,22 +16,22 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri;
 
-			[CommandLineOption(Required = false)]
-			[CommandLineOptionChoices("read", "write", "readwrite", "none")]
+			[CommandOption(Required = false)]
+			[CommandOptionChoices("read", "write", "readwrite", "none")]
 			public string Share = "readwrite";
 
-			[CommandLineOption(Required = false)]
-			[CommandLineOptionChoices("read", "write", "readwrite", "none")]
+			[CommandOption(Required = false)]
+			[CommandOptionChoices("read", "write", "readwrite", "none")]
 			public string Access = "readwrite";
 
-			[CommandLineOption(Required = false)]
-			[CommandLineOptionChoices("append", "create", "createnew", "open", "openorcreate", "truncate")]
+			[CommandOption(Required = false)]
+			[CommandOptionChoices("append", "create", "createnew", "open", "openorcreate", "truncate")]
 			public string Mode = "openorcreate";
 
-			[CommandLineOption("w", Required = false)]
+			[CommandOption("w", Required = false)]
 			public bool WaitForReady = false;
 		}
 

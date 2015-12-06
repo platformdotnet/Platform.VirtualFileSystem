@@ -14,17 +14,17 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri;
 
-			[CommandLineOption(Required = false)]
+			[CommandOption(Required = false)]
 			public int Offset = 0;
 
-			[CommandLineOption(Required = false)]
+			[CommandOption(Required = false)]
 			public int Length = -1;
 
-			[CommandLineOption(Required = false)]
-			[CommandLineOptionChoices("read", "write", "readwrite", "none")]
+			[CommandOption(Required = false)]
+			[CommandOptionChoices("read", "write", "readwrite", "none")]
 			public string Share = "readwrite";
 		}
 

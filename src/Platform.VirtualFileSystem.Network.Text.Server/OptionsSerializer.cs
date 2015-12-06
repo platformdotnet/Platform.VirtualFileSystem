@@ -7,7 +7,7 @@ using Platform.VirtualFileSystem.Network.Text.Protocol;
 namespace Platform.VirtualFileSystem.Network.Text.Server
 {
 	public class OptionsSerializer
-		: CommandLineOptionsSerializer
+		: CommandOptionsSerializer
 	{
 		private readonly CommandProcessor commandProcessor;
 
@@ -21,7 +21,7 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 		{
 			var localErrorOccured = false;
 
-			var retval = this.Parse(commandLine, delegate(object sender, CommandLineOptionsSerializerEventArgs eventArgs)
+			var retval = this.Parse(commandLine, (sender, eventArgs) =>
 			{
 				if (localErrorOccured)
 				{

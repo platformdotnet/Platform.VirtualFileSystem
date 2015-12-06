@@ -15,19 +15,19 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(Required = false)]
+			[CommandOption(Required = false)]
 			public bool Compress = false;
 
-			[CommandLineOption(Required = false)]
+			[CommandOption(Required = false)]
 			public string Modulus = null;
 
-			[CommandLineOption(Required = false)]
+			[CommandOption(Required = false)]
 			public string Exponent = null;
 
-			[CommandLineOption(Required = false)]
+			[CommandOption(Required = false)]
 			public string Algorithm = "aes";
 
-			[CommandLineOption("w", Required = false)]
+			[CommandOption("w", Required = false)]
 			public bool WaitForReady = false;
 		}
 

@@ -14,7 +14,7 @@ namespace Platform.VirtualFileSystem.Network.Text.Server.Text
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption("ticket", Required = true)]
+			[CommandOption("ticket", Required = true)]
 			public string Ticket = "";
 		}
 

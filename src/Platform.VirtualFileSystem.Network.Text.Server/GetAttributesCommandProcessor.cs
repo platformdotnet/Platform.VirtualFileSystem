@@ -11,10 +11,10 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri;
 
-			[CommandLineOption("t", Required = true)]
+			[CommandOption("t", Required = true)]
 			public string NodeType = "Any";
 		}
 

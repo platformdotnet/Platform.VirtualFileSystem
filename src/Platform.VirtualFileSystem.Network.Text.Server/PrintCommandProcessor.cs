@@ -17,15 +17,15 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri;
 
-			[CommandLineOption("outenc", Required = false)]
-			[CommandLineOptionChoices("none", "url")]
+			[CommandOption("outenc", Required = false)]
+			[CommandOptionChoices("none", "url")]
 			public string Encoding = "none";
 
-			[CommandLineOption("txtenc", Required = false)]
-			[CommandLineOptionChoices("utf-8", "utf-16", "ascii")]
+			[CommandOption("txtenc", Required = false)]
+			[CommandOptionChoices("utf-8", "utf-16", "ascii")]
 			public string TextEncoding = "utf-8";
 		}
 

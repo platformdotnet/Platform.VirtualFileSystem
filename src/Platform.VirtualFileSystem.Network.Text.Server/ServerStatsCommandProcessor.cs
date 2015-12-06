@@ -15,7 +15,7 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(Required = false)]
+			[CommandOption(Required = false)]
 			public bool ConnectionCount = false;			
 		}
 

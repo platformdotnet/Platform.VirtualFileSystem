@@ -15,34 +15,34 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 		protected class CommandOptions
 			: RandomAccessCommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri = "";
 
-			[CommandLineOption("r", Required = false)]
+			[CommandOption("r", Required = false)]
 			public bool Recursive = false;
 
-			[CommandLineOption("dirattribs", Required = false)]
+			[CommandOption("dirattribs", Required = false)]
 			public string DirAttribs = "";
 
-			[CommandLineOption("fileattribs", Required = false)]
+			[CommandOption("fileattribs", Required = false)]
 			public string FileAttribs = "";			
 		}
 
 		protected class RandomAccessCommandOptions
 		{
-			[CommandLineOption("t", Required = false)]
+			[CommandOption("t", Required = false)]
 			public string NodeType = "f";
 
-			[CommandLineOption("hex", Required = false)]
+			[CommandOption("hex", Required = false)]
 			public bool SerializeAsHex = false;
 
-			[CommandLineOption("o", Required = false)]
+			[CommandOption("o", Required = false)]
 			public long Offset = 0;
 
-			[CommandLineOption("l", Required = false)]
+			[CommandOption("l", Required = false)]
 			public long Length = -1;
 
-			[CommandLineOption("a", Required = false)]
+			[CommandOption("a", Required = false)]
 			public string Algorithm = "md5";
 		}
 

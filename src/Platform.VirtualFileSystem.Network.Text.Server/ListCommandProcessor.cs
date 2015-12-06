@@ -20,13 +20,13 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri = "";
 
-			[CommandLineOption("a", Required = false)]
+			[CommandOption("a", Required = false)]
 			public bool IncludeAttributes = false;
 
-			[CommandLineOption("regex", Required = false)]
+			[CommandOption("regex", Required = false)]
 			public string Regex = null;
 		}
 

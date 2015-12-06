@@ -12,11 +12,11 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri;
 
-			[CommandLineOption("outenc", Required = false)]
-			[CommandLineOptionChoices("base64")]
+			[CommandOption("outenc", Required = false)]
+			[CommandOptionChoices("base64")]
 			public string OutEncoding = "base64";
 		}
 

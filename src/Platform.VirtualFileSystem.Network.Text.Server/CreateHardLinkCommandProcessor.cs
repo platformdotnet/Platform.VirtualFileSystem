@@ -13,13 +13,13 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Path = "";
 
-			[CommandLineOption(1, Required = true)]
+			[CommandOption(1, Required = true)]
 			public string Target = "";
 
-			[CommandLineOption("o", Required = false)]
+			[CommandOption("o", Required = false)]
 			public bool Overwrite;
 		}
 

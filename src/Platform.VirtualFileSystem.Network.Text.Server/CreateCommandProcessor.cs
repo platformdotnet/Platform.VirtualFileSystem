@@ -13,13 +13,13 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Uri;
 
-			[CommandLineOption("t", Required = true)]
+			[CommandOption("t", Required = true)]
 			public string NodeType = "f";
 
-			[CommandLineOption("p", Required = false)]
+			[CommandOption("p", Required = false)]
 			public bool CreateParent = false;
 		}
 

@@ -14,11 +14,11 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption("o", Required = false)]
-			[CommandLineOptionChoices("begin", "current", "end")]
+			[CommandOption("o", Required = false)]
+			[CommandOptionChoices("begin", "current", "end")]
 			public string SeekOrigin = "begin";
 
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public long Position;
 		}
 

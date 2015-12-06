@@ -94,7 +94,7 @@ namespace Platform.VirtualFileSystem
 			{
 				if (regex == null)
 				{
-					regex = RegexCache.Default.NewRegex(regexString, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline);
+					regex = RegexCache.Default.Create(regexString, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline);
 				}
 
 				return regex.IsMatch(node.Name);

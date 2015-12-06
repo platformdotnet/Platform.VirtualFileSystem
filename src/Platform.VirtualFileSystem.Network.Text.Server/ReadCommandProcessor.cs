@@ -14,10 +14,10 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public int Length;
 
-			[CommandLineOption("w", Required = false)]
+			[CommandOption("w", Required = false)]
 			public bool WaitForReady = false;
 		}
 

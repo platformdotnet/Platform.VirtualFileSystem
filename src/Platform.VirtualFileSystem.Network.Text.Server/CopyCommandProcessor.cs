@@ -13,22 +13,22 @@ namespace Platform.VirtualFileSystem.Network.Text.Server
 	{
 		protected class CommandOptions
 		{
-			[CommandLineOption(0, Required = true)]
+			[CommandOption(0, Required = true)]
 			public string Src = "";
 
-			[CommandLineOption(1, Required = true)]
+			[CommandOption(1, Required = true)]
 			public string Des = "";
 
-			[CommandLineOption("o", Required = false)]
+			[CommandOption("o", Required = false)]
 			public bool Overwrite;
 
-			[CommandLineOption("bsz", Required = false)]
+			[CommandOption("bsz", Required = false)]
 			public int BufferSize = 1024 * 64;
 
-			[CommandLineOption("t", Required = true)]
+			[CommandOption("t", Required = true)]
 			public string NodeType = "f";
 
-			[CommandLineOption("m", Required = false)]
+			[CommandOption("m", Required = false)]
 			public bool Monitor = false;
 		}
 				
