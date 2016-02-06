@@ -124,7 +124,7 @@ namespace Platform.VirtualFileSystem.Tests
 		[Test]
 		public void Test_Create_PasswordProtected_ZipFileSystem_And_Write_Files()
 		{
-			using (var fileSystem = ZipFileSystem.CreateZipFile(FileSystemManager.Default.ResolveFile("temp:///TestZipFile.zip"), this.WorkingDirectory.ResolveDirectory("Directory1"), FileSystemOptions.Default.AddVariables(new { ZipPassword = "pass123" })))
+			using (var fileSystem = ZipFileSystem.CreateZipFile(FileSystemManager.Default.ResolveFile("temp:///TestZipFile2.zip"), this.WorkingDirectory.ResolveDirectory("Directory1"), FileSystemOptions.Default.AddVariables(new { ZipPassword = "pass123" })))
 			{
 				var fileContents = fileSystem.ResolveFile("SubDirectory1/A.csv").GetContent().GetReader().ReadToEnd();
 
@@ -144,7 +144,7 @@ namespace Platform.VirtualFileSystem.Tests
 				Assert.IsTrue(newFile.Exists);
 			}
 
-			var fileContents2 = FileSystemManager.Default.ResolveFile("zip://[temp:///TestZipFile.zip?ZipPassword=pass123]/SubDirectory1/A.csv").GetContent().GetReader().ReadToEnd();
+			var fileContents2 = FileSystemManager.Default.ResolveFile("zip://[temp:///TestZipFile2.zip?ZipPassword=pass123]/SubDirectory1/A.csv").GetContent().GetReader().ReadToEnd();
 
 			Console.WriteLine(fileContents2);
 		}
