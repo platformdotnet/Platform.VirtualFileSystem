@@ -1,15 +1,12 @@
+using System.Collections.Specialized;
+using System.Linq;
+
 namespace Platform.VirtualFileSystem.Providers.Zip
 {
 	public class ZipNodeProvider
 		: AbstractMultiFileSystemNodeProvider
 	{
-		public override string[] SupportedUriSchemas
-		{
-			get
-			{
-				return new[] { "zip" };
-			}
-		}
+		public override string[] SupportedUriSchemas => new[] { "zip" };
 
 		public ZipNodeProvider(IFileSystemManager manager)
 			: base(manager)
@@ -27,7 +24,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 			cache = options.ReadOnly;
 
-			return new ZipFileSystem(rootAddress, backingFile, options);
+			return new ZipFileSystem(rootAddress, backingFile, this.AmmendOptionsFromAddress(backingFile.Address, options));
 		}
 	}
 }

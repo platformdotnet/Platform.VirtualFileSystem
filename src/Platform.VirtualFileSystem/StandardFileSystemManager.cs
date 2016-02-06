@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -140,11 +141,11 @@ namespace Platform.VirtualFileSystem
 			{
 				if (uri == null)
 				{
-					throw new ArgumentNullException("uri");
+					throw new ArgumentNullException(nameof(uri));
 				}
 				else
 				{
-					throw new ArgumentException("uri");
+					throw new ArgumentException(nameof(uri));
 				}
 			}
 
@@ -155,15 +156,12 @@ namespace Platform.VirtualFileSystem
 
 			if (uri.Length == 0)
 			{
-				throw new ArgumentException(uri, "uri");
+				throw new ArgumentException(uri, nameof(uri));
 			}
 						
-			foreach (var provider in providers)
+			foreach (var provider in this.providers.Where(provider => provider.SupportsUri(uri)))
 			{
-				if (provider.SupportsUri(uri))
-				{
-					return provider.Find(this, uri, nodeType, options);
-				}
+				return provider.Find(this, uri, nodeType, options);
 			}
 
 			throw new NotSupportedException(uri);

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Platform.IO;
@@ -118,6 +119,34 @@ namespace Platform.VirtualFileSystem.Tests
 
 				Assert.IsTrue(newFile.Exists);
 			}
+		}
+
+		[Test]
+		public void Test_Create_PasswordProtected_ZipFileSystem_And_Write_Files()
+		{
+			using (var fileSystem = ZipFileSystem.CreateZipFile(FileSystemManager.Default.ResolveFile("temp:///TestZipFile.zip"), this.WorkingDirectory.ResolveDirectory("Directory1"), FileSystemOptions.Default.AddVariables(new { ZipPassword = "pass123" })))
+			{
+				var fileContents = fileSystem.ResolveFile("SubDirectory1/A.csv").GetContent().GetReader().ReadToEnd();
+
+				Assert.AreEqual("A.csv", fileContents);
+
+				var newFile = fileSystem.ResolveFile("SubDirectory1/B.txt");
+
+				newFile.ParentDirectory.Create();
+
+				Assert.IsFalse(newFile.Exists);
+
+				using (var writer = newFile.GetContent().GetWriter(Encoding.UTF8))
+				{
+					writer.Write("B.txt");
+				}
+
+				Assert.IsTrue(newFile.Exists);
+			}
+
+			var fileContents2 = FileSystemManager.Default.ResolveFile("zip://[temp:///TestZipFile.zip?ZipPassword=pass123]/SubDirectory1/A.csv").GetContent().GetReader().ReadToEnd();
+
+			Console.WriteLine(fileContents2);
 		}
 
 		[Test]

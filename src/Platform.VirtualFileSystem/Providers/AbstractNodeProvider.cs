@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace Platform.VirtualFileSystem.Providers
 {
@@ -23,6 +25,23 @@ namespace Platform.VirtualFileSystem.Providers
 		protected AbstractNodeProvider(IFileSystemManager manager)
 		{
 			this.Manager = manager;
+		}
+
+		protected virtual FileSystemOptions AmmendOptionsFromAddress(INodeAddress address, FileSystemOptions options)
+		{
+			NameValueCollection variables = null;
+
+			foreach (var key in address.QueryValues.Keys.Cast<string>().Where(key => this.SupportedUriSchemas.Any(c => key.StartsWith(c, StringComparison.InvariantCultureIgnoreCase))))
+			{
+				if (variables == null)
+				{
+					variables = new NameValueCollection();
+				}
+
+				variables[key] = address.QueryValues[key];
+			}
+
+			return options.AddVariables(variables);
 		}
 
 		public abstract INode Find(INodeResolver resolver, string uri, NodeType nodeType, FileSystemOptions options);

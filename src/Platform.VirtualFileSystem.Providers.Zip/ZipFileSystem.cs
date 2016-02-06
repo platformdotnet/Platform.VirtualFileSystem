@@ -11,11 +11,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		: AbstractFileSystem
 	{
 		internal ZLib.ZipFile zipFile;
-
-		public override bool SupportsActivityEvents
-		{
-			get { return true; }
-		}
+		public override bool SupportsActivityEvents => true;
 
 		private readonly AttributeChangeDeterminer changeDeterminer; 
 		private readonly Dictionary<string, ZipFileInfo> zipFileInfos = new Dictionary<string, ZipFileInfo>(StringComparer.InvariantCultureIgnoreCase);
@@ -29,9 +25,8 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 				if (!zipDirectoryInfos.TryGetValue(path, out retval))
 				{
-					retval = new ZipDirectoryInfo(false);
+					retval = new ZipDirectoryInfo(false) { AbsolutePath = path };
 
-					retval.AbsolutePath = path;
 
 					zipDirectoryInfos[path] = retval;
 				}
@@ -48,9 +43,8 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 
 				if (!zipFileInfos.TryGetValue(path, out retval))
 				{
-					retval = new ZipFileInfo(null);
+					retval = new ZipFileInfo(null) { AbsolutePath = path };
 
-					retval.AbsolutePath = path;
 
 					zipFileInfos[path] = retval;
 				}
@@ -80,9 +74,8 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				zipFileInfos.Clear();
 				zipDirectoryInfos.Clear();
 
-				var directories = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+				var directories = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase) { "/" };
 
-				directories.Add("/");
 
 				var zipEntriesByDirectory = new Dictionary<string, ZLib.ZipEntry>();
 
@@ -318,11 +311,14 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				}
 			}
 
+			var password = options.Variables["ZipPassword"];
+
 			using (var zipOutputStream = new ZLib.ZipOutputStream(zipFile.GetContent().GetOutputStream()))
 			{
 				zipOutputStream.SetLevel(compressionLevel);
 				zipOutputStream.IsStreamOwner = true;
 				zipOutputStream.UseZip64 = ZLib.UseZip64.Dynamic;
+				zipOutputStream.Password = password;
 
 				if (files != null)
 				{
@@ -410,11 +406,17 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			if (this.Options.ReadOnly)
 			{
-				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().GetInputStream(FileShare.ReadWrite));
+				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().GetInputStream(FileShare.ReadWrite))
+				{
+					Password = this.Options.Variables["ZipPassword"] 
+				};
 			}
 			else
 			{
-				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().OpenStream(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read));
+				this.zipFile = new ZLib.ZipFile(this.ParentLayer.GetContent().OpenStream(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read))
+				{
+					Password = this.Options.Variables["ZipPassword"]
+				};
 			}
 		}
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using Platform.VirtualFileSystem.Providers;
 
 namespace Platform.VirtualFileSystem
@@ -27,10 +29,7 @@ namespace Platform.VirtualFileSystem
 
 							nodeServiceProviderTypes.Add(typeof(CoreNodeServicesProvider));
 
-							FileSystemOptions.DefaultOptions = new FileSystemOptions(typeof(DefaultNodeCache), nodeServiceProviderTypes, ConfigurationSection.Default.NodeResolutionFilters.Select(c => c.Type).ToList(), ConfigurationSection.Default.NodeOperationFilters.Select(c => c.Type).ToList(), new List<Type>(), new FileSystemVariablesCollection())
-							{
-								IsDefault = true
-							};
+							FileSystemOptions.DefaultOptions = new FileSystemOptions(typeof(DefaultNodeCache), nodeServiceProviderTypes, ConfigurationSection.Default.NodeResolutionFilters.Select(c => c.Type).ToList(), ConfigurationSection.Default.NodeOperationFilters.Select(c => c.Type).ToList(), new List<Type>(), new FileSystemVariablesCollection(), true);
 						}
 					}
 				}
@@ -39,14 +38,16 @@ namespace Platform.VirtualFileSystem
 			}
 		}
 
-		public bool IsDefault { get; private set; }
-		public bool ReadOnly { get; private set; }
-		public FileSystemVariablesCollection Variables { get; set; }
-		public ReadOnlyCollection<Type> NodeResolutionFilterTypes { get; private set; }
-		public ReadOnlyCollection<Type> NodeTransformationFilterTypes { get; private set; }
-		public ReadOnlyCollection<Type> NodeServiceProviderTypes { get; private set; }
-		public ReadOnlyCollection<Type> NodeOperationFilterTypes { get; private set; }
-		public ReadOnlyCollection<Type> AccessPermissionVerifierTypes { get; private set; }
+		public bool ReadOnly => false;
+		public bool IsDefault { get; }
+
+		public FileSystemVariablesCollection Variables { get; }
+		public ReadOnlyCollection<Type> NodeResolutionFilterTypes { get; }
+		public ReadOnlyCollection<Type> NodeTransformationFilterTypes { get; }
+		public ReadOnlyCollection<Type> NodeServiceProviderTypes { get; }
+		public ReadOnlyCollection<Type> NodeOperationFilterTypes { get; }
+		public ReadOnlyCollection<Type> AccessPermissionVerifierTypes { get; }
+		public Type NodeCacheType { get; set; }
 
 		public override int GetHashCode()
 		{
@@ -63,6 +64,7 @@ namespace Platform.VirtualFileSystem
 
 			return retval;
 		}
+
 		public override bool Equals(object obj)
 		{
 			var typedObj = obj as FileSystemOptions;
@@ -99,14 +101,12 @@ namespace Platform.VirtualFileSystem
 				variables[variable.Name] = variable.Value;
 			}
 
-			return new FileSystemOptions(this.NodeCacheType, this.NodeServiceProviderTypes, this.NodeResolutionFilterTypes, nodeOperationFileTypes, accessPermissionVerifierTypes, variables)
-			{
-				IsDefault = false
-			};
+			return new FileSystemOptions(this.NodeCacheType, this.NodeServiceProviderTypes, this.NodeResolutionFilterTypes, nodeOperationFileTypes, accessPermissionVerifierTypes, variables, false);
 		}
 
-		private FileSystemOptions(Type nodeCacheType, IList<Type> nodeServiceProviderTypes, IList<Type> nodeResolutionFilterTypes, IList<Type> nodeOperationFilterTypes, IList<Type> accessPermissionVerifierTypes, NameValueCollection variables)
+		private FileSystemOptions(Type nodeCacheType, IList<Type> nodeServiceProviderTypes, IList<Type> nodeResolutionFilterTypes, IList<Type> nodeOperationFilterTypes, IList<Type> accessPermissionVerifierTypes, NameValueCollection variables, bool isDefault = false)
 		{
+			this.IsDefault = IsDefault;
 			this.NodeCacheType = nodeCacheType;
 			this.Variables = new FileSystemVariablesCollection(variables);
 			this.NodeTransformationFilterTypes = new ReadOnlyCollection<Type>(new List<Type>());
@@ -116,12 +116,63 @@ namespace Platform.VirtualFileSystem
 			this.NodeOperationFilterTypes = new ReadOnlyCollection<Type>(nodeOperationFilterTypes.Distinct().ToList());
 		}
 
-		/// <summary>
-		/// Get/Set the <c>Type</c> of the cache <c>NodeCache</c> implementation to use for new file systems.
-		/// </summary>
-		/// <remarks>
-		/// If not set, the default is <see cref="DefaultNodeCache"/>.
-		/// </remarks>
-		public Type NodeCacheType { get; set; }
+		public FileSystemOptions AddVariables(NameValueCollection variables)
+		{
+			if (variables == null)
+			{
+				return this;
+			}
+
+			var newVariables = new NameValueCollection(this.Variables) { variables };
+
+			return new FileSystemOptions(this.NodeCacheType, this.NodeServiceProviderTypes, this.NodeResolutionFilterTypes, this.NodeOperationFilterTypes, this.AccessPermissionVerifierTypes, newVariables, false);
+		}
+
+		private static Dictionary<Type, Action<object, NameValueCollection>> variableAdderFuncs = new Dictionary<Type, Action<object, NameValueCollection>>();
+
+		public FileSystemOptions AddVariables<T>(T variables)
+		{
+			if (variables == null)
+			{
+				return this;
+			}
+
+			var newVariables = new NameValueCollection(this.Variables);
+
+			Action<object, NameValueCollection> adderFunc;
+
+			if (!variableAdderFuncs.TryGetValue(typeof(T), out adderFunc))
+			{
+				var param1 = Expression.Parameter(typeof(object));
+				var param2 = Expression.Parameter(typeof(NameValueCollection));
+				var adderCalls = new List<Expression>();
+
+				var setMethod = typeof(NameValueCollection)
+					.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+					.Where(c => c.GetIndexParameters().Length == 1)
+					.Where(c => c.GetIndexParameters()[0].ParameterType == typeof(string))
+					.Where(c => c.Name == "Item")
+					.Select(c => c.SetMethod)
+					.Single();
+
+				foreach (var property in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+				{
+					adderCalls.Add(Expression.Call(param2, setMethod, Expression.Constant(property.Name), Expression.Property(Expression.Convert(param1, typeof(T)), property)));
+				}
+
+				adderFunc = Expression.Lambda<Action<object, NameValueCollection>>(Expression.Block(adderCalls), param1, param2).Compile();
+
+				variableAdderFuncs = new Dictionary<Type, Action<object, NameValueCollection>>(variableAdderFuncs) { [typeof(T)] = adderFunc };
+			}
+
+			adderFunc(variables, newVariables);
+
+			return new FileSystemOptions(this.NodeCacheType, this.NodeServiceProviderTypes, this.NodeResolutionFilterTypes, this.NodeOperationFilterTypes, this.AccessPermissionVerifierTypes, newVariables, false);
+		}
+
+		public FileSystemOptions ChangeNodeCacheType(Type nodeCacheType)
+		{
+			return new FileSystemOptions(nodeCacheType, this.NodeServiceProviderTypes, this.NodeResolutionFilterTypes, this.NodeOperationFilterTypes, this.AccessPermissionVerifierTypes, this.Variables, false);
+		}
 	}
 }

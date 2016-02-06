@@ -22,14 +22,7 @@ namespace Platform.VirtualFileSystem.Providers
 
 		#endregion
 
-        public virtual bool IsDisposed
-        {
-            get
-            {
-                return false;
-            }
-        }
-
+		public virtual bool IsDisposed => false;
 		public virtual FileSystemSecurityManager SecurityManager { get; private set; }
 
 		public virtual bool HasAccess(INode node, FileSystemSecuredOperation operation)
@@ -76,54 +69,14 @@ namespace Platform.VirtualFileSystem.Providers
 
 		#region Properties
 		
-		public virtual bool SupportsSeeking
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		public virtual AutoLock AquireAutoLock()
-		{
-			return this.autoLock;
-		}
-
-		public virtual object SyncLock
-		{
-			get
-			{
-				return this;
-			}
-		}
-
-		public virtual int MaximumPathLength
-		{
-			get
-			{
-				return Int32.MaxValue;
-			}
-		}
-
+		public virtual bool SupportsSeeking => false;
+		public virtual AutoLock AquireAutoLock() => this.autoLock;
+		public virtual object SyncLock => this;
+		public virtual int MaximumPathLength => int.MaxValue;
 		protected IFile ParentLayer { get; private set; }
-
-		protected virtual INodeAddress RootAddress
-		{
-			get
-			{
-				return this.rootAddress;
-			}
-		}
-
-		public virtual bool SupportsActivityEvents
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		public FileSystemOptions Options { get; private set; }
+		protected virtual INodeAddress RootAddress => this.rootAddress;
+		public virtual bool SupportsActivityEvents => false;
+		public FileSystemOptions Options { get; }
 
 		public virtual IDirectory RootDirectory
 		{
@@ -296,10 +249,13 @@ namespace Platform.VirtualFileSystem.Providers
 		/// </param>
 		/// <returns></returns>
 		protected INode GetFromCache(INodeAddress address, NodeType nodeType)
-		{			
-			return this.cache.Get(address, nodeType);
+		{
+			lock (this.cache)
+			{
+				return this.cache.Get(address, nodeType);
+			}
 		}
-	
+
 		protected virtual void OnClosed()
 		{
 			if (Closed != null)

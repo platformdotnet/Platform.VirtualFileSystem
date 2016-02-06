@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Platform.VirtualFileSystem.Providers.Overlayed
 {
@@ -57,16 +58,9 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 	public class OverlayedFileSystem
 		: AbstractFileSystem
 	{
-		private IList<IFileSystem> readonlyFileSystems;
 		private readonly IList<IFileSystem> fileSystems;
 		
-		public override bool SupportsActivityEvents
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public override bool SupportsActivityEvents => true;
 
 		public override event FileSystemActivityEventHandler Activity
 		{
@@ -134,31 +128,19 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 			}
 		}
 
-		public virtual IList<IFileSystem> FileSystems
-		{
-			get
-			{
-				return fileSystems;
-			}
-		}
-
-		public OverlayedNodeSelector OverlayedNodeSelector
-		{
-			get; private set; 
-		}
-
+		public OverlayedNodeSelector OverlayedNodeSelector { get; }
+		public virtual IList<IFileSystem> FileSystems => this.fileSystems;
+		
 		private static FileSystemOptions VerifyOptions(FileSystemOptions options)
 		{
-			options.NodeCacheType = typeof(PathKeyedNodeCache);
-
-			return options;
+			return options.ChangeNodeCacheType(typeof(PathKeyedNodeCache));
 		}
 
 		public override void Close()
 		{
 			RemoveActivityHandlers();
 
-			foreach (IFileSystem fs in this.FileSystems)
+			foreach (var fs in this.FileSystems)
 			{
 				fs.Close();
 			}
@@ -182,7 +164,10 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 		{
 			((IFileSystem)sender).Activity -= this.FileSystemsActivity;
 
-			this.fileSystems.Remove((IFileSystem)sender);
+			lock (this.SyncLock)
+			{
+				this.fileSystems.Remove((IFileSystem)sender);
+			}
 		}
 
 		/// <summary>
@@ -244,19 +229,17 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 		/// <param name="options">The options for the file system.</param>
 		/// <param name="overlayedNodeSelector">The <c>OverlayedNodeSelector</c> to use to select/resolve files.</param>
 		public OverlayedFileSystem(string name, IEnumerable<IFileSystem> fileSystems, FileSystemOptions options, OverlayedNodeSelector overlayedNodeSelector)
-			: base(new StandardNodeAddress(name == null ? "overlayed" : name, name != null ? null : OverlayedNodeProvider.NextUniqueName(), 0, 0, "", "", "/", "") , null, VerifyOptions(options))
+			: base(new StandardNodeAddress(name ?? "overlayed", name != null ? null : OverlayedNodeProvider.NextUniqueName(), 0, 0, "", "", "/", "") , null, VerifyOptions(options))
 		{
 			this.fileSystems = new List<IFileSystem>();
 			
-			foreach (IFileSystem fs in fileSystems)
+			foreach (var fs in fileSystems)
 			{
-				fs.Closed += new EventHandler(FileSystem_Closed);
+				fs.Closed += this.FileSystem_Closed;
 
 				this.fileSystems.Add(fs);
 			}
-
-			readonlyFileSystems = ((List<IFileSystem>)this.fileSystems).AsReadOnly();
-
+			
 			this.OverlayedNodeSelector = overlayedNodeSelector;
 		}
 
@@ -272,17 +255,12 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 						throw new InvalidOperationException("Overlayed FileSystem isn't initialized with any file systems");
 					}
 
-					foreach (var fs in overlayedFileSystem.FileSystems)
+					foreach (var node in overlayedFileSystem.FileSystems.Select(fs => fs.Resolve(address.AbsolutePath, nodeType)).Where(node => node.Exists))
 					{
-						var node = fs.Resolve(address.AbsolutePath, nodeType);
-						
-						if (node.Exists)
-						{
-							return node;
-						}
+						return node;
 					}
 
-					return ((IFileSystem)overlayedFileSystem.FileSystems[0]).Resolve(address.AbsolutePath, nodeType);
+					return overlayedFileSystem.FileSystems[0].Resolve(address.AbsolutePath, nodeType);
 				}
 			}
 		}
@@ -302,14 +280,7 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 
 			lock (this.SyncLock)
 			{
-				foreach (var fileSystem in fileSystems)
-				{
-					var alternateNode = fileSystem.Resolve(node.Address.AbsolutePath, node.NodeType);
-
-					// Don't yield directly here because we still hold the SyncLock
-
-					retvals.Add(alternateNode);
-				}
+				retvals.AddRange(this.fileSystems.Select(fileSystem => fileSystem.Resolve(node.Address.AbsolutePath, node.NodeType)));
 			}
 
 			return retvals;
@@ -345,19 +316,15 @@ namespace Platform.VirtualFileSystem.Providers.Overlayed
 			{
 				return new OverlayedFile(this, nodeAddress, (IFile)node);
 			}
-			else if (node.NodeType.Equals(NodeType.Directory))
+
+			if (node.NodeType.Equals(NodeType.Directory))
 			{
 				return new OverlayedDirectory(this, nodeAddress, (IDirectory)node);
 			}
-			else
-			{
-				throw new NodeTypeNotSupportedException(node.NodeType);
-			}
+
+			throw new NodeTypeNotSupportedException(node.NodeType);
 		}
 
-		protected override INode CreateNode(INodeAddress address, NodeType nodeType)
-		{			
-			return GetOverlay(address, nodeType);
-		}
+		protected override INode CreateNode(INodeAddress address, NodeType nodeType) => this.GetOverlay(address, nodeType);
 	}
 }
