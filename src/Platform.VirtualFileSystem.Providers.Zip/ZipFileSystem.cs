@@ -10,7 +10,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 	public class ZipFileSystem
 		: AbstractFileSystem
 	{
-		internal ZLib.ZipFile zipFile;
+		public ZLib.ZipFile zipFile;
 
 		public override bool SupportsActivityEvents
 		{
