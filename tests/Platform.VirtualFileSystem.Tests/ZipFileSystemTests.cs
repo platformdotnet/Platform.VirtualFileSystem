@@ -144,9 +144,20 @@ namespace Platform.VirtualFileSystem.Tests
 				Assert.IsTrue(newFile.Exists);
 			}
 
-			var fileContents2 = FileSystemManager.Default.ResolveFile("zip://[temp:///TestZipFile2.zip?ZipPassword=pass123]/SubDirectory1/A.csv").GetContent().GetReader().ReadToEnd();
+			var file = FileSystemManager.Default.ResolveFile("zip://[temp:///TestZipFile2.zip?ZipPassword=pass123]/SubDirectory1/A.csv");
+
+			var fileContents2 = file.GetContent().GetReader().ReadToEnd();
 
 			Console.WriteLine(fileContents2);
+
+			file.FileSystem.Close();
+
+			var fileContents3 = new ZipFileSystem(FileSystemManager.Default
+				.ResolveFile("temp:///TestZipFile2.zip"), FileSystemOptions.Default.AddVariables(new { ZipPassword = "pass123" }))
+				.ResolveFile("SubDirectory1/A.csv")
+				.GetContent().GetReader().ReadToEnd();
+
+			Console.WriteLine(fileContents3);
 		}
 
 		[Test]
