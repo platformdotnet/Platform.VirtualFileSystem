@@ -18,10 +18,7 @@ namespace Platform.VirtualFileSystem
 		{
 			foreach (var provider in providers)
 			{
-				if (provider is Providers.View.ViewNodeProvider)
-				{
-					((Providers.View.ViewNodeProvider) provider).ViewFileSystem.Close();
-				}
+				(provider as Providers.View.ViewNodeProvider)?.ViewFileSystem.Close();
 			}
 		}
 

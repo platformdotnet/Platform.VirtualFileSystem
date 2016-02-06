@@ -12,7 +12,8 @@ namespace Platform.VirtualFileSystem
 		public const string RootPath = "/";
 
 		private static readonly IFileSystemManager manager;
-
+		public static IFileSystemManager Default => GetManager();
+		
 		static FileSystemManager()
 		{
 			try
@@ -23,14 +24,6 @@ namespace Platform.VirtualFileSystem
 			{
 				Console.Error.WriteLine("There was an error initializing the {0}", typeof(FileSystemManager).Name);
 				Console.Error.WriteLine(e.InnerException);
-			}
-		}
-
-		public static IFileSystemManager Default
-		{
-			get
-			{
-				return GetManager();
 			}
 		}
 

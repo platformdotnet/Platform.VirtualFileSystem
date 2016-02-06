@@ -23,15 +23,10 @@ namespace Platform.VirtualFileSystem
 		: StandardFileSystemManager
 	{
 		public DefaultFileSystemManager()
-			: base()
 		{
 			if (ConfigurationSection.Default.DefaultNodeProviders.Length == 0)
 			{
-				AddProvider(new Providers.Local.LocalNodeProvider(this));
-				AddProvider(new Providers.Temp.TempNodeProvider(this));
-				AddProvider(new Providers.Web.WebNodeProvider(this));				
-				AddProvider(new Providers.Shadow.ShadowNodeProvider(this));
-				AddProvider(new Providers.MyComputer.MyComputerNodeProvider(this));
+				AddDefaultProviders();
 			}
 			else
 			{
@@ -51,6 +46,15 @@ namespace Platform.VirtualFileSystem
 			}
 
 			this.ScanAssembliesAndAddProviders();
+		}
+
+		private void AddDefaultProviders()
+		{
+			AddProvider(new Providers.Local.LocalNodeProvider(this));
+			AddProvider(new Providers.Temp.TempNodeProvider(this));
+			AddProvider(new Providers.Web.WebNodeProvider(this));
+			AddProvider(new Providers.Shadow.ShadowNodeProvider(this));
+			AddProvider(new Providers.MyComputer.MyComputerNodeProvider(this));
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 		{
 			var backingFile = this.Manager.ResolveFile(((LayeredNodeAddress)rootAddress).InnerUri);
 
-			cache = options.ReadOnly;
+			cache = true;
 
 			return new ZipFileSystem(rootAddress, backingFile, this.AmmendOptionsFromAddress(backingFile.Address, options));
 		}

@@ -34,7 +34,19 @@ namespace Platform.VirtualFileSystem
 		protected virtual void QueryResolutionFilters()
 		{			
 		}
+		
+		public virtual IFileSystem ResolveFileSystem(string uri, FileSystemOptions options = null)
+		{
+			var node = this.Resolve(uri, NodeType.Directory, AddressScope.FileSystem, options);
 
-		public abstract INode Resolve(string uri, NodeType nodeType, AddressScope scope, FileSystemOptions options);
+			if (node.Address.AbsolutePath != "/")
+			{
+				throw new UriFormatException($"Expected root directory in uri: ${uri}");
+			}
+			
+			return node.FileSystem;
+		}
+
+		public abstract INode Resolve(string uri, NodeType nodeType, AddressScope scope, FileSystemOptions options = null);
 	}
 }
