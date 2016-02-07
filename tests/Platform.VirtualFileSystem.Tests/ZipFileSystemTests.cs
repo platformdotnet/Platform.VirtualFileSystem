@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using Platform.IO;
 using Platform.VirtualFileSystem.Providers.Zip;
+using System.Collections.Generic;
 
 namespace Platform.VirtualFileSystem.Tests
 {
@@ -193,6 +194,44 @@ namespace Platform.VirtualFileSystem.Tests
 				var fileContents = fileSystem.ResolveFile("SubDirectory1/A.csv").GetContent().GetReader().ReadToEnd();
 
 				Assert.AreEqual("A.csv", fileContents);
+			}
+		}
+
+		[Test]
+		public void Test_Walk_Zip_Directory()
+		{
+			using (var zfs = new ZipFileSystem(this.WorkingDirectory.ResolveFile("TestWalkZipDir.zip")))
+			{
+				const int limit = 100;
+				int count = 0;
+				var entries = new List<INode>();
+				foreach (var entry in zfs.RootDirectory.Walk())
+				{
+					entries.Add(entry);
+					if (++count > limit)
+						Assert.Fail("Infinite loop when walking zip directory");
+				}
+				Assert.AreEqual(5, entries.Count);
+				Assert.AreEqual(1, entries.Count(x =>
+					x.Name == "sample" &&
+					x.Address.AbsolutePath == "/sample" &&
+					x.NodeType == NodeType.Directory));
+				Assert.AreEqual(1, entries.Count(x =>
+					x.Name == "TextFile2.txt" &&
+					x.Address.AbsolutePath == "/sample/TextFile2.txt" &&
+					x.NodeType == NodeType.File));
+				Assert.AreEqual(1, entries.Count(x =>
+					x.Name == "data" &&
+					x.Address.AbsolutePath == "/sample/data" &&
+					x.NodeType == NodeType.Directory));
+				Assert.AreEqual(1, entries.Count(x =>
+					x.Name == "DataFile1.xml" &&
+					x.Address.AbsolutePath == "/sample/data/DataFile1.xml" &&
+					x.NodeType == NodeType.File));
+				Assert.AreEqual(1, entries.Count(x =>
+					x.Name == "TextFile1.txt" &&
+					x.Address.AbsolutePath == "/sample/data/TextFile1.txt" &&
+					x.NodeType == NodeType.File));
 			}
 		}
 	}

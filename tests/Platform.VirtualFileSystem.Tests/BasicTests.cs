@@ -169,7 +169,7 @@ namespace Platform.VirtualFileSystem.Tests
 		{
 			var children = this.WorkingDirectory.GetChildren(NodeType.Any).ToList();
 
-			Assert.AreEqual(6, children.Count);
+			Assert.AreEqual(7, children.Count);
 
 			var childNamesSetchildrenSet = new HashSet<string>(this.WorkingDirectory.GetChildren(NodeType.Any).Select(c => c.Name));
 
@@ -178,6 +178,7 @@ namespace Platform.VirtualFileSystem.Tests
 			Assert.IsTrue(childNamesSetchildrenSet.Contains("TextFile1.txt"));
 			Assert.IsTrue(childNamesSetchildrenSet.Contains("TextFile2.txt"));
 			Assert.IsTrue(childNamesSetchildrenSet.Contains("DataFile1.xml"));
+			Assert.IsTrue(childNamesSetchildrenSet.Contains("TestWalkZipDir.zip"));
 
 			childNamesSetchildrenSet = new HashSet<string>(this.WorkingDirectory.GetChildNames(NodeType.Any));
 
@@ -191,7 +192,7 @@ namespace Platform.VirtualFileSystem.Tests
 
 			children = this.WorkingDirectory.GetChildren(NodeType.File).ToList();
 
-			Assert.AreEqual(3, children.Count);
+			Assert.AreEqual(4, children.Count);
 		}
 
 		[Test]
