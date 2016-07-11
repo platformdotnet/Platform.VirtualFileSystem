@@ -19,6 +19,8 @@ namespace Platform.VirtualFileSystem.Tests
 
 			var file = FileSystemManager.Default.ResolveFile($"temp:///{Guid.NewGuid().ToString("N")}.txt");
 
+			file.Create();
+
 			var x = file.GetContentNames().Count();
 
 			Assert.GreaterOrEqual(x, 1);
