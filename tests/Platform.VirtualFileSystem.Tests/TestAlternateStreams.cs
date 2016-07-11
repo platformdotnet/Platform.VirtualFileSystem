@@ -17,7 +17,7 @@ namespace Platform.VirtualFileSystem.Tests
 				return;
 			}
 
-			var file = FileSystemManager.Default.ResolveFile("temp:///Temp.txt");
+			var file = FileSystemManager.Default.ResolveFile($"temp:///{Guid.NewGuid().ToString("N")}.txt");
 
 			var x = file.GetContentNames().Count();
 
@@ -36,6 +36,8 @@ namespace Platform.VirtualFileSystem.Tests
 			{
 				Assert.AreEqual("AlternateData", reader.ReadToEnd());
 			}
+
+			file.Delete();
 		}
 	}
 }
