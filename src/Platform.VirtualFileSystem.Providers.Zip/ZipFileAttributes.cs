@@ -1,7 +1,7 @@
 namespace Platform.VirtualFileSystem.Providers.Zip
 {
 	internal class ZipFileAttributes
-		: ZipNodeAttributes
+		: ZipNodeAttributes, IFileAttributes
 	{
 		private readonly object lockObject = new object();
 
@@ -23,5 +23,12 @@ namespace Platform.VirtualFileSystem.Providers.Zip
 				}				
 			}
 		}
+
+		public IFileAttributes Refresh()
+		{
+			return this;
+		}
+
+		long? IFileAttributes.Length => Length;
 	}
 }
